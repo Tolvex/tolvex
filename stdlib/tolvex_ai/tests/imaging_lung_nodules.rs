@@ -1,5 +1,5 @@
-use tolvex_ai::imaging::detect_lung_nodules;
 use serde_json::json;
+use tolvex_ai::imaging::detect_lung_nodules;
 
 #[test]
 fn docs_style_lung_nodule_detection_is_deterministic() {

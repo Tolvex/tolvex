@@ -45,15 +45,15 @@ Written in Rust, with plans to become self-hosted (see `SELF_HOSTING.md`).
 #### Phase 2 (12–18 Months)
 * Add privacy/compliance checker and optimize for WebAssembly/RISC-V.
 
-## 3. Package Manager (`tlvxpack`)
+## 3. Package Manager (`tvx`)
 
 ### Role
-Tolvex’s build system and package manager, managing dependencies, compiling projects, running tests, and generating documentation.
+Tolvex’s build system and package manager (`tvx`), managing dependencies, compiling projects, running tests, and generating documentation.
 
 ### Tolvex-Specific
-* Hosts healthcare libraries (e.g., `tolvex.ai`, `tolvex.genomics`) on a Tolvex package registry (`tlvxpacks.io`).
-* Configured via `Tolvex.toml`, with sections for healthcare standards (e.g., `[fhir]`).
-* Supports clinician-friendly commands (e.g., `tlvxpack visual` for the visual IDE).
+* Hosts healthcare formulas (e.g., `tolvex.ai`, `tolvex.genomics`) on the Tolvex formulary (`formulary.tolvex.dev`).
+* Configured via `formula.toml`, with sections for healthcare standards (e.g., `[fhir]`).
+* Supports clinician-friendly commands (e.g., `tvx add fhir-utils`, `tvx publish`, `tvx build`).
 
 ### Implementation
 Built in Rust, inspired by Cargo.
@@ -62,7 +62,7 @@ Built in Rust, inspired by Cargo.
 #### Phase 1 (6–12 Months)
 * Implement basic functionality (dependency management, compilation).
 #### Phase 2 (12–18 Months)
-* Launch `tlvxpacks.io` and add `tlvxpack visual`.
+* Launch `formulary.tolvex.dev` and add `tvx` visual workflows.
 
 ## 4. Privacy/Compliance Checker
 
@@ -163,7 +163,7 @@ Custom scripts (`build.tolvex`) for pre-build tasks.
 * Generates FHIR/DICOM bindings, links to medical device SDKs, or sets up compliance checks.
 
 ### Implementation
-Integrated with `tlvxpack`, written in Rust.
+Integrated with `tvx`, written in Rust.
 
 ### Development Plan
 #### Phase 1 (6–12 Months)
@@ -174,7 +174,7 @@ Integrated with `tlvxpack`, written in Rust.
 ## 10. Testing Framework
 
 ### Role
-Built-in testing for Tolvex code, integrated with `tlvxpack test`.
+Built-in testing for Tolvex code, integrated with `tvx test`.
 
 ### Tolvex-Specific
 * Supports unit tests for healthcare functions (e.g., `predict_risk`), integration tests for FHIR queries, and doc tests for examples.
@@ -192,7 +192,7 @@ Written in Rust, inspired by `cargo test`.
 ## 11. Documentation System
 
 ### Role
-Generates HTML documentation via `tlvxpack doc`.
+Generates HTML documentation via `tvx doc`.
 
 ### Tolvex-Specific
 * Includes testable healthcare examples (e.g., `fhir_query` snippets).
@@ -242,34 +242,34 @@ Written in Rust, inspired by `rustup`.
 ## 14. Toolchain
 
 ### Role: 
-Collection of tools: `tlvxc`, `tlvxpack`, `standard library`, and optional components (e.g., `tlvxfmt`, `tlvxcheck`).
+Collection of tools: `tlvxc`, `tvx`, `standard library`, and optional components (e.g., `tlvxfmt`, `tvxcheck`).
 
 ### Tolvex-Specific:
-Includes healthcare-specific tools (e.g., `tlvxcheck` for compliance linting).
+Includes healthcare-specific tools (e.g., `tvxcheck` for compliance linting).
 
-### Implementation: Managed by `tlvxup`, built in Rust.
+### Implementation: Managed by `tvxup`, built in Rust.
 Development Plan:
 #### Phase 1 (6–12 Months): 
-* Bundle `tlvxc`, `tlvxpack`, and `standard library`.
+* Bundle `tlvxc`, `tvx`, and `standard library`.
 #### Phase 2 (12–18 Months): *
-* Add `tlvxfmt` and `tlvxcheck`.
+* Add `tlvxfmt` and `tvxcheck`.
 
-## 15. Medipack Subcommands and Plugins
+## 15. tvx Subcommands and Plugins
 
 ### Role: 
-Extends `tlvxpack` with tools like `tlvxpack-watch`, `tlvxpack-audit`, medipack-gen.
+Extends `tvx` with tools like `tvx watch`, `tvx audit`, tvx-gen.
 
 ### Tolvex-Specific:
-* `tlvxpack-audit`: Audits code for HIPAA/GDPR compliance.
-* `tlvxpack-gen`: Generates boilerplate for healthcare modules (e.g., FHIR integrations).
+* `tvx audit`: Audits code for HIPAA/GDPR compliance.
+* `tvx gen`: Generates boilerplate for healthcare modules (e.g., FHIR integrations).
 
 
 ### Implementation: Written in Rust, inspired by Cargo plugins.
 Development Plan:
 #### Phase 2 (12–18 Months): 
-* Implement `tlvxpack-watch` and `tlvxpack-audit`.
+* Implement `tvx watch` and `tvx audit`.
 #### Phase 3 (18–36 Months): 
-* Add `tlvxpack-gen` and community plugins.
+* Add `tvx gen` and community plugins.
 
 ## 16. Codegen Backends
 
@@ -410,10 +410,10 @@ Expands Tolvex’s capabilities through community libraries.
 ### Tolvex-Specific:
 * Libraries: `tolvex.ai` (AI models), `tolvex.genomics` (sequence analysis), `tolvex.viz` (dashboards).
 
-### Implementation: Hosted on medipacks.io, built by the community.
+### Implementation: Hosted on formulary.tolvex.dev, built by the community.
 Development Plan:
 #### Phase 2 (12–18 Months): 
-* Launch medipacks.io with initial crates.
+* Launch formulary.tolvex.dev with initial formulas.
 #### Phase 3 (18–36 Months): 
 * Grow ecosystem with community contributions.
 
@@ -451,30 +451,30 @@ Development Plan:
 #### Phase 3 (18–36 Months): 
 * Add `tolvex-analyzer` and `tlvxmiri`.
 
-## 27. Medipacks.io
+## 27. Tolvex Formulary (formulary.tolvex.dev)
 
 ### Role: 
-* Central repository for Tolvex libraries.
+* Central repository for Tolvex formulas.
 
 ### Tolvex-Specific:
-* Hosts healthcare-focused crates (e.g., `tolvex.ai`, `tolvex.compliance`).
+* Hosts healthcare-focused formulas (e.g., `tolvex.ai`, `tolvex.compliance`).
 
 ### Implementation: Modeled after crates.io, built in Rust.
 Development Plan:
 #### Phase 2 (12–18 Months): 
-* Launch `tlvxpacks.io`.
+* Launch `formulary.tolvex.dev`.
 #### Phase 3 (18–36 Months): 
-* Expand with community crates.
+* Expand with community formulas.
 
 ## Overall Development Phases
 
 #### Phase 1: Prototype (0–12 Months):
-* Build core components: parser, `tlvxc` (compiler), `tlvxpack`, standard library.
+* Build core components: parser, `tlvxc` (compiler), `tvx`, standard library.
 * Focus on healthcare syntax and basic functionality.
 
 #### Phase 2: Pilot (12–18 Months):
 * Test with universities/hospitals, expand the library (`tolvex.iot`, `tolvex.viz`, `tolvex.privacy`), and enhance RISC-V support.
-* Launch `tlvxpacks.io` and initial tooling (`tlvxfmt`, `tlvxcheck`).
+* Launch `formulary.tolvex.dev` and initial tooling (`tlvxfmt`, `tvxcheck`).
 
 #### Phase 3: Production Release (18–36 Months):
 * Launch Tolvex v1.0 with a full library, plugin marketplace, and integrations (Epic, Cerner).

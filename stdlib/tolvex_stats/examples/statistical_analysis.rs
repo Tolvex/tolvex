@@ -1,5 +1,5 @@
-use tolvex_stats::t_test_welch;
 use std::fs;
+use tolvex_stats::t_test_welch;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = "examples/use_cases/trial_results.csv";

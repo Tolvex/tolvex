@@ -1,9 +1,9 @@
-# Getting Started: medi_ai
+# Getting Started: tolvex_ai
 
 Minimal risk prediction and stratification.
 
 ```rust
-use medi_ai::{RiskScorer, predict_risk, stratify_risk};
+use tolvex_ai::{RiskScorer, predict_risk, stratify_risk};
 use serde_json::json;
 
 let model = RiskScorer { weights: vec![0.2, 0.5, 0.3], bias: 0.1, model_name: "demo".into() };

@@ -1,5 +1,5 @@
-use tlvxc_runtime::{create_bounded_channel, create_unbounded_channel};
 use std::thread;
+use tlvxc_runtime::{create_bounded_channel, create_unbounded_channel};
 
 #[test]
 fn xchan_unbounded_roundtrip() {

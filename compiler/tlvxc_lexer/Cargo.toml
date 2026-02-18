@@ -1,6 +1,6 @@
 [package]
 name = "tlvxc_lexer"
-version = "0.1.15"
+version = "0.1.6"
 edition = "2021"
 description = "Lexer for the Medi programming language with support for healthcare-specific syntax"
 license = "MIT OR Apache-2.0"

@@ -15,8 +15,8 @@ fn str_to_token_slice(input: &str) -> (TokenSlice<'_>, Vec<Token>) {
 #[cfg(test)]
 mod array_literals_test {
     use super::*;
-    use tlvxc_ast::ast::{ExpressionNode, LiteralNode};
     use pretty_assertions::assert_eq;
+    use tlvxc_ast::ast::{ExpressionNode, LiteralNode};
 
     #[test]
     fn test_parse_simple_array_literal() {
@@ -93,8 +93,8 @@ mod array_literals_test {
 #[cfg(test)]
 mod expressions_test {
     use super::*;
-    use tlvxc_ast::ast::{BinaryExpressionNode, BinaryOperator, ExpressionNode, LiteralNode};
     use pretty_assertions::assert_eq;
+    use tlvxc_ast::ast::{BinaryExpressionNode, BinaryOperator, ExpressionNode, LiteralNode};
 
     #[test]
     fn test_operator_precedence() {
@@ -158,8 +158,8 @@ mod expressions_test {
 #[cfg(test)]
 mod medical_operators_test {
     use super::*;
-    use tlvxc_ast::ast::{BinaryOperator, ExpressionNode, LiteralNode};
     use pretty_assertions::assert_eq;
+    use tlvxc_ast::ast::{BinaryOperator, ExpressionNode, LiteralNode};
 
     #[test]
     fn test_of_operator() {

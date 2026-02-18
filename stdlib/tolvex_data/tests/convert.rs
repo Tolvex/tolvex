@@ -1,4 +1,6 @@
-use tolvex_data::convert::{diagnostic_report_from_observation_codes, link_conditions_to_encounters};
+use tolvex_data::convert::{
+    diagnostic_report_from_observation_codes, link_conditions_to_encounters,
+};
 use tolvex_data::fhir::*;
 
 #[test]

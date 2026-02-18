@@ -1,6 +1,6 @@
-# MediLang Glossary
+# Tolvex Glossary
 
-This glossary provides explanations of healthcare and bioinformatics-related terms that developers might encounter while working with MediLang. Each section includes relevant resources, citations, and practical examples for better understanding.
+This glossary provides explanations of healthcare and bioinformatics-related terms that developers might encounter while working with Tolvex. Each section includes relevant resources, citations, and practical examples for better understanding.
 
 ## Healthcare Data Standards
 
@@ -614,10 +614,10 @@ print(f"95% CI: [{results['confidence_interval'][0]:.2f}, {results['confidence_i
 - [Nature Methods Statistics Guide](https://www.nature.com/collections/qghhqm/content/practical-statistics)
 - [statsmodels Documentation](https://www.statsmodels.org/stable/index.html)
 
-## MediLang-Specific Features
+## Tolvex-Specific Features
 
 ### Runtime Features
-- **MEDI_BACKTRACE**: Environment variable enabling detailed call stack traces for runtime errors
+- **TOLVEX_BACKTRACE**: Environment variable enabling detailed call stack traces for runtime errors
   - Similar to Rust's RUST_BACKTRACE
   - Helps debug execution flow
   - Shows function call hierarchy
@@ -630,8 +630,8 @@ print(f"95% CI: [{results['confidence_interval'][0]:.2f}, {results['confidence_i
 - Documentation generators
 
 **Resources:**
-- [MediLang Documentation](https://medilang.github.io/medi/)
-- [GitHub Repository](https://github.com/medilang/medi)
+- [Tolvex Documentation](https://tolvex.dev/docs/)
+- [GitHub Repository](https://github.com/Tolvex/tolvex)
 
 ---
 

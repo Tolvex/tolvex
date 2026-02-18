@@ -3,8 +3,8 @@
 
 #[cfg(feature = "rt_zones")]
 fn main() {
-    use tlvxc_runtime::rt::RtZone;
     use std::time::{Duration, Instant};
+    use tlvxc_runtime::rt::RtZone;
 
     #[derive(Clone, Copy, Debug)]
     struct Msg {

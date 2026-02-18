@@ -4,6 +4,8 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use serde::{Deserialize, Serialize};
+use std::net::SocketAddr;
 use tlvxc_ast::visit::Span;
 use tlvxc_env::env::TypeEnv;
 use tlvxc_lexer::lexer::Lexer;
@@ -13,8 +15,6 @@ use tlvxc_parser::parser::{
 };
 use tlvxc_type::types::MediType;
 use tlvxc_typeck::type_checker::TypeChecker;
-use serde::{Deserialize, Serialize};
-use std::net::SocketAddr;
 use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Debug, Deserialize)]

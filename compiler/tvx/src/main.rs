@@ -74,7 +74,7 @@ struct BuildArgs {
 
     /// Pass additional flags to tlvxc
     #[arg(last = true)]
-    medic_args: Vec<String>,
+    tlvxc_args: Vec<String>,
 }
 
 fn main() {

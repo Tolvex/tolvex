@@ -1,20 +1,20 @@
-# Medi Basic Syntax
+# Tolvex Basic Syntax
 
-Medi's syntax is designed to be intuitive for both beginners and experienced programmers, with special attention to healthcare domain needs. Medi follows a Rust-inspired approach with clean, modern syntax while maintaining healthcare-specific features.
+Tolvex's syntax is designed to be intuitive for both beginners and experienced programmers, with special attention to healthcare domain needs. Tolvex follows a Rust-inspired approach with clean, modern syntax while maintaining healthcare-specific features.
 
 ## File Extension
 
-Medi source files use the `.medi` extension:  
+Tolvex source files use the `.tlvx` extension:  
 ```
-myprogram.medi
-patient_analysis.medi
+myprogram.tlvx
+patient_analysis.tlvx
 ```
 
 ## Variables and Types
 
-Medi uses type inference but also supports explicit typing. Variables are declared with `let` and can be made mutable with `mut`:
+Tolvex uses type inference but also supports explicit typing. Variables are declared with `let` and can be made mutable with `mut`:
 
-```medi
+```tlvx
 // Type inference with let
 let patient_name = "John Doe";  // string
 let heart_rate = 75;           // int
@@ -37,9 +37,9 @@ const PI: float = 3.14159;
 
 ## Healthcare Data Types
 
-Medi supports composite types that are commonly used to model clinical data. The language specification also defines medical-specific literals for identifiers and codes.
+Tolvex supports composite types that are commonly used to model clinical data. The language specification also defines medical-specific literals for identifiers and codes.
 
-```medi
+```tlvx
 // Medical-specific literals
 let patient = pid("PT-12345");
 let dx = icd10("E11.65");
@@ -68,9 +68,9 @@ let tags: map[string, string] = {"site": "clinic-a", "unit": "ICU"};
 
 ## Control Flow
 
-Medi's control flow constructs are similar to Rust and other C-like languages:
+Tolvex's control flow constructs are similar to Rust and other C-like languages:
 
-```medi
+```tlvx
 // If-else statement
 if heart_rate > 100 {
   print("Tachycardia detected");
@@ -101,7 +101,7 @@ match lab_result {
 
 Functions are declared with the `fn` keyword:
 
-```medi
+```tlvx
 // Basic function
 fn calculate_bmi(weight_kg, height_m) {
   weight_kg / (height_m * height_m)
@@ -124,7 +124,7 @@ The pipeline operator `|>` is **reserved for a future version** (see the Languag
 
 ## Healthcare-Specific Syntax
 
-```medi
+```tlvx
 // FHIR queries
 dataset diabetic_patients = fhir_query("Patient", filter: "condition=diabetes");
 
@@ -147,7 +147,7 @@ federated {
 
 v0.1 uses `Result<T, E>` and the `?` operator for error propagation.
 
-```medi
+```tlvx
 fn load_patient(id: string) -> Result<record, Error> {
   let patient = fhir_query("Patient", id)?
   Ok(patient)
@@ -156,6 +156,6 @@ fn load_patient(id: string) -> Result<record, Error> {
 
 ## Next Steps
 
-* Try a [complete Medi program](first-program.md)
-* Learn about [Medi's standard library](../reference/standard-library.md)
+* Try a [complete Tolvex program](first-program.md)
+* Learn about [Tolvex's standard library](../reference/standard-library.md)
 * Explore [Medical Data Science features](../key-features/medical-data-science.md)

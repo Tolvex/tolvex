@@ -1,6 +1,6 @@
 # Common Errors and Solutions
 
-This page lists frequent issues seen in Medi code and how to resolve them, with examples of the annotated diagnostics you will see.
+This page lists frequent issues seen in Tolvex code and how to resolve them, with examples of the annotated diagnostics you will see.
 
 ## Using '=' instead of '=='
 
@@ -39,7 +39,7 @@ error: Unrecognized token: '??='
  --> line N, col M
   |
  N | a ??= b
-  |   ~~  help: This text is not valid Medi syntax. Remove it or replace with a valid symbol/keyword.
+  |   ~~  help: This text is not valid Tolvex syntax. Remove it or replace with a valid symbol/keyword.
 ```
 
 ## Misusing clinical operators (e.g., 'per', 'of')

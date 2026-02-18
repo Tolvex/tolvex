@@ -1,9 +1,9 @@
+use serde::Serialize;
 use tlvxc_env::env::TypeEnv;
 use tlvxc_lexer::lexer::Lexer;
 use tlvxc_lexer::token::Token;
 use tlvxc_parser::parser::{parse_program_with_diagnostics, TokenSlice};
 use tlvxc_typeck::type_checker::TypeChecker;
-use serde::Serialize;
 
 #[derive(Debug, Serialize)]
 pub struct PrivacySpanLabel {

@@ -1,5 +1,5 @@
-use tolvex_compliance::*;
 use serde_json::json;
+use tolvex_compliance::*;
 
 #[test]
 fn fhir_compliance_anonymize_report_flow() {

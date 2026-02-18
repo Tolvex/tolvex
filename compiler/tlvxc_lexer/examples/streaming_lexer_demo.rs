@@ -3,9 +3,9 @@
 //! This example shows how to use the streaming lexer to process large files
 //! with minimal memory usage.
 
-use tlvxc_lexer::streaming_lexer::{LexerConfig, StreamingLexer};
 use std::fs::File;
 use std::io::{self, BufRead, BufReader, Write};
+use tlvxc_lexer::streaming_lexer::{LexerConfig, StreamingLexer};
 
 fn main() -> io::Result<()> {
     println!("Medi Streaming Lexer Demo");

@@ -1,4 +1,4 @@
-# Medi Language Reference
+# Tolvex Language Reference
 
 ## Reference Index
 
@@ -13,7 +13,7 @@ This section links to the authoritative language and tooling references.
 
 ## Minimal v0.1 example
 
-```medi
+```tlvx
 fn is_hypertensive(systolic: int, diastolic: int) -> bool {
   systolic >= 140 || diastolic >= 90
 }

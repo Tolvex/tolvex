@@ -1,5 +1,5 @@
-use tolvex_ai::predict_risk;
 use serde_json::json;
+use tolvex_ai::predict_risk;
 
 #[test]
 fn docs_style_predict_risk_uses_numeric_features_and_is_deterministic() {

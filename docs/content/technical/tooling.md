@@ -1,13 +1,13 @@
 # Tooling
 
-Medi's current compiler/CLI tool is `medic`.
+Tolvex's current compiler/CLI tool is `tlvxc`.
 
 ## Building
 
 From the repository root:
 
 ```bash
-cargo build -p medic
+cargo build -p tlvxc
 ```
 
 ## Quick check
@@ -15,7 +15,7 @@ cargo build -p medic
 Typecheck a file and print diagnostics:
 
 ```bash
-cargo run -p medic -- check path/to/file.medi
+cargo run -p tlvxc -- check path/to/file.tlvx
 ```
 
 ## JSON output
@@ -23,13 +23,13 @@ cargo run -p medic -- check path/to/file.medi
 Emit machine-readable diagnostics and type information:
 
 ```bash
-cargo run -p medic -- json path/to/file.medi
+cargo run -p tlvxc -- json path/to/file.tlvx
 ```
 
 You can also provide function type metadata via `--types-json`:
 
 ```bash
-cargo run -p medic -- check --types-json path/to/types.json path/to/file.medi
+cargo run -p tlvxc -- check --types-json path/to/types.json path/to/file.tlvx
 ```
 
 ## REPL
@@ -37,7 +37,7 @@ cargo run -p medic -- check --types-json path/to/types.json path/to/file.medi
 Interactive parsing/typechecking feedback:
 
 ```bash
-cargo run -p medic -- repl
+cargo run -p tlvxc -- repl
 ```
 
 ## Docs generator
@@ -45,21 +45,21 @@ cargo run -p medic -- repl
 Generate Markdown documentation from `///` / `//!` doc comments:
 
 ```bash
-cargo run -p medic -- docs --out-dir out_docs path/to/file.medi
+cargo run -p tlvxc -- docs --out-dir out_docs path/to/file.tlvx
 ```
 
 ## Package manifest (experimental)
 
-Initialize a minimal `medipack.toml` manifest:
+Initialize a minimal `tolvex.toml` manifest:
 
 ```bash
-cargo run -p medic -- pack init
+cargo run -p tlvxc -- pack init
 ```
 
 List manifest contents:
 
 ```bash
-cargo run -p medic -- pack list
+cargo run -p tlvxc -- pack list
 ```
 
 ## LLVM backend (optional)

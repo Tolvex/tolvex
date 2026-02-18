@@ -1,6 +1,6 @@
 [package]
 name = "tolvex_compliance"
-version = "0.1.15"
+version = "0.1.6"
 edition = "2021"
 description = "Medi standard library: HIPAA compliance primitives, anonymization, audit trail"
 license = "Apache-2.0"

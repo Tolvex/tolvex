@@ -17,7 +17,9 @@ markdown_extensions:
   - attr_list  # For adding attributes to markdown elements
   - md_in_html  # For using raw HTML in markdown
   - pymdownx.superfences  # For better code block handling
-  - pymdownx.emoji  # For emoji support
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.details  # For collapsible sections
   - pymdownx.tabbed  # For tabbed content
   - pymdownx.snippets  # For including content from other files
@@ -34,9 +36,6 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.smartsymbols
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.extra
 
 # Development server settings
@@ -99,15 +98,16 @@ nav:
   - Blog:
     - Overview: blog/index.md
     - Posts:
-      - Medi v0.0.4 Released: blog/posts/2025-10-24-v0-0-4-release.md
-      - Medi v0.0.3 Released: blog/posts/2025-09-30-v0-0-3-release.md
-      - MediLang v0.0.2 Released: blog/posts/2025-09-02-v0-0-2-release.md
+      - Tolvex v0.1.0 Released: blog/2026-01-08-v0.1.0-release.md
+      - Tolvex v0.0.4 Released: blog/posts/2025-10-24-v0-0-4-release.md
+      - Tolvex v0.0.3 Released: blog/posts/2025-09-30-v0-0-3-release.md
+      - Tolvex v0.0.2 Released: blog/posts/2025-09-02-v0-0-2-release.md
       - Journey to Nested Expressions: blog/posts/2025-05-24-nested-expressions.md
   - Getting Started:
     - Overview: getting-started/index.md
     - Installation: getting-started/installation.md
     - Basic Syntax: getting-started/basic-syntax.md
-    - First Medi Program: getting-started/first-program.md
+    - First Tolvex Program: getting-started/first-program.md
     - Development Environment: getting-started/development-environment.md
   - Key Features:
     - Overview: key-features/index.md

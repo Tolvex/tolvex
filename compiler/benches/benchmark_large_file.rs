@@ -1,13 +1,13 @@
+use std::fs;
+use std::io::Cursor;
+use std::io::Write;
+use std::time::Instant;
 use tlvxc_lexer::{
     chunked_lexer::{ChunkedLexer, ChunkedLexerConfig},
     lexer::Lexer as OriginalLexer,
     streaming_lexer::StreamingLexer,
     token::Token,
 };
-use std::fs;
-use std::io::Cursor;
-use std::io::Write;
-use std::time::Instant;
 
 /// Gets the CPU model information by reading /proc/cpuinfo on Linux systems.
 /// Falls back to a default string if the information cannot be determined.

@@ -1162,262 +1162,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "medi_ai"
-version = "0.1.15"
-dependencies = [
- "serde",
- "serde_json",
- "tempfile",
-]
-
-[[package]]
-name = "medi_compliance"
-version = "0.1.15"
-dependencies = [
- "criterion",
- "regex",
- "serde",
- "serde_json",
- "sha2",
-]
-
-[[package]]
-name = "medi_core"
-version = "0.1.15"
-dependencies = [
- "approx",
-]
-
-[[package]]
-name = "medi_data"
-version = "0.1.15"
-dependencies = [
- "aes-gcm",
- "criterion",
- "hex",
- "medi_stats",
- "once_cell",
- "rand_core",
- "serde",
- "serde_json",
- "tempfile",
- "thiserror 1.0.69",
-]
-
-[[package]]
-name = "medi_model"
-version = "0.1.15"
-dependencies = [
- "chrono",
- "parking_lot",
- "serde",
- "serde_json",
- "thiserror 1.0.69",
-]
-
-[[package]]
-name = "medi_privacy"
-version = "0.1.15"
-dependencies = [
- "approx",
- "rand",
-]
-
-[[package]]
-name = "medi_rt"
-version = "0.1.15"
-
-[[package]]
-name = "medi_standards"
-version = "0.1.15"
-dependencies = [
- "medi_data",
- "tempfile",
-]
-
-[[package]]
-name = "medi_stats"
-version = "0.1.15"
-dependencies = [
- "approx",
- "medi_data",
- "rand",
- "statrs",
-]
-
-[[package]]
-name = "medic"
-version = "0.1.15"
-dependencies = [
- "clap",
- "medic_ast",
- "medic_borrowck",
- "medic_codegen_llvm",
- "medic_env",
- "medic_lexer",
- "medic_parser",
- "medic_runtime",
- "medic_type",
- "medic_typeck",
- "rustyline",
- "serde",
- "serde_json",
- "tempfile",
-]
-
-[[package]]
-name = "medic_ast"
-version = "0.1.15"
-dependencies = [
- "medic_lexer",
- "pretty_assertions",
- "serde",
- "serde_json",
- "smallvec",
- "thiserror 1.0.69",
-]
-
-[[package]]
-name = "medic_benchmarks"
-version = "0.1.15"
-dependencies = [
- "criterion",
- "libc",
- "medi_ai",
- "medi_compliance",
- "medi_data",
- "medi_stats",
- "medic_ast",
- "medic_borrowck",
- "medic_codegen_llvm",
- "medic_lexer",
- "medic_parser",
- "memory-stats",
- "num_cpus",
- "plotters",
- "plotters-svg",
- "rand",
- "serde",
- "serde_json",
- "sys-info",
-]
-
-[[package]]
-name = "medic_borrowck"
-version = "0.1.15"
-dependencies = [
- "medic_ast",
- "medic_env",
- "medic_type",
- "thiserror 1.0.69",
-]
-
-[[package]]
-name = "medic_codegen_llvm"
-version = "0.1.15"
-dependencies = [
- "inkwell",
- "medic_ast",
- "medic_type",
- "medic_typeck",
- "thiserror 1.0.69",
-]
-
-[[package]]
-name = "medic_env"
-version = "0.1.15"
-dependencies = [
- "medic_type",
-]
-
-[[package]]
-name = "medic_ide_server"
-version = "0.1.15"
-dependencies = [
- "axum",
- "medic_ast",
- "medic_env",
- "medic_lexer",
- "medic_parser",
- "medic_type",
- "medic_typeck",
- "serde",
- "serde_json",
- "tokio",
- "tower-http",
-]
-
-[[package]]
-name = "medic_lexer"
-version = "0.1.15"
-dependencies = [
- "criterion",
- "env_logger",
- "jemalloc-ctl",
- "jemallocator",
- "lazy_static",
- "log",
- "logos",
- "medic_parser",
- "pretty_assertions",
- "proptest",
- "serde",
- "tempfile",
-]
-
-[[package]]
-name = "medic_parser"
-version = "0.1.15"
-dependencies = [
- "env_logger",
- "log",
- "medic_ast",
- "medic_lexer",
- "nom",
- "pretty_assertions",
- "thiserror 2.0.12",
-]
-
-[[package]]
-name = "medic_runtime"
-version = "0.1.15"
-dependencies = [
- "aes-gcm",
- "core_affinity",
- "criterion",
- "crossbeam-channel",
- "crossbeam-deque",
- "num_cpus",
- "rand_core",
- "thiserror 1.0.69",
-]
-
-[[package]]
-name = "medic_type"
-version = "0.1.15"
-
-[[package]]
-name = "medic_typeck"
-version = "0.1.15"
-dependencies = [
- "log",
- "medic_ast",
- "medic_env",
- "medic_type",
- "once_cell",
-]
-
-[[package]]
-name = "medipack"
-version = "0.1.15"
-dependencies = [
- "clap",
- "serde",
- "tempfile",
- "toml",
-]
-
-[[package]]
 name = "memchr"
 version = "2.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1782,15 +1526,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "pymedi"
-version = "0.1.15"
-dependencies = [
- "medi_data",
- "medi_stats",
- "pyo3",
-]
-
-[[package]]
 name = "pyo3"
 version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1851,6 +1586,15 @@ dependencies = [
  "pyo3-build-config",
  "quote",
  "syn 2.0.101",
+]
+
+[[package]]
+name = "pytolvex"
+version = "0.1.6"
+dependencies = [
+ "pyo3",
+ "tolvex_data",
+ "tolvex_stats",
 ]
 
 [[package]]
@@ -2299,15 +2043,15 @@ dependencies = [
 
 [[package]]
 name = "tests"
-version = "0.1.15"
+version = "0.1.6"
 dependencies = [
- "medic_ast",
- "medic_codegen_llvm",
- "medic_env",
- "medic_lexer",
- "medic_parser",
- "medic_type",
- "medic_typeck",
+ "tlvxc_ast",
+ "tlvxc_codegen_llvm",
+ "tlvxc_env",
+ "tlvxc_lexer",
+ "tlvxc_parser",
+ "tlvxc_type",
+ "tlvxc_typeck",
 ]
 
 [[package]]
@@ -2361,6 +2105,168 @@ dependencies = [
 ]
 
 [[package]]
+name = "tlvxc"
+version = "0.1.6"
+dependencies = [
+ "clap",
+ "rustyline",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "tlvxc_ast",
+ "tlvxc_borrowck",
+ "tlvxc_codegen_llvm",
+ "tlvxc_env",
+ "tlvxc_lexer",
+ "tlvxc_parser",
+ "tlvxc_runtime",
+ "tlvxc_type",
+ "tlvxc_typeck",
+]
+
+[[package]]
+name = "tlvxc_ast"
+version = "0.1.6"
+dependencies = [
+ "pretty_assertions",
+ "serde",
+ "serde_json",
+ "smallvec",
+ "thiserror 1.0.69",
+ "tlvxc_lexer",
+]
+
+[[package]]
+name = "tlvxc_benchmarks"
+version = "0.1.6"
+dependencies = [
+ "criterion",
+ "libc",
+ "memory-stats",
+ "num_cpus",
+ "plotters",
+ "plotters-svg",
+ "rand",
+ "serde",
+ "serde_json",
+ "sys-info",
+ "tlvxc_ast",
+ "tlvxc_borrowck",
+ "tlvxc_codegen_llvm",
+ "tlvxc_lexer",
+ "tlvxc_parser",
+ "tolvex_ai",
+ "tolvex_compliance",
+ "tolvex_data",
+ "tolvex_stats",
+]
+
+[[package]]
+name = "tlvxc_borrowck"
+version = "0.1.6"
+dependencies = [
+ "thiserror 1.0.69",
+ "tlvxc_ast",
+ "tlvxc_env",
+ "tlvxc_type",
+]
+
+[[package]]
+name = "tlvxc_codegen_llvm"
+version = "0.1.6"
+dependencies = [
+ "inkwell",
+ "thiserror 1.0.69",
+ "tlvxc_ast",
+ "tlvxc_type",
+ "tlvxc_typeck",
+]
+
+[[package]]
+name = "tlvxc_env"
+version = "0.1.6"
+dependencies = [
+ "tlvxc_type",
+]
+
+[[package]]
+name = "tlvxc_ide_server"
+version = "0.1.6"
+dependencies = [
+ "axum",
+ "serde",
+ "serde_json",
+ "tlvxc_ast",
+ "tlvxc_env",
+ "tlvxc_lexer",
+ "tlvxc_parser",
+ "tlvxc_type",
+ "tlvxc_typeck",
+ "tokio",
+ "tower-http",
+]
+
+[[package]]
+name = "tlvxc_lexer"
+version = "0.1.6"
+dependencies = [
+ "criterion",
+ "env_logger",
+ "jemalloc-ctl",
+ "jemallocator",
+ "lazy_static",
+ "log",
+ "logos",
+ "pretty_assertions",
+ "proptest",
+ "serde",
+ "tempfile",
+ "tlvxc_parser",
+]
+
+[[package]]
+name = "tlvxc_parser"
+version = "0.1.6"
+dependencies = [
+ "env_logger",
+ "log",
+ "nom",
+ "pretty_assertions",
+ "thiserror 2.0.12",
+ "tlvxc_ast",
+ "tlvxc_lexer",
+]
+
+[[package]]
+name = "tlvxc_runtime"
+version = "0.1.6"
+dependencies = [
+ "aes-gcm",
+ "core_affinity",
+ "criterion",
+ "crossbeam-channel",
+ "crossbeam-deque",
+ "num_cpus",
+ "rand_core",
+ "thiserror 1.0.69",
+]
+
+[[package]]
+name = "tlvxc_type"
+version = "0.1.6"
+
+[[package]]
+name = "tlvxc_typeck"
+version = "0.1.6"
+dependencies = [
+ "log",
+ "once_cell",
+ "tlvxc_ast",
+ "tlvxc_env",
+ "tlvxc_type",
+]
+
+[[package]]
 name = "tokio"
 version = "1.48.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2383,6 +2289,100 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.101",
+]
+
+[[package]]
+name = "tolvex_ai"
+version = "0.1.6"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tempfile",
+]
+
+[[package]]
+name = "tolvex_compliance"
+version = "0.1.6"
+dependencies = [
+ "criterion",
+ "regex",
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
+name = "tolvex_core"
+version = "0.1.6"
+dependencies = [
+ "approx",
+]
+
+[[package]]
+name = "tolvex_data"
+version = "0.1.6"
+dependencies = [
+ "aes-gcm",
+ "criterion",
+ "hex",
+ "once_cell",
+ "rand_core",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "thiserror 1.0.69",
+ "tolvex_stats",
+]
+
+[[package]]
+name = "tolvex_model"
+version = "0.1.6"
+dependencies = [
+ "chrono",
+ "parking_lot",
+ "serde",
+ "serde_json",
+ "thiserror 1.0.69",
+]
+
+[[package]]
+name = "tolvex_privacy"
+version = "0.1.6"
+dependencies = [
+ "approx",
+ "rand",
+]
+
+[[package]]
+name = "tolvex_rt"
+version = "0.1.6"
+
+[[package]]
+name = "tolvex_standards"
+version = "0.1.6"
+dependencies = [
+ "tempfile",
+ "tolvex_data",
+]
+
+[[package]]
+name = "tolvex_stats"
+version = "0.1.6"
+dependencies = [
+ "approx",
+ "rand",
+ "statrs",
+ "tolvex_data",
+]
+
+[[package]]
+name = "tolvexpack"
+version = "0.1.6"
+dependencies = [
+ "clap",
+ "serde",
+ "tempfile",
+ "toml",
 ]
 
 [[package]]

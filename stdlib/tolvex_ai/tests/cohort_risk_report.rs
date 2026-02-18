@@ -1,6 +1,6 @@
+use serde_json::json;
 use tolvex_ai::cohort::{build_cohort_risk_report, PatientInput};
 use tolvex_ai::risk::RiskStratum;
-use serde_json::json;
 
 #[test]
 fn cohort_risk_report_ties_prediction_stratification_and_bias_metrics() {

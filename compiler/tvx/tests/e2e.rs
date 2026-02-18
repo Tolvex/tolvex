@@ -52,7 +52,10 @@ fn e2e_init_with_name_and_description() {
         .current_dir(dir.path())
         .status()
         .expect("spawn tolvexpack init");
-    assert!(status.success(), "tolvexpack init --name failed: {status:?}");
+    assert!(
+        status.success(),
+        "tolvexpack init --name failed: {status:?}"
+    );
 
     let manifest = fs::read_to_string(dir.path().join("tolvex.toml")).unwrap();
     assert!(manifest.contains("name = \"my_healthcare_app\""));

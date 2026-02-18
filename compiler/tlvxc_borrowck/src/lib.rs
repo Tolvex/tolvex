@@ -1,7 +1,7 @@
+use std::collections::HashMap;
 use tlvxc_ast::ast::*;
 use tlvxc_ast::visit::{Span, VisitResult, Visitable, Visitor};
 use tlvxc_type::types::PrivacyAnnotation;
-use std::collections::HashMap;
 
 #[derive(Debug, thiserror::Error)]
 pub enum BorrowError {

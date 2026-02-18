@@ -1,9 +1,9 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use std::fs;
+use std::path::PathBuf;
 use tlvxc_lexer::lexer::Lexer;
 use tlvxc_lexer::token::Token;
 use tlvxc_parser::parser::{parse_program, TokenSlice};
-use std::fs;
-use std::path::PathBuf;
 
 fn load_tokens(path: &str) -> Vec<Token> {
     let p = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(path);

@@ -1,3 +1,12 @@
+use memory_stats::memory_stats;
+use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
+use std::env;
+use std::fs;
+use std::process::Command;
+use std::sync::Arc;
+use std::thread;
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use tolvex_ai::RiskScorer;
 use tolvex_compliance::{run_hipaa_bundle, HipaaKeywordRule, RuleSeverity};
 use tolvex_data::{
@@ -10,15 +19,6 @@ use tolvex_data::{
     FHIRObservation,
 };
 use tolvex_stats::t_test_welch;
-use memory_stats::memory_stats;
-use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
-use std::env;
-use std::fs;
-use std::process::Command;
-use std::sync::Arc;
-use std::thread;
-use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct WorkloadResult {

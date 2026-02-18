@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Planned improvements and documentation updates.
 
+## [v0.1.6] - 2026-02-18
+
+### Rebranding
+- **Global Project Rename**: Formally transitioned from "Medi" to **Tolvex**.
+- **CLI Tooling**: Renamed the package manager CLI to `tvx` (formerly `medipack`/`tlvxpack`).
+- **Compiler**: Renamed the compiler binary to `tlvxc`.
+- **Registry**: Updated the package registry to `formulary.tolvex.dev`.
+- **Manifests**: Changed package manifest filename to `formula.toml` and lockfile to `formula.lock`.
+- **Package Terminology**: Standardized on "formulas" for Tolvex packages.
+- **File Extensions**: Transitioned from `.medi` to `.tlvx` for source files.
+- **Crate Reorganization**: 
+    - Compiler internal crates renamed to `tlvxc_*`.
+    - Standard library crates renamed to `tolvex_*`.
+- **Namespaces**: Updated standard library namespaces from `medi::*` to `tolvex::*`.
+
+### Changed
+- Bumped all workspace crate versions to `0.1.6`.
+- Updated all internal references and documentation to reflect Tolvex branding.
+- Renamed `compiler/tolvexpack` directory to `compiler/tvx`.
+
 ## [v0.1.15] - 2026-02-10
 
 ### Added
@@ -118,7 +138,7 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 - **Complete Language Core**: Lexer, parser, type checker, borrow checker, and LLVM codegen
 - **Multi-Target Compilation**: x86-64, WebAssembly (wasm32-wasi), and RISC-V (RV32)
 - **Healthcare Standard Library**: `medi_data`, `medi_stats`, `medi_compliance`, `medi_ai`
-- **Full Toolchain**: `medic` compiler, `medipack` package manager, REPL, documentation generator
+- **Full Toolchain**: `tlvxc` compiler, `tvx` package manager, REPL, documentation generator
 - **IDE Support**: Web-based IDE with CodeMirror integration and compiler-backed analysis
 - **Python Interop**: `pymedi` FFI bindings via PyO3
 
@@ -158,7 +178,7 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 | medi.stats (survival, streaming, bootstrap) | ✅ Complete |
 | medi.compliance (HIPAA, GDPR rules) | ✅ Complete |
 | medi.ai (registry, calibration, metrics) | ✅ Complete |
-| CLI (medic, medipack, REPL) | ✅ Complete |
+| CLI (tlvxc, tvx, REPL) | ✅ Complete |
 | Documentation Generator | ✅ Complete |
 | IDE Prototype | ✅ Complete |
 | Python FFI (pymedi) | ✅ Complete |
@@ -219,13 +239,13 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 ## [v0.0.14] - 2026-01-06
 
 ### Added
-- **Medipack (Task 14)**:
-  - Introduced a dedicated `medipack` CLI crate (`compiler/medipack`) inspired by Cargo.
-  - Added `medipack init` project scaffolding with `--name`, `--description`, and `--lib`.
-  - Added `medipack check` to validate `medi.toml` without building.
-  - Added `medipack clean` to remove build artifacts (`target/`).
-  - Added `medipack build` integration with `medic` including pass-through args and a `--release` stub.
-  - Extended `medi.toml` manifest schema to include optional `description`, `authors`, `license`, `edition`, detailed dependencies (`version`/`path`/`git`), and a healthcare-specific `[fhir]` section.
+- **tvx (Task 14)**:
+  - Introduced a dedicated `tvx` CLI (replacing medipack) inspired by Cargo.
+  - Added `tvx init` project scaffolding with `--name`, `--description`, and `--lib`.
+  - Added `tvx check` to validate `formula.toml` without building.
+  - Added `tvx clean` to remove build artifacts (`target/`).
+  - Added `tvx build` integration with `tlvxc` including pass-through args and a `--release` stub.
+  - Extended `formula.toml` manifest schema to include optional `description`, `authors`, `license`, `edition`, detailed dependencies (`version`/`path`/`git`), and a healthcare-specific `[fhir]` section.
 
 ### Changed
 - Release alignment:
@@ -326,10 +346,10 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 ## [v0.0.7] - 2025-12-15
 
 ### Added
-- `medic` now provides a structured command-line interface with subcommands (`check`, `json`, `repl`, `docs`, `pack`) and built-in `--help/--version`.
-- REPL: `medic repl` for interactive parsing/typechecking feedback (with basic history and multi-line buffering).
-- Documentation generator: `medic docs` emits Markdown from `///` / `//!` doc comments.
-- Package manager foundation: `medic pack init|list` creates and reads a minimal `medipack.toml` manifest.
+- `tvx` now provides a structured command-line interface with subcommands (`check`, `json`, `repl`, `docs`, `pack`) and built-in `--help/--version`.
+- REPL: `tvx repl` for interactive parsing/typechecking feedback (with basic history and multi-line buffering).
+- Documentation generator: `tvx docs` emits Markdown from `///` / `//!` doc comments.
+- Package manager foundation: `tvx pack init|list` creates and reads a minimal `formula.toml` manifest.
 
 ## [v0.0.6] - 2025-12-11
 
@@ -339,7 +359,7 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
   - Detection of unprotected PHI flowing to sinks (print, log, network, file)
   - Verification of proper anonymization through de-identification function recognition
   - `regulate` construct integration for scoped compliance blocks
-- New `compiler/medic_typeck/src/compliance.rs` module with `check_compliance()` function and `ComplianceViolation` types
+- New `compiler/tvx_typeck/src/compliance.rs` module with `check_compliance()` function and `ComplianceViolation` types
 - AST support for `RegulateNode` with standard identifier and body block
 - Parser support for `regulate <STANDARD> { ... }` blocks
 
@@ -352,10 +372,10 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 
 ### Added
 - Documentation: new Cookbook (`docs/content/cookbook.md`) with runnable-style snippets:
-  - FHIR validation and queries (`medi_data`)
-  - De-identification and compliance (`medi_compliance`)
-  - Risk prediction utilities (`medi_ai`)
-  - Basic stats (`medi_stats`)
+  - FHIR validation and queries (`tolvex_data`)
+  - De-identification and compliance (`tolvex_compliance`)
+  - Risk prediction utilities (`tolvex_ai`)
+  - Basic stats (`tolvex_stats`)
 - Docs navigation updated to include Cookbook in `docs/mkdocs.yml`.
 
 ### Changed
@@ -369,9 +389,9 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 ## [v0.0.4] - 2025-10-24
 
 ### Added
-- Comprehensive runtime error/diagnostics system in `compiler/medic_runtime`:
+- Comprehensive runtime error/diagnostics system in `compiler/tvx_runtime`:
   - `RuntimeError`, `MemoryErrorKind`, `SchedulerErrorKind`, and `RuntimeDiagnostic`.
-  - Context-aware reporting via `set_error_reporter_with_context` and `medi_runtime_report!` capturing file/line/module/op tags.
+  - Context-aware reporting via `set_error_reporter_with_context` and `tvx_runtime_report!` capturing file/line/module/op tags.
   - Multi-listener support with `add_error_context_listener` for observability and tests.
 - Context tags for channels and GC paths:
   - Channels: `channel.send`, `channel.recv`, `channel.try_recv` (on non-empty failures).
@@ -380,7 +400,7 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 - Real-time memory (rt_zones) diagnostics:
   - `rt_region.alloc_*_overflow` tags for region overflow cases.
   - `fixed_pool.alloc_exhausted`, `fixed_pool.invalid_free`, `fixed_pool.double_free`.
-- Documentation: new `compiler/medic_runtime/README.md` covering errors, recovery policies, RT memory, and examples.
+- Documentation: new `compiler/tvx_runtime/README.md` covering errors, recovery policies, RT memory, and examples.
 
 ### Changed
 - Hardened scheduler tests to be deterministic (barrier/ack-based), serialized with a test mutex to avoid global scheduler cross-talk.
@@ -396,7 +416,7 @@ This release marks the completion of **PRD Phase 1**, delivering a fully functio
 ## [v0.0.3] - 2025-09-30
 
 ### Added
-- LLVM backend integration behind `llvm-backend` feature in `compiler/medic/` backed by `medic_codegen_llvm` using Inkwell/LLVM 15.
+- LLVM backend integration behind `llvm-backend` feature in `compiler/tlvxc/` backed by `tvx_codegen_llvm` using Inkwell/LLVM 15.
 - Target codegen support and CI artifacts for:
   - x86-64
   - wasm32-wasi

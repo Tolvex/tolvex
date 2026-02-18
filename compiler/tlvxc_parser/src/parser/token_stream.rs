@@ -1,8 +1,8 @@
-use tlvxc_lexer::{Token, TokenType};
 use nom::{
     error::{Error, ErrorKind},
     Err as NomErr, IResult,
 };
+use tlvxc_lexer::{Token, TokenType};
 
 /// A stream of tokens from the lexer
 pub struct TokenStream<'a> {

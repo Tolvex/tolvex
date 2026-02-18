@@ -1,23 +1,23 @@
-# Medi Examples
+# Tolvex Examples
 
-This section provides practical examples of Medi code for various healthcare applications.
+This section provides practical examples of Tolvex code for various healthcare applications.
 
 ## Runnable End-to-End Use Cases
 
 The repository includes small, deterministic end-to-end use cases in `examples/use_cases/`.
 
 - Clinical Data Exploration
-  - Medi: `examples/use_cases/clinical_data_exploration.medi`
-  - Rust harness: `cargo run -p medi_data --example clinical_data_exploration`
+  - Tolvex: `examples/use_cases/clinical_data_exploration.tlvx`
+  - Rust harness: `cargo run -p tolvex_data --example clinical_data_exploration`
 - Basic Regulatory Compliance
-  - Medi: `examples/use_cases/regulatory_compliance.medi`
-  - Rust harness: `cargo run -p medi_compliance --example regulatory_compliance`
+  - Tolvex: `examples/use_cases/regulatory_compliance.tlvx`
+  - Rust harness: `cargo run -p tolvex_compliance --example regulatory_compliance`
 - Simple Statistical Analysis
-  - Medi: `examples/use_cases/statistical_analysis.medi`
-  - Rust harness: `cargo run -p medi_stats --example statistical_analysis`
+  - Tolvex: `examples/use_cases/statistical_analysis.tlvx`
+  - Rust harness: `cargo run -p tolvex_stats --example statistical_analysis`
 - Synthetic Data Testing
-  - Medi: `examples/use_cases/synthetic_data_testing.medi`
-  - Rust harness: `cargo run -p medi_ai --example synthetic_data_testing`
+  - Tolvex: `examples/use_cases/synthetic_data_testing.tlvx`
+  - Rust harness: `cargo run -p tolvex_ai --example synthetic_data_testing`
 
 ## Additional Resources
 

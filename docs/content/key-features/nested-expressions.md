@@ -4,7 +4,7 @@ title: "Nested Expressions & Medical Operators"
 
 # Nested Expressions & Medical Operators
 
-MediLang now supports complex nested expressions and medical-specific operators, making it easier to write and read healthcare-related calculations.
+Tolvex now supports complex nested expressions and medical-specific operators, making it easier to write and read healthcare-related calculations.
 
 ## Key Features
 
@@ -48,7 +48,7 @@ let infusion_rate = 1000mL per 8hr;
 
 ## Operator Precedence
 
-MediLang defines the following operator precedence (from highest to lowest):
+Tolvex defines the following operator precedence (from highest to lowest):
 
 1. `of`
 2. `*`, `/`, `per`
@@ -91,6 +91,6 @@ let drops_per_minute = (ml_per_hour * drops_per_ml) / 60min;
 
 ## Related Articles
 
-- [Getting Started with MediLang](/getting-started/)
-- [Medical Data Science Features](/key-features/medical-data-science/)
-- [Full Language Reference](/reference/)
+- [Getting Started with Tolvex](../getting-started/index.md)
+- [Medical Data Science Features](medical-data-science.md)
+- [Full Language Reference](../reference/index.md)

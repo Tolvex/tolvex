@@ -1,8 +1,8 @@
 // Type environment for Tolvex language in Rust
 // Mimics TypeScript's TypeEnv for variable/function scopes
 
-use tlvxc_type::types::{MediType, PrivacyAnnotation};
 use std::collections::{HashMap, HashSet};
+use tlvxc_type::types::{MediType, PrivacyAnnotation};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum SinkKind {

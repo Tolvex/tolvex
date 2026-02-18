@@ -1,15 +1,15 @@
-# Your First Medi Program
+# Your First Tolvex Program
 
-This guide walks you through writing a small Medi program and checking it with the current compiler CLI.
+This guide walks you through writing a small Tolvex program and checking it with the current compiler CLI.
 
 ## A Simple Health Risk Calculator
 
 Let's create a simple program that calculates a basic health risk score based on patient parameters.
 
-Create a file named `risk_calculator.medi` with the following content:
+Create a file named `risk_calculator.tlvx` with the following content:
 
-```medi
-// First Medi Program: Health Risk Calculator
+```tlvx
+// First Tolvex Program: Health Risk Calculator
 
 // Define our risk calculation function
 fn calculate_risk_score(age: int, systolic_bp: int, diastolic_bp: int, is_smoker: bool, has_diabetes: bool) -> int {
@@ -59,10 +59,10 @@ let example_risk = calculate_risk_score(
 
 ## Checking the Program
 
-From the repository root, typecheck the file with `medic`:
+From the repository root, typecheck the file with `tlvxc`:
 
 ```bash
-cargo run -p medic -- check risk_calculator.medi
+cargo run -p tlvxc -- check risk_calculator.tlvx
 ```
 
 ## Key Concepts Demonstrated

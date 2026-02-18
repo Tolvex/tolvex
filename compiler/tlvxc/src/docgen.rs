@@ -89,7 +89,7 @@ fn extract_doc_tests_from_text(item_name: &str, text: &str) -> Vec<DocTestCase> 
         let t = line.trim_start();
         if let Some(info) = t.strip_prefix("```") {
             let info = info.trim();
-            if !info.starts_with("tolvex") {
+            if !(info.starts_with("tolvex") || info.starts_with("tlvx")) {
                 continue;
             }
 
@@ -130,13 +130,16 @@ fn extract_doc_tests_from_text(item_name: &str, text: &str) -> Vec<DocTestCase> 
 
 fn parse_doc_test_mode(info: &str) -> DocTestMode {
     // Accepted:
-    // - medi
-    // - medi,no_run
-    // - medi,ignore
-    // - medi,compile_fail
-    // Also allow ```medi,no_run``` (no comma space) and ```medi no_run```.
+    // - tolvex
+    // - tolvex,no_run
+    // - tolvex,ignore
+    // - tolvex,compile_fail
+    // Also allow ```tolvex,no_run``` (no comma space) and ```tolvex no_run`.
     let mut flags: Vec<&str> = Vec::new();
-    if let Some(rest) = info.strip_prefix("tolvex") {
+    if let Some(rest) = info
+        .strip_prefix("tolvex")
+        .or_else(|| info.strip_prefix("tlvx"))
+    {
         let rest = rest.trim();
         if let Some(rest) = rest.strip_prefix(',') {
             flags.extend(rest.split(',').map(|s| s.trim()).filter(|s| !s.is_empty()));
@@ -630,8 +633,8 @@ mod tests {
     }
 
     #[test]
-    fn extracts_medi_doc_tests() {
-        let src = "/// Example\n/// ```medi\n/// let x = 1;\n/// ```\nfn a() { }\n";
+    fn extracts_tolvex_doc_tests() {
+        let src = "/// Example\n/// ```tlvx\n/// let x = 1;\n/// ```\nfn a() { }\n";
         let (_comments, items) = extract_doc_items_from_source(src, None).unwrap();
         let tests = extract_doc_tests(&items);
         assert_eq!(tests.len(), 1);
@@ -641,7 +644,7 @@ mod tests {
 
     #[test]
     fn supports_doc_test_modifiers_and_hidden_lines() {
-        let src = "/// Example\n/// ```medi,no_run\n/// # let hidden = 1;\n/// let x = hidden;\n/// ```\nfn a() { }\n";
+        let src = "/// Example\n/// ```tlvx,no_run\n/// # let hidden = 1;\n/// let x = hidden;\n/// ```\nfn a() { }\n";
         let (_comments, items) = extract_doc_items_from_source(src, None).unwrap();
         let tests = extract_doc_tests(&items);
         assert_eq!(tests.len(), 1);

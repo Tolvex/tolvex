@@ -1,6 +1,6 @@
+use nom::Err as NomErr;
 use tlvxc_lexer::token::{Location, Token, TokenType};
 use tlvxc_parser::parser::token_stream::TokenStream;
-use nom::Err as NomErr;
 
 fn tok(tt: TokenType) -> Token {
     Token::new(tt, "", Location::default())

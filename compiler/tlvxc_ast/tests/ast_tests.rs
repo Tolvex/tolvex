@@ -1,7 +1,7 @@
+use std::error::Error;
 use tlvxc_ast::ast::*;
 use tlvxc_ast::visit::{Span, VisitResult, Visitable, Visitor};
 use tlvxc_ast::{to_json, Spanned};
-use std::error::Error;
 
 // Helper function to create a test span
 fn test_span() -> Span {

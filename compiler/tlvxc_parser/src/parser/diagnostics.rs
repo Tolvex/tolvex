@@ -1,7 +1,7 @@
-use tlvxc_ast::visit::Span;
-use tlvxc_lexer::token::{Token, TokenType};
 use nom::error::{Error as NomError, ErrorKind};
 use nom::Err as NomErr;
+use tlvxc_ast::visit::Span;
+use tlvxc_lexer::token::{Token, TokenType};
 
 /// Severity levels for diagnostics
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

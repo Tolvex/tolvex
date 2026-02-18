@@ -4,13 +4,13 @@
 static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
 use lazy_static::lazy_static;
+use std::fs;
+use std::path::Path;
+use std::sync::Mutex;
 use tlvxc_lexer::{
     lexer::Lexer as OriginalLexer,
     streaming_lexer::{LexerConfig, StreamingLexer},
 };
-use std::fs;
-use std::path::Path;
-use std::sync::Mutex;
 
 #[cfg(feature = "jemalloc")]
 use jemalloc_ctl::{epoch, stats};

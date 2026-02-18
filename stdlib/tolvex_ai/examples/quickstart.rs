@@ -1,5 +1,5 @@
-use tolvex_ai::{predict_risk, stratify_risk, RiskScorer};
 use serde_json::json;
+use tolvex_ai::{predict_risk, stratify_risk, RiskScorer};
 
 fn main() {
     // Model

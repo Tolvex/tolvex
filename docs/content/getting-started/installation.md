@@ -1,6 +1,6 @@
-# Installing Medi
+# Installing Tolvex
 
-Medi is currently in pre-alpha development. This guide will walk you through setting up the Medi development environment.
+Tolvex is currently in pre-alpha development. This guide will walk you through setting up the Tolvex development environment.
 
 ## System Requirements
 
@@ -17,18 +17,18 @@ Medi is currently in pre-alpha development. This guide will walk you through set
 
 ```bash
 # Clone the repository
-git clone https://github.com/MediLang/medi.git
-cd medi
+git clone https://github.com/Tolvex/tolvex.git
+cd tolvex
 
 # Build the compiler CLI
-cargo build -p medic
+cargo build -p tlvxc
 
 # Run the CLI from the repository
-cargo run -p medic -- --help
+cargo run -p tlvxc -- --help
 ```
 
 ## Next Steps
 
-* Learn about [Medi's basic syntax](basic-syntax.md)
-* Try [your first Medi program](first-program.md)
+* Learn about [Tolvex's basic syntax](basic-syntax.md)
+* Try [your first Tolvex program](first-program.md)
 * Explore the [standard library](../reference/standard-library.md)

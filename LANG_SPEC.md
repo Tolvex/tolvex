@@ -591,10 +591,10 @@ The Tolvex compiler (`tlvxc`) consists of several stages:
 
 ## Ecosystem Components
 
-1. **Package Manager (`tlvxpack`)**:
+1. **Package Manager (`tvx`)**:
    - Dependency management
    - Build system
-   - Package registry at medipacks.io
+   - Package registry at formulary.tolvex.dev
 
 2. **Standard Library**:
    - `tolvex::fhir` - FHIR/HL7 integration
@@ -618,7 +618,7 @@ The Tolvex compiler (`tlvxc`) consists of several stages:
 - Privacy/compliance checker
 
 ### Phase 2: Ecosystem Growth (2-3 Years)
-- Launch `tlvxpack` and registry
+- Launch `tvx` and formulary.tolvex.dev
 - Expand standard library
 - Visual IDE beta
 - Stabilize healthcare constructs

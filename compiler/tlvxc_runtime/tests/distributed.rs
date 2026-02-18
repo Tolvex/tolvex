@@ -1,10 +1,10 @@
 #![cfg(feature = "distributed")]
 
+use std::thread;
 use tlvxc_runtime::distributed::{
     accept_one, bind_listener, EncryptedLink, IsolatedCell, IsolationDomain, Message,
     PrivacyBoundary, PrivacyLevel,
 };
-use std::thread;
 
 #[test]
 fn secure_task_isolation_enforces_domain() {

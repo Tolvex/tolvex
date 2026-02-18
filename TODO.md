@@ -1,4 +1,4 @@
-# Medi Phase 2 TODO
+# Tolvex Phase 2 TODO
 
 **Phase:** Stabilization & Growth  
 **Timeline:** 12-18 Months  
@@ -79,31 +79,31 @@
   - [x] Implement panic recovery for critical paths
 
 #### Standard Library Completion (v0.1.5)
-- [x] Complete core library (medi::core)
+- [x] Complete core library (tolvex::core)
   - [x] Finalize collections API
   - [x] Complete iterator implementations
   - [x] Add async/await primitives
-- [x] Healthcare standards (medi::standards)
+- [x] Healthcare standards (tolvex::standards)
   - [x] FHIR R4 complete coverage
   - [x] HL7 v2.x full parser
   - [x] DICOM full metadata support
   - [x] SNOMED CT integration
   - [x] LOINC code support
   - [x] ICD-10/ICD-11 support
-- [x] Data science tools (medi::science)
+- [x] Data science tools (tolvex::science)
   - [x] Complete statistical test suite
   - [x] Add machine learning primitives
   - [x] Implement visualization backends
-- [x] Privacy framework (medi::privacy)
+- [x] Privacy framework (tolvex::privacy)
   - [x] Differential privacy algorithms
   - [x] Federated learning infrastructure
   - [x] Anonymization toolkit
-- [x] Real-time system support (medi::rt)
+- [x] Real-time system support (tolvex::rt)
   - [x] Streaming data primitives
   - [x] Low-latency I/O
   - [x] Device protocol support
 
--### 1.3 REBRANDING (v0.1.6)
+### 1.3 REBRANDING (v0.1.6)
 - [x] Step 1: Rename compiler crate directories
   - [x] `compiler/medic` → `compiler/tlvxc`
   - [x] `compiler/medic_ast` → `compiler/tlvxc_ast`
@@ -116,7 +116,7 @@
   - [x] `compiler/medic_runtime` → `compiler/tlvxc_runtime`
   - [x] `compiler/medic_type` → `compiler/tlvxc_type`
   - [x] `compiler/medic_typeck` → `compiler/tlvxc_typeck`
-  - [x] `compiler/medipack` → `compiler/tolvexpack`
+  - [x] `compiler/medipack` → `compiler/tvx`
 - [x] Step 2: Rename stdlib crate directories
   - [x] `stdlib/medi_ai` → `stdlib/tolvex_ai`
   - [x] `stdlib/medi_compliance` → `stdlib/tolvex_compliance`
@@ -131,9 +131,9 @@
 - [x] Step 4: Update root `Cargo.toml` workspace members
 - [x] Step 5: Update every crate's `Cargo.toml` (names, deps, paths, bin targets)
 - [x] Step 6: Global find-replace in all `.rs` files
-  - [x] Crate references: `medic_*` → `tlvxc_*`
+  - [x] Crate references: `medic_*` → `tlvxc_*` / `tvx_*`
   - [x] Stdlib references: `medi_*` → `tolvex_*`
-  - [x] Binary/tool references: `medipack` → `tolvexpack`, `pymedi` → `pytolvex`
+  - [x] Binary/tool references: `medipack` → `tvx`, `pymedi` → `pytolvex`
   - [x] String literals: "Medi" → "Tolvex", "medi" → "tolvex", "MEDI" → "TOLVEX"
   - [x] Env vars: `MEDI_*` → `TOLVEX_*`
   - [x] Identifiers: `MediLang` → `TolvexLang`, `medi-lang` → `tolvex-lang`
@@ -144,18 +144,18 @@
   - [x] Update `LANG_SPEC.md`, `ECOSYSTEM_ROADMAP.md`, `SELF_HOSTING.md`
   - [x] Rename `README-MediCMM.md` → `README-TolvexCMM.md`
   - [x] Update `stdlib/README.md`
-- [ ] Step 9: Update config & CI files
-  - [ ] `docs/mkdocs.yml` (site_name, URLs, logo, social, copyright)
-  - [ ] `package.json` (name, repo URL, author, homepage)
-  - [ ] `.github/workflows/ci.yml` and `docs.yml`
-  - [ ] `.github/instructions/*.md`
-  - [ ] `.gitignore` comment update
-  - [ ] `compiler/Cargo.toml` (nested workspace members)
-- [ ] Step 10: Verify build
-  - [ ] `cargo build --workspace` succeeds
-  - [ ] `cargo test --workspace` passes
-  - [ ] `cargo fmt --all` and `cargo clippy --workspace`
-  - [ ] Grep for stale `medic_`, `medi_`, `.medi`, `MediLang` references
+- [x] Step 9: Update config & CI files
+  - [x] `docs/mkdocs.yml` (site_name, URLs, logo, social, copyright)
+  - [x] `package.json` (name, repo URL, author, homepage)
+  - [x] `.github/workflows/ci.yml` and `docs.yml`
+  - [x] `.github/instructions/*.md`
+  - [x] `.gitignore` comment update
+  - [x] `compiler/Cargo.toml` (nested workspace members)
+- [x] Step 10: Verify build
+  - [x] `cargo build --workspace` succeeds
+  - [x] `cargo test --workspace` passes
+  - [x] `cargo fmt --all` and `cargo clippy --workspace`
+  - [x] Grep for stale `medic_`, `medi_`, `.medi`, `MediLang` references (only REBRAND.md remains by design)
 - [ ] Step 11: Release v0.1.6
   - [ ] Bump all `Cargo.toml` versions to `0.1.6`
   - [ ] Add CHANGELOG.md v0.1.6 rebrand entry
@@ -188,7 +188,7 @@
 
 ## 2. Ecosystem Growth
 
-### 2.1 Package Registry (medipacks.io)
+### 2.1 Package Registry (formulary.tolvex.dev)
 - [ ] Launch public package registry
   - [ ] Set up infrastructure (hosting, CDN, database)
   - [ ] Design and implement web UI
@@ -199,7 +199,7 @@
   - [ ] Dependency vulnerability scanning
   - [ ] License compliance checking
 - [ ] Develop package publishing workflow
-  - [ ] CLI integration with `medipack publish`
+  - [ ] CLI integration with `tvx publish`
   - [ ] Version management and semver enforcement
   - [ ] Documentation generation
 - [ ] Create discovery and search mechanisms
@@ -326,9 +326,9 @@
   - [ ] Privacy flow visualizer
 
 ### 4.2 Package Management (v0.1.12)
-- [ ] Enhance `medipack` with dependency resolution
+- [ ] Enhance `tvx` with dependency resolution
   - [ ] Implement SAT solver for dependencies
-  - [ ] Add lock file support (`medi.lock`)
+  - [ ] Add lock file support (`formula.lock`)
   - [ ] Support version ranges and constraints
 - [ ] Implement build scripts for healthcare resources
   - [ ] FHIR profile compilation
@@ -391,7 +391,7 @@
 - [ ] Prepare for cloud deployment (AWS, Azure, GCP) - discovery/design
 
 ### 6.3 Security & Privacy (v0.1.18)
-- [ ] SOC 2 compliance for `medipacks.io`
+- [ ] SOC 2 compliance for `formulary.tolvex.dev`
 - [ ] HIPAA-compliant design patterns documented
 - [ ] Formal verification of critical privacy components
 
@@ -416,7 +416,7 @@
 ## 8. Success Criteria
 
 - [ ] Stable language specification with minimal expected breaking changes
-- [ ] Launched `medipacks.io` with at least 10 quality packages
+- [ ] Launched `formulary.tolvex.dev` with at least 10 quality formulas
 - [ ] Completed 3+ successful pilot projects
 - [ ] Active community with regular contributions
 - [ ] Comprehensive standard library covering core healthcare needs

@@ -3,6 +3,7 @@ use tlvxc_ast::ast::{
 };
 
 // Import specific TokenType variants we need
+use std::sync::Once;
 use tlvxc_lexer::string_interner::InternedString;
 use tlvxc_lexer::token::Location;
 use tlvxc_lexer::token::Token;
@@ -11,7 +12,6 @@ use tlvxc_lexer::token::TokenType::{
     Comma, FatArrow, Identifier, Integer, LeftBrace, RightBrace, String, Underscore,
 };
 use tlvxc_parser::parser::{parse_match_statement, TokenSlice};
-use std::sync::Once;
 
 // Initialize the logger only once for all tests
 static INIT: Once = Once::new();

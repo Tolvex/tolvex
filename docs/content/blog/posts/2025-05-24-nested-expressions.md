@@ -1,6 +1,6 @@
 ---
 title: "Journey to Nested Expressions: Building a Medical-Specific Language Feature"
-description: "A deep dive into implementing nested expressions and medical operators in MediLang"
+description: "A deep dive into implementing nested expressions and medical operators in Tolvex"
 date: 2025-05-24
 authors:
   - medicore
@@ -15,13 +15,13 @@ tags:
   - technical-deep-dive
 ---
 
-# Implementing Nested Expressions in MediLang: A Developer's Journey
+# Implementing Nested Expressions in Tolvex: A Developer's Journey
 
-*This is the first in a series of posts documenting the development of MediLang, a programming language designed specifically for healthcare applications.*
+*This is the first in a series of posts documenting the development of Tolvex, a programming language designed specifically for healthcare applications.*
 
 ## The Challenge
 
-When we started building MediLang, we knew we needed a way to express complex medical calculations in a way that felt natural to healthcare professionals. Traditional programming languages often fall short when it comes to medical-specific operations and units. Our solution? Build a language with first-class support for medical concepts.
+When we started building Tolvex, we knew we needed a way to express complex medical calculations in a way that felt natural to healthcare professionals. Traditional programming languages often fall short when it comes to medical-specific operations and units. Our solution? Build a language with first-class support for medical concepts.
 
 ## Our Development Journey
 
@@ -49,7 +49,7 @@ When we started building MediLang, we knew we needed a way to express complex me
 
 ### Medical-Specific Operators
 
-MediLang introduces operators that make medical calculations more intuitive:
+Tolvex introduces operators that make medical calculations more intuitive:
 
 ```rust
 // Calculate total medication dose
@@ -68,7 +68,7 @@ We've put significant effort into making error messages helpful and actionable:
 
 ```
 Error: Type mismatch in expression
-  --> patient.medi:12:25
+  --> patient.tlvx:12:25
    |
 12 | let dose = 2 of "500mg";
    |             ^ Expected number after 'of', found string
@@ -117,10 +117,10 @@ Our roadmap includes:
 ## Get Involved
 
 We're just getting started! Join our community:
-- Try out the [latest build](https://github.com/MediLang/medi/releases)
-- Contribute to our [GitHub repository](https://github.com/MediLang/medi)
+- Try out the [latest build](https://github.com/Tolvex/tolvex/releases)
+- Contribute to our [GitHub repository](https://github.com/Tolvex/tolvex)
 - Join the discussion in our [Discord server](#)
 
 ## Full Development History
 
-For a detailed account of all changes, see our [CHANGELOG.md](https://github.com/MediLang/medi/blob/main/CHANGELOG.md).
+For a detailed account of all changes, see our [CHANGELOG.md](https://github.com/Tolvex/tolvex/blob/main/CHANGELOG.md).

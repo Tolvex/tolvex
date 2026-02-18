@@ -1,9 +1,9 @@
+use serde_json::Value as JsonValue;
+use std::fs;
 use tolvex_compliance::{
     check_hipaa_keywords, deidentify_field, make_audit_entry, redact_phi, AuditTrail,
     HipaaKeywordRule, RuleSeverity,
 };
-use serde_json::Value as JsonValue;
-use std::fs;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = "examples/use_cases/patient_record_phi.json";

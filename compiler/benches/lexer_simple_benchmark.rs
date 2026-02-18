@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, BatchSize, Criterion};
-use tlvxc_lexer::lexer::Lexer as OriginalLexer;
 use std::time::Duration;
+use tlvxc_lexer::lexer::Lexer as OriginalLexer;
 
 // Simple test content for benchmarking
 const TEST_CONTENT: &str = r#"

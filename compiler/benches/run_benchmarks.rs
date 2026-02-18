@@ -1,7 +1,7 @@
-use tlvxc_lexer::{lexer::Lexer as OriginalLexer, token::Token};
 use std::error::Error;
 use std::fmt;
 use std::time::Instant;
+use tlvxc_lexer::{lexer::Lexer as OriginalLexer, token::Token};
 
 #[derive(Debug)]
 #[allow(dead_code)]

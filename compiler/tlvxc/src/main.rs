@@ -1,4 +1,11 @@
 use clap::{Args, Parser, Subcommand};
+use serde_json::Value as JsonValue;
+use std::ffi::OsString;
+use std::fs;
+use std::io::{self, Read};
+use std::path::Path;
+use std::path::PathBuf;
+use std::process::Command as ProcessCommand;
 use tlvxc_borrowck::BorrowChecker;
 use tlvxc_borrowck::RtConstraintChecker;
 use tlvxc_env::env::TypeEnv;
@@ -9,13 +16,6 @@ use tlvxc_parser::parser::{
 };
 use tlvxc_runtime::{init_gc_with_params, maybe_incremental_step, GcParams};
 use tlvxc_typeck::{compliance::check_compliance, type_checker::TypeChecker};
-use serde_json::Value as JsonValue;
-use std::ffi::OsString;
-use std::fs;
-use std::io::{self, Read};
-use std::path::Path;
-use std::path::PathBuf;
-use std::process::Command as ProcessCommand;
 
 mod docgen;
 
@@ -772,7 +772,8 @@ fn load_types_json(env: &mut TypeEnv, json_text: &str) -> Result<(), String> {
                         .map(|s| s.as_str().and_then(parse_tolvex_type_str))
                         .collect();
                     let params_mt = params_mt.ok_or("invalid param type string")?;
-                    let ret_mt = parse_tolvex_type_str(ret_s).ok_or("invalid return type string")?;
+                    let ret_mt =
+                        parse_tolvex_type_str(ret_s).ok_or("invalid return type string")?;
                     env.insert(
                         name.to_string(),
                         tlvxc_type::types::MediType::Function {

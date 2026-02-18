@@ -1,10 +1,10 @@
+use std::sync::Once;
 use tlvxc_ast::ast::{
     ExpressionNode, IdentifierNode, LiteralNode, MatchArmNode, PatternNode, Spanned, StatementNode,
 };
 use tlvxc_lexer::string_interner::InternedString;
 use tlvxc_lexer::token::{Location, Token, TokenType};
 use tlvxc_parser::parser::{expressions::parse_match_expression, parse_expression, TokenSlice};
-use std::sync::Once;
 
 // Initialize the logger only once for all tests
 static INIT: Once = Once::new();

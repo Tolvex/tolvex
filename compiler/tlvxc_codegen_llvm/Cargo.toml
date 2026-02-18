@@ -1,6 +1,6 @@
 [package]
 name = "tlvxc_codegen_llvm"
-version = "0.1.15"
+version = "0.1.6"
 edition = "2021"
 
 [features]

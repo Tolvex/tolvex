@@ -44,12 +44,12 @@
 //! ```
 
 use crate::parser::Span;
-use tlvxc_ast::ast::HealthcareQueryNode;
-use tlvxc_ast::ast::{IndexExpressionNode, QuantityLiteralNode};
-use tlvxc_ast::Spanned;
 use nom::error::ErrorKind;
 use nom::Err;
 use nom::IResult;
+use tlvxc_ast::ast::HealthcareQueryNode;
+use tlvxc_ast::ast::{IndexExpressionNode, QuantityLiteralNode};
+use tlvxc_ast::Spanned;
 
 use crate::parser::{
     get_binary_operator, get_operator_precedence, is_comparison_operator, parse_block,

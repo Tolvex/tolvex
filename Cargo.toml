@@ -2,7 +2,7 @@
 resolver = "2"
 members = [
     "compiler/tlvxc",
-    "compiler/tolvexpack",
+    "compiler/tvx",
     "compiler/tlvxc_ast",
     "compiler/tlvxc_env",
     "compiler/tlvxc_lexer",

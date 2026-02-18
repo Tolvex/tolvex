@@ -1,6 +1,6 @@
-# Key Features of Medi
+# Key Features of Tolvex
 
-Medi is designed with healthcare-specific features that set it apart from general-purpose programming languages.
+Tolvex is designed with healthcare-specific features that set it apart from general-purpose programming languages.
 
 ## Core Features
 
@@ -10,11 +10,11 @@ Medi is designed with healthcare-specific features that set it apart from genera
 * [Performance Optimization](../technical/benchmarks.md) - Benchmarks and performance measurement
 * [Healthcare Standards](../getting-started/data.md) - Healthcare data processing and ingestion
 
-## What Makes Medi Unique?
+## What Makes Tolvex Unique?
 
 ### For Clinicians and Healthcare Professionals
 
-Medi empowers clinicians with no programming background to perform complex analytics with minimal training:
+Tolvex empowers clinicians with no programming background to perform complex analytics with minimal training:
 
 * Natural language queries
 * Visual programming interface
@@ -23,7 +23,7 @@ Medi empowers clinicians with no programming background to perform complex analy
 
 ### For Researchers and Data Scientists
 
-Medi accelerates healthcare research with:
+Tolvex accelerates healthcare research with:
 
 * High-performance genomic and imaging analysis
 * Privacy-preserving federated learning
@@ -32,7 +32,7 @@ Medi accelerates healthcare research with:
 
 ### For Healthcare Developers
 
-Medi simplifies development of healthcare applications with:
+Tolvex simplifies development of healthcare applications with:
 
 * Pre-built components for regulatory compliance
 * Native FHIR/HL7 support eliminating complex integrations

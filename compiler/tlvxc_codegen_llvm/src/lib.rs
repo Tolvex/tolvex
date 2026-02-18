@@ -1105,7 +1105,8 @@ impl<'ctx> CodeGen<'ctx> {
         }
         let i64 = self.context.i64_type();
         let fn_ty = self.void.fn_type(&[i64.into()], false);
-        self.module.add_function("tolvex_gc_remove_root", fn_ty, None)
+        self.module
+            .add_function("tolvex_gc_remove_root", fn_ty, None)
     }
 
     #[cfg(all(feature = "gc-runtime-integration", target_pointer_width = "64"))]
@@ -1137,7 +1138,8 @@ impl<'ctx> CodeGen<'ctx> {
         }
         let i64 = self.context.i64_type();
         let fn_ty = i64.fn_type(&[], false);
-        self.module.add_function("tolvex_gc_alloc_unit", fn_ty, None)
+        self.module
+            .add_function("tolvex_gc_alloc_unit", fn_ty, None)
     }
 
     #[cfg(all(feature = "gc-runtime-integration", target_pointer_width = "64"))]

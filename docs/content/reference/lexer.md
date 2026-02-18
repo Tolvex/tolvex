@@ -1,10 +1,10 @@
 # Lexer and Tokenization
 
-This document describes the lexical analysis phase of the Medi programming language, including token types, numeric literals, and error handling.
+This document describes the lexical analysis phase of the Tolvex programming language, including token types, numeric literals, and error handling.
 
 ## Numeric Literals
 
-Medi supports the following numeric literal formats:
+Tolvex supports the following numeric literal formats:
 
 ### Integer Literals
 
@@ -30,7 +30,7 @@ The following are examples of invalid numeric literals:
 
 ## Performance and Benchmarks
 
-The Medi lexer provides three different implementations with different performance characteristics:
+The Tolvex lexer provides three different implementations with different performance characteristics:
 
 ### Lexer Types
 
@@ -52,7 +52,7 @@ The Medi lexer provides three different implementations with different performan
 
 ### Benchmark Results
 
-Here are the benchmark results for processing a 1MB Medi source file:
+Here are the benchmark results for processing a 1MB Tolvex source file:
 
 | Lexer Type     | Min (ms) | Max (ms) | Avg (ms) | Memory (MB) |
 |----------------|----------|----------|-----------|-------------|
@@ -76,7 +76,7 @@ When an invalid numeric literal is encountered, the lexer will generate an error
 
 ```
 Error: Invalid numeric literal: 123abc
-  --> example.medi:5:10
+  --> example.tlvx:5:10
    |
  5 | let x = 123abc;
    |          ^^^^^^ Invalid numeric literal

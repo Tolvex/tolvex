@@ -1,13 +1,13 @@
 <p align="center">
-  <img src="./assets/medi-logo.png" alt="Medi Logo" width="200">
+  <img src="./assets/tolvex-logo.png" alt="Tolvex Logo" width="200">
 </p>
 
-<h1 align="center">The Medi Book</h1>
+<h1 align="center">The Tolvex Book</h1>
 
 <p align="center">
-  <a href="http://medi-lang.org">Website</a> | 
-  <a href="https://github.com/MediLang/medi">Repository</a> | 
-  <a href="https://github.com/MediLang/medi/blob/main/CONTRIBUTING.md">Contributing</a> | 
+  <a href="https://tolvex.dev">Website</a> | 
+  <a href="https://github.com/Tolvex/tolvex">Repository</a> | 
+  <a href="https://github.com/Tolvex/tolvex/blob/main/CONTRIBUTING.md">Contributing</a> | 
   <a href="./glossary.md">Glossary</a>
 </p>
 
@@ -16,9 +16,9 @@
   <img src="https://img.shields.io/badge/Status-Pre--alpha%20(Prototype)-orange" alt="Status">
 </p>
 
-Medi is a programming language purpose-built for healthcare, designed to transform medical analytics with unparalleled ease, speed, and security. With a beginner-friendly syntax inspired by Python and R, high performance rivaling Julia, Rust, and C++, and native support for healthcare standards like FHIR, HL7, and DICOM, Medi empowers clinicians, researchers, and developers to unlock insights from complex medical data. New to healthcare informatics? Check out our [comprehensive glossary](./glossary.md) of healthcare and bioinformatics terms.
+Tolvex is a programming language purpose-built for healthcare, designed to transform medical analytics with unparalleled ease, speed, and security. With a beginner-friendly syntax inspired by Python and R, high performance rivaling Julia, Rust, and C++, and native support for healthcare standards like FHIR, HL7, and DICOM, Tolvex empowers clinicians, researchers, and developers to unlock insights from complex medical data. New to healthcare informatics? Check out our [comprehensive glossary](./glossary.md) of healthcare and bioinformatics terms.
 
-## Why Medi?
+## Why Tolvex?
 
 Healthcare demands tools that balance accessibility, performance, security, and compliance. Existing languages fall short:
 
@@ -26,7 +26,7 @@ Healthcare demands tools that balance accessibility, performance, security, and 
 * **SAS/Stata:** Expensive, proprietary, and cumbersome for modern workflows.
 * **Julia:** Fast but not healthcare-specific, with a smaller ecosystem.
 
-Medi fills these gaps with a language tailored for healthcare, offering:
+Tolvex fills these gaps with a language tailored for healthcare, offering:
 
 * **Native Healthcare Standards:** Built-in support for FHIR, HL7, DICOM, and genomic formats (FASTQ, VCF).
 * **Privacy-Preserving Analytics:** Federated learning and differential privacy for secure data science and AI.
@@ -41,11 +41,11 @@ Medi fills these gaps with a language tailored for healthcare, offering:
 
 ![Status](https://img.shields.io/badge/Status-Pre--alpha%20(Prototype)-orange)
 
-Medi is currently in pre-alpha stage. The core language features and standard library are under active development.
+Tolvex is currently in pre-alpha stage. The core language features and standard library are under active development.
 
 ## Getting Started
 
 * [Installation](getting-started/installation.md)
 * [Basic Syntax](getting-started/basic-syntax.md)
-* [First Medi Program](getting-started/first-program.md)
+* [First Tolvex Program](getting-started/first-program.md)
 * [Example Scripts](examples/index.md)

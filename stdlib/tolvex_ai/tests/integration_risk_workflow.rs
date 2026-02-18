@@ -1,6 +1,6 @@
-use tolvex_ai::{load_model, stratify_risk, RiskScorer};
 use serde_json::json;
 use std::fs;
+use tolvex_ai::{load_model, stratify_risk, RiskScorer};
 
 #[test]
 fn patient_risk_prediction_workflow() {

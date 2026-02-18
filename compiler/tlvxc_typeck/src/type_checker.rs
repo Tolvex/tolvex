@@ -2,12 +2,12 @@
 // This is a basic structure; expand with more rules as needed
 
 use crate::units;
+use std::collections::HashMap;
 use tlvxc_ast::ast::*;
 use tlvxc_ast::visit::Span;
 use tlvxc_env::env::{SinkKind, TypeEnv};
 use tlvxc_type::traits::{ValidationCtx, ValidationError};
 use tlvxc_type::types::*;
-use std::collections::HashMap;
 
 pub struct TypeChecker<'a> {
     env: &'a mut TypeEnv,

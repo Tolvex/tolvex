@@ -48,8 +48,8 @@
 #![allow(dead_code)]
 #![allow(unused_imports)]
 
-use tlvxc_ast::visit::Span;
 use std::ops;
+use tlvxc_ast::visit::Span;
 
 use nom::error::{Error as NomError, ErrorKind, ParseError};
 use nom::{

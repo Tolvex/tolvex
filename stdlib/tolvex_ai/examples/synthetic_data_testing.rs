@@ -1,5 +1,5 @@
-use tolvex_ai::{predict_risk, stratify_risk};
 use serde_json::json;
+use tolvex_ai::{predict_risk, stratify_risk};
 
 fn main() {
     // Deterministic synthetic cohort (hand-rolled; stable for docs/tests).

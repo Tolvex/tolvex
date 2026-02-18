@@ -1,6 +1,6 @@
 # Interpreting Annotated Diagnostics
 
-Medi shows clinician‑friendly diagnostic messages with an annotated snippet of your source code to help you quickly understand and fix issues.
+Tolvex shows clinician‑friendly diagnostic messages with an annotated snippet of your source code to help you quickly understand and fix issues.
 
 Each diagnostic includes:
 
@@ -42,7 +42,7 @@ The "info" severity communicates non‑actionable guidance (e.g., tips or contex
 
 ## Common guidance
 
-Medi offers domain‑aware help messages, for example:
+Tolvex offers domain‑aware help messages, for example:
 
 - Confusing `=` with `==` in comparisons.
 - Unmatched brackets `)`, `]`, or `}`.

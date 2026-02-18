@@ -1,6 +1,6 @@
 ---
-title: "Optimizing MediLang: Lexer Benchmarks and File Extension Standardization"
-description: "A look at our lexer performance improvements and the transition to .medi file extension"
+title: "Optimizing Tolvex: Lexer Benchmarks and File Extension Standardization"
+description: "A look at our lexer performance improvements and the transition to .tlvx file extension"
 date: 2025-05-30
 authors:
   - medicore
@@ -15,13 +15,13 @@ tags:
   - file-format
 ---
 
-# Optimizing MediLang: Lexer Benchmarks and File Extension Standardization
+# Optimizing Tolvex: Lexer Benchmarks and File Extension Standardization
 
-*In our ongoing development of MediLang, we've made significant improvements to our lexer's performance and standardized on the `.medi` file extension. Here's a deep dive into what changed and why it matters.*
+*In our ongoing development of Tolvex, we've made significant improvements to our lexer's performance and standardized on the `.tlvx` file extension. Here's a deep dive into what changed and why it matters.*
 
 ## The Need for Speed: Lexer Benchmarks
 
-As MediLang grows more sophisticated, we need to ensure our toolchain remains fast and efficient. We implemented a comprehensive benchmarking suite to measure and compare the performance of our different lexer implementations.
+As Tolvex grows more sophisticated, we need to ensure our toolchain remains fast and efficient. We implemented a comprehensive benchmarking suite to measure and compare the performance of our different lexer implementations.
 
 ### Meet the Lexers
 
@@ -46,7 +46,7 @@ We currently maintain three different lexer implementations, each with its own s
 
 ### Benchmark Results
 
-Our latest benchmarks show significant performance improvements in the MediLang lexer. Here are the results from processing 12,300 tokens (approximately 73KB of source code) across 10 iterations:
+Our latest benchmarks show significant performance improvements in the Tolvex lexer. Here are the results from processing 12,300 tokens (approximately 73KB of source code) across 10 iterations:
 
 | Metric | Value |
 |--------|-------|
@@ -61,18 +61,18 @@ Our latest benchmarks show significant performance improvements in the MediLang 
 These results demonstrate that our lexer can process over 6.5 million tokens per second with minimal memory overhead. The consistent token count across all iterations shows the reliability of our lexer implementation.
 
 
-## Standardizing on .medi
+## Standardizing on .tlvx
 
-We've also standardized on using `.medi` as the official file extension for Medi source files. This change brings several benefits:
+We've also standardized on using `.tlvx` as the official file extension for Tolvex source files. This change brings several benefits:
 
-1. **Consistency**: A single, standard extension makes it easier to identify Medi files
+1. **Consistency**: A single, standard extension makes it easier to identify Tolvex files
 2. **Tooling**: Better support in editors and IDEs with proper syntax highlighting
-3. **Clarity**: Distinguishes Medi files from other similar-looking extensions
+3. **Clarity**: Distinguishes Tolvex files from other similar-looking extensions
 
 ### What Changed
 
-- Updated all example code and documentation to use `.medi`
-- Modified the compiler and tools to recognize `.medi` files
+- Updated all example code and documentation to use `.tlvx`
+- Modified the compiler and tools to recognize `.tlvx` files
 - Updated build systems and CI/CD pipelines
 
 ## Choosing the Right Lexer
@@ -93,10 +93,10 @@ We'll continue to optimize our lexer implementations and add more comprehensive 
 
 ## Get Involved
 
-We'd love to hear about your experiences with these changes! If you have feedback or want to contribute to MediLang's development, check out our [GitHub repository](https://github.com/MediLang/medi).
+We'd love to hear about your experiences with these changes! If you have feedback or want to contribute to Tolvex's development, check out our [GitHub repository](https://github.com/Tolvex/tolvex).
 
-```medi
-// Example Medi code with the new .medi extension
+```tlvx
+// Example Tolvex code with the new .tlvx extension
 protocol PatientData {
   name: string
   age: int
@@ -130,4 +130,4 @@ let risk = analyze_patient(patient);
 println!("Risk score: {}", risk);
 ```
 
-*Stay tuned for more updates as we continue to improve MediLang!*
+*Stay tuned for more updates as we continue to improve Tolvex!*

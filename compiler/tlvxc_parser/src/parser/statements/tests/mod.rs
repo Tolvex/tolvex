@@ -16,8 +16,8 @@ fn str_to_token_slice(input: &str) -> (TokenSlice<'_>, Vec<Token>) {
 mod statements_test {
     use super::*;
     use crate::tests::init_test_logger;
-    use tlvxc_ast::ast::{ExpressionNode, LiteralNode, PatternNode, StatementNode};
     use pretty_assertions::assert_eq;
+    use tlvxc_ast::ast::{ExpressionNode, LiteralNode, PatternNode, StatementNode};
 
     #[test]
     fn test_let_statement() {

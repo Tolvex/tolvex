@@ -1,8 +1,8 @@
-use tolvex_data::fhir::FHIRPatient;
-use tolvex_data::validate::validate_patient;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
+use tolvex_data::fhir::FHIRPatient;
+use tolvex_data::validate::validate_patient;
 
 #[pyfunction]
 fn mean(xs: Vec<f64>) -> PyResult<f64> {

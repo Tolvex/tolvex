@@ -5,36 +5,36 @@ This page summarizes crate versions, Rust edition, and notable feature flags for
 
 ## Crates
 
-- medi_ai
+- tolvex_ai
   - Version: 0.0.13
   - Edition: 2021
   - Features: None (default)
 
-- medi_compliance
+- tolvex_compliance
   - Version: 0.0.13
   - Edition: 2021
   - Features: None (default)
 
-- medi_data
+- tolvex_data
   - Version: 0.0.13
   - Edition: 2021
   - Features:
     - encryption-aes-gcm (optional)
 
-- medi_model
+- tolvex_model
   - Version: 0.0.13
   - Edition: 2021
   - Features:
     - onnx (stub)
 
-- medi_stats
+- tolvex_stats
   - Version: 0.0.13
   - Edition: 2021
   - Features:
     - pvalue (enables `statrs`)
-    - fhir (enables `medi_data`)
+    - fhir (enables `tolvex_data`)
 
-- pymedi
+- pytolvex
   - Version: 0.0.13
   - Edition: 2021
   - Notes: Python bindings built with maturin/PyO3

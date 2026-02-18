@@ -1,7 +1,7 @@
-use tolvex_core::{block_on, spawn_async};
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
+use tolvex_core::{block_on, spawn_async};
 
 struct YieldOnce {
     yielded: bool,

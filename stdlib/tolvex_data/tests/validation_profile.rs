@@ -1,3 +1,4 @@
+use serde_json::json;
 use tolvex_data::fhir::FHIRPatient;
 use tolvex_data::fhir_any::FHIRAny;
 use tolvex_data::validate::ValidationErrorKind;
@@ -5,7 +6,6 @@ use tolvex_data::validation_profile::{
     load_profiles_from_str, validate_with_profile_any, validate_with_profile_json,
     ValidationProfile,
 };
-use serde_json::json;
 
 #[test]
 fn validate_json_required_fields_and_cardinality() {

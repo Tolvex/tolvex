@@ -1,14 +1,14 @@
 # Medical Data Science and AI
 
-Medi redefines healthcare analytics with powerful, accessible data science and AI tools designed specifically for medical applications.
+Tolvex redefines healthcare analytics with powerful, accessible data science and AI tools designed specifically for medical applications.
 
 ## Data Science Capabilities
 
 ### Advanced Statistical Analysis
 
-Medi includes built-in methods for common healthcare statistical operations:
+Tolvex includes built-in methods for common healthcare statistical operations:
 
-```medi
+```tlvx
 // Survival analysis for clinical trials
 survival_curve = kaplan_meier(
   data: trial_data,
@@ -34,9 +34,9 @@ bed_allocation = optimize_resources(
 
 ### Big Data Processing
 
-Medi scales effortlessly to process massive healthcare datasets:
+Tolvex scales effortlessly to process massive healthcare datasets:
 
-```medi
+```tlvx
 // Process and analyze 10TB genomic dataset
 dataset genome_data = parallel {
   load_bulk_genomic(
@@ -58,7 +58,7 @@ dataset patient_records = distributed {
 
 Create interactive, clinician-friendly visualizations with a few lines of code:
 
-```medi
+```tlvx
 visualize {
   // Forest plot for meta-analysis
   plot_forest(
@@ -84,18 +84,18 @@ visualize {
 
 ### Pre-Trained Healthcare Models
 
-Medi's `medi.ai` module provides ready-to-use models for common healthcare tasks:
+Tolvex's `tolvex.ai` module provides ready-to-use models for common healthcare tasks:
 
-```medi
+```tlvx
 // Detect lung nodules in CT scans
-detection_results = medi.ai.imaging.detect_lung_nodules(
+detection_results = tolvex.ai.imaging.detect_lung_nodules(
   images: patient_ct_scans,
   sensitivity: "high",
   return_confidence: true
 );
 
 // Predict heart failure risk
-risk_scores = medi.ai.predict_risk(
+risk_scores = tolvex.ai.predict_risk(
   data: patient_data,
   condition: "heart_failure",
   timeframe: "5_years",
@@ -103,7 +103,7 @@ risk_scores = medi.ai.predict_risk(
 );
 
 // Analyze clinical notes
-sentiment_analysis = medi.ai.nlp.analyze_notes(
+sentiment_analysis = tolvex.ai.nlp.analyze_notes(
   text: clinical_notes,
   extract: ["symptoms", "medications", "sentiment"]
 );
@@ -113,7 +113,7 @@ sentiment_analysis = medi.ai.nlp.analyze_notes(
 
 Train AI models across hospitals without sharing sensitive data:
 
-```medi
+```tlvx
 // Set up federated learning
 federated pneumonia_detection {
   sites: ["hospital_a", "hospital_b", "hospital_c"],
@@ -144,10 +144,10 @@ global_metrics = pneumonia_detection.evaluate_global();
 
 Implement low-latency inference on edge devices like wearables:
 
-```medi
+```tlvx
 // Define ECG analysis for wearable
 stream ecg_stream = connect("wearable_001", protocol: "MQTT");
-model = medi.ai.load_model("arrhythmia_detection.medi");
+model = tolvex.ai.load_model("arrhythmia_detection.tlvx");
 
 // Optimize for edge deployment
 edge_model = model.optimize(
@@ -175,7 +175,7 @@ monitor ecg_stream {
 
 Ensure transparency and trust in AI-driven healthcare decisions:
 
-```medi
+```tlvx
 // Get explanations for AI predictions
 explanations = model.explain(
   prediction: diagnosis_prediction,
@@ -205,12 +205,12 @@ report {
 
 Early support for quantum algorithms applicable to drug discovery and genomics:
 
-```medi
+```tlvx
 // Import quantum computing module
-import medi.quantum;
+import tolvex.quantum;
 
 // Define quantum circuit for molecular simulation
-circuit = medi.quantum.create_circuit(
+circuit = tolvex.quantum.create_circuit(
   algorithm: "vqe",
   molecule: "aspirin",
   backend: "qiskit"
