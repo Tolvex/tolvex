@@ -14,7 +14,7 @@
 | Domain | medi-lang.org | tolvex.dev |
 | Crate prefix | `medic_*` | `tlvxc_*` |
 | Stdlib prefix | `medi.*` | `tolvex.*` |
-| Twitter/X | @MediLangHQ | @TolvexLang |
+| Twitter/X | @TolvexLang | @TolvexLang |
 | Discord | existing server | rename or new |
 | npm | N/A | @tolvex/* |
 | crates.io | N/A | tolvex / tlvxc_* |
@@ -29,11 +29,11 @@
 **Why first:** All other changes reference the repo URL. GitHub auto-redirects old URLs.
 
 1. **Rename GitHub org:** Settings → Organization name → `TolvexLang`
-   - Old URL `github.com/MediLang/*` auto-redirects to `github.com/TolvexLang/*`
+   - Old URL `github.com/Tolvex/*` auto-redirects to `github.com/TolvexLang/*`
    - ⚠️ Redirect breaks if someone creates a new `MediLang` org
 
 2. **Rename repo:** Settings → Repository name → `tolvex`
-   - Old URL `github.com/TolvexLang/medi` auto-redirects to `github.com/Tolvex/tolvex`
+   - Old URL `github.com/Tolvex/tolvex` auto-redirects to `github.com/Tolvex/tolvex`
    - All 316 commits, stars, issues preserved
 
 3. **Update local clone remote:**
@@ -334,7 +334,7 @@ grep -rl "medic" tests/ | xargs sed -i 's/medic/tlvxc/g'
 
 | Platform | Action |
 |----------|--------|
-| Twitter/X | Create `@TolvexLang` or rename `@MediLangHQ` |
+| Twitter/X | Create `@TolvexLang` or rename `@TolvexLang` |
 | Discord | Rename server to "Tolvex" |
 | Discord invite | Update link in README if changed |
 

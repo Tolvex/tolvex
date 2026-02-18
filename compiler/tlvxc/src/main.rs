@@ -148,7 +148,7 @@ fn run_doctest_compile(source: &str) -> Result<(), String> {
         \n  tlvxc check --emit=wasm32 -o app.wasm app.tlvx Compile to WebAssembly\n\
         \n  tlvxc repl                                 Start interactive REPL\n\
         \n  echo 'let x = 1;' | tlvxc check            Check code from stdin",
-    after_help = "For more information, visit: https://github.com/TolvexLang/medi"
+    after_help = "For more information, visit: https://github.com/Tolvex/tolvex"
 )]
 struct Cli {
     /// Increase verbosity level (-v, -vv, -vvv)

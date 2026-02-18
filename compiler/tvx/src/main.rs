@@ -24,7 +24,7 @@ const BUILD_DIR: &str = "target";
         check    Validate tolvex.toml without building\n  \
         clean    Remove build artifacts\n\n\
         Phase 1 provides project scaffolding and basic build integration.",
-    after_help = "For more information, visit: https://github.com/TolvexLang/medi"
+    after_help = "For more information, visit: https://github.com/Tolvex/tolvex"
 )]
 struct Cli {
     /// Enable verbose output
@@ -192,7 +192,7 @@ fn run_init(ctx: &Context, args: &InitArgs) -> i32 {
             "# {project_name}\n\n\
              {desc}\n\n\
              ## Prerequisites\n\n\
-             - [Tolvex compiler](https://github.com/TolvexLang/medi) (`tlvxc`)\n\
+             - [Tolvex compiler](https://github.com/Tolvex/tolvex) (`tlvxc`)\n\
              - tolvexpack (this project's package manager)\n\n\
              ## Build\n\n\
              ```bash\n\

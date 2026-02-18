@@ -244,7 +244,7 @@
   - [ ] Set up discussion categories
   - [ ] Create community guidelines
   - [ ] Assign moderators
-- [ ] Create X (@MediLangHQ) presence for announcements
+- [ ] Create X (@TolvexLang) presence for announcements
   - [ ] Set up account and branding
   - [ ] Create content calendar
   - [ ] Engage with healthcare tech community
@@ -403,7 +403,7 @@
 - [ ] Set up GitHub Discussions
 - [ ] Schedule regular community calls (biweekly)
 - [ ] Conduct user interviews with pilot participants
-- [ ] Maintain X (@MediLangHQ) presence
+- [ ] Maintain X (@TolvexLang) presence
 
 ### 7.2 Documentation (v0.1.20)
 - [ ] Comprehensive language specification (update LANG_SPEC.md)
