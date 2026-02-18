@@ -3,11 +3,11 @@ requires = ["maturin>=1.5,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "pymedi"
-version = "0.1.2"
+name = "pytolvex"
+version = "0.1.6"
 requires-python = ">=3.10"
 
 [tool.maturin]
 manifest-path = "Cargo.toml"
-module-name = "pymedi"
+module-name = "pytolvex"
 bindings = "pyo3"
