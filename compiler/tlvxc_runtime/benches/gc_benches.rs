@@ -77,7 +77,7 @@ fn bench_incremental_100mb(c: &mut Criterion) {
                 let mut roots = Vec::new();
                 while bytes < target_bytes {
                     let r = gc.allocate::<String>(payload.clone());
-                    if bytes % (64 * 1024) == 0 {
+                    if bytes.is_multiple_of(64 * 1024) {
                         gc.add_root(&r);
                         roots.push(r);
                     }
@@ -219,7 +219,7 @@ fn bench_major_gc_pause(c: &mut Criterion) {
                 let payload = "x".repeat(64); // 64B each string body
                 while bytes < target_bytes {
                     let r = gc.allocate::<String>(payload.clone());
-                    if bytes % (64 * 1024) == 0 {
+                    if bytes.is_multiple_of(64 * 1024) {
                         gc.add_root(&r);
                         roots.push(r);
                     }

@@ -156,11 +156,11 @@
   - [x] `cargo test --workspace` passes
   - [x] `cargo fmt --all` and `cargo clippy --workspace`
   - [x] Grep for stale `medic_`, `medi_`, `.medi`, `MediLang` references (only REBRAND.md remains by design)
-- [ ] Step 11: Release v0.1.6
-  - [ ] Bump all `Cargo.toml` versions to `0.1.6`
-  - [ ] Add CHANGELOG.md v0.1.6 rebrand entry
-  - [ ] `pre-commit run --all-files`
-  - [ ] Commit, tag `v0.1.6`, push
+- [x] Step 11: Release v0.1.6
+  - [x] Bump all `Cargo.toml` versions to `0.1.6`
+  - [x] Add CHANGELOG.md v0.1.6 rebrand entry
+  - [x] `pre-commit run --all-files`
+  - [x] Commit, tag `v0.1.6`, push
 
 ### 1.4 Performance Optimization (v0.1.7)
 - [ ] LLVM optimization passes for medical workloads
