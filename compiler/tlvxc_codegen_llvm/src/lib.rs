@@ -296,7 +296,7 @@ pub fn generate_wasm32_unknown_object_with_opts_types_and_specs(
         ("debug", _) => {
             pm.add_cfg_simplification_pass();
         }
-        ("aggressive", _) => {
+        ("aggressive", _) | ("medical", _) => {
             pm.add_basic_alias_analysis_pass();
             pm.add_promote_memory_to_register_pass();
             pm.add_instruction_combining_pass();
@@ -787,7 +787,7 @@ pub fn generate_x86_64_object_with_opts_types(
                 // keep IR readable: minimal passes
                 pm.add_cfg_simplification_pass();
             }
-            ("aggressive", _) => {
+            ("aggressive", _) | ("medical", _) => {
                 pm.add_basic_alias_analysis_pass();
                 pm.add_promote_memory_to_register_pass();
                 pm.add_instruction_combining_pass();
@@ -6395,6 +6395,20 @@ pub fn generate_x86_64_object_cpu_features(
                 // Memory optimizations
                 pm.add_memcpy_optimize_pass();
             }
+            ("medical", _) => {
+                // Targeted medical workload pipeline: prioritize vectorization and memory locality
+                pm.add_basic_alias_analysis_pass();
+                pm.add_promote_memory_to_register_pass();
+                pm.add_instruction_combining_pass();
+                pm.add_reassociate_pass();
+                pm.add_gvn_pass();
+                pm.add_cfg_simplification_pass();
+                pm.add_licm_pass();
+                pm.add_loop_vectorize_pass();
+                pm.add_slp_vectorize_pass();
+                pm.add_memcpy_optimize_pass();
+                pm.add_dead_store_elimination_pass();
+            }
             ("debug", _) => {
                 // Keep transformations minimal to preserve debuggability
                 pm.add_promote_memory_to_register_pass();
@@ -6415,7 +6429,7 @@ pub fn generate_x86_64_object_cpu_features(
 
     // Run custom, opt-in passes after standard pipeline
     let pipe = std::env::var("TOLVEX_LLVM_PIPE").unwrap_or_else(|_| "minimal".to_string());
-    if pipe == "aggressive" {
+    if pipe == "aggressive" || pipe == "medical" {
         // Dedicated healthcare numerics pass (scaffold)
         run_healthcare_numerics_pass(&cg.module);
         // Metadata-driven tiling/interchange pass (scaffold)

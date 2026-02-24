@@ -39,3 +39,7 @@ tolvex_stats = { path = "../tolvex_stats" }
 [[bench]]
 name = "query_bench"
 harness = false
+
+[[bench]]
+name = "medical_workloads"
+harness = false

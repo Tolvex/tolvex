@@ -163,10 +163,10 @@
   - [x] Commit, tag `v0.1.6`, push
 
 ### 1.4 Performance Optimization (v0.1.7)
-- [ ] LLVM optimization passes for medical workloads
-  - [ ] Profile common healthcare operations
-  - [ ] Add custom optimization passes
-  - [ ] Benchmark against Phase 1 baseline
+- [x] LLVM optimization passes for medical workloads
+  - [x] Profile common healthcare operations
+  - [x] Add custom optimization passes
+  - [x] Benchmark against Phase 1 baseline
 - [ ] SIMD support for genomics/imaging
   - [ ] Vectorize sequence alignment
   - [ ] Vectorize image processing kernels
@@ -212,28 +212,28 @@
   - [ ] Conflict resolution strategies
 
 ### 2.2 Standard Library Expansion (v0.1.7)
-- [ ] Enhance `medi.data` with HL7, DICOM, and genomic formats
+- [ ] Enhance `tolvex.data` with HL7, DICOM, and genomic formats
   - [ ] Full HL7 v2.x message parser and generator
   - [ ] DICOM image reading and metadata extraction
   - [ ] FASTQ/VCF/BAM genomic format support
   - [ ] OMOP Common Data Model support
-- [ ] Expand `medi.stats` with clinical trial and epidemiology methods
+- [ ] Expand `tolvex.stats` with clinical trial and epidemiology methods
   - [ ] Cox proportional hazards model
   - [ ] Competing risks analysis
   - [ ] Meta-analysis functions
   - [ ] Epidemiological models (SIR, SEIR)
   - [ ] Sample size calculations
-- [ ] Develop `medi.privacy` with differential privacy and federated learning
+- [ ] Develop `tolvex.privacy` with differential privacy and federated learning
   - [ ] Laplace and Gaussian mechanisms
   - [ ] Local differential privacy
   - [ ] Federated averaging algorithm
   - [ ] Secure aggregation protocols
-- [ ] Implement `medi.iot` for real-time data streaming
+- [ ] Implement `tolvex.iot` for real-time data streaming
   - [ ] Stream processing primitives
   - [ ] Windowing functions (tumbling, sliding, session)
   - [ ] Alert and notification system
   - [ ] Device protocol adapters (MQTT, AMQP)
-- [ ] Enhance `medi.viz` with interactive dashboards
+- [ ] Enhance `tolvex.viz` with interactive dashboards
   - [ ] Web-based visualization runtime
   - [ ] Interactive chart components
   - [ ] Dashboard layout system

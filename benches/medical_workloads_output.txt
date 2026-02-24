@@ -1,0 +1,16 @@
+lab_stats_1000          time:   [47.680 µs 48.008 µs 48.294 µs]
+                        change: [-2.3779% +1.1314% +4.4166%] (p = 0.50 > 0.05)
+                        No change in performance detected.
+
+lab_stats_1000_medical  time:   [48.970 µs 49.542 µs 50.002 µs]
+                        change: [-3.6790% -1.2930% +1.1052%] (p = 0.29 > 0.05)
+                        No change in performance detected.
+
+lab_stats_10000         time:   [495.87 µs 503.26 µs 509.44 µs]
+                        change: [-4.7061% -1.4474% +1.9520%] (p = 0.39 > 0.05)
+                        No change in performance detected.
+
+lab_stats_10000_medical time:   [499.26 µs 506.78 µs 512.86 µs]
+                        change: [-4.4851% -1.3055% +2.1907%] (p = 0.45 > 0.05)
+                        No change in performance detected.
+
