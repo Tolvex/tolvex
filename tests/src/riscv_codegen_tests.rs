@@ -25,11 +25,11 @@ fn main() -> int {
     // Use conservative defaults for embedded-like targets
     let obj = generate_riscv32_object_with_opts_types_and_specs(
         &program,
-        2,              // opt level (Default)
-        "generic",     // cpu
-        "",            // features
-        &[],            // no extra function type metadata
-        &[],            // no specializations
+        2,         // opt level (Default)
+        "generic", // cpu
+        "",        // features
+        &[],       // no extra function type metadata
+        &[],       // no specializations
     )
     .expect("emit ok");
     assert!(obj.len() > 0, "expected non-empty riscv32 object bytes");

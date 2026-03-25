@@ -48,6 +48,7 @@ impl PackageMetadata {
 
 pub struct RegistryClient {
     base_url: String,
+    #[allow(dead_code)]
     auth_token: Option<String>,
 }
 

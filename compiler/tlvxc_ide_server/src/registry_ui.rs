@@ -13,6 +13,7 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct PackageInfo {
     pub name: String,
     pub version: String,
@@ -22,6 +23,7 @@ pub struct PackageInfo {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)] // Stub implementation
 pub struct AppState {
     pub packages: Arc<RwLock<HashMap<String, PackageInfo>>>,
 }
@@ -55,6 +57,7 @@ impl Default for AppState {
     }
 }
 
+#[allow(dead_code)] // Stub implementation
 pub fn registry_router() -> Router<AppState> {
     Router::new()
         .route("/", get(index))
@@ -64,15 +67,18 @@ pub fn registry_router() -> Router<AppState> {
         .with_state(AppState::default())
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn index() -> impl IntoResponse {
     Html(include_str!("../static/index.html"))
 }
 
 #[derive(Deserialize)]
+#[allow(dead_code)] // Stub implementation
 struct PackagesQuery {
     tag: Option<String>,
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn packages(
     Query(query): Query<PackagesQuery>,
     State(state): State<AppState>,
@@ -86,6 +92,7 @@ async fn packages(
     Json(packages_vec)
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn package_detail(
     Path(name): Path<String>,
     State(state): State<AppState>,
@@ -98,10 +105,12 @@ async fn package_detail(
 }
 
 #[derive(Deserialize)]
+#[allow(dead_code)] // Stub implementation
 struct SearchQuery {
     q: String,
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn search(
     Query(query): Query<SearchQuery>,
     State(state): State<AppState>,

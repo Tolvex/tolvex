@@ -23,19 +23,21 @@ fn str_to_token_slice(input: &str) -> (TokenSlice<'_>, Vec<Token>) {
 #[cfg(test)]
 mod identifiers_test {
     use super::*;
-    use tlvxc_ast::ast::{ExpressionNode, IdentifierNode};
     use pretty_assertions::assert_eq;
+    use tlvxc_ast::ast::{ExpressionNode, IdentifierNode};
 
     #[test]
     fn test_parse_identifier() {
         let (input, _) = str_to_token_slice("x");
         let (_, expr) = parse_identifier(input).unwrap();
-        
+
         assert_eq!(
             expr,
-            ExpressionNode::Identifier(IdentifierNode { name: "x".to_string() })
+            ExpressionNode::Identifier(IdentifierNode {
+                name: "x".to_string()
+            })
         );
     }
-    
+
     // Add more test cases for identifiers and member expressions
 }

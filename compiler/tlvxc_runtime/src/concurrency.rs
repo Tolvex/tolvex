@@ -160,7 +160,8 @@ impl TaskGroup {
 
         let (tx, rx) = std::sync::mpsc::channel();
         self.scheduler.spawn_with_priority(priority, move |ctx| {
-            let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| f(ctx, token.clone())));
+            let result =
+                std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| f(ctx, token.clone())));
             let _ = tx.send(result);
             pending.fetch_sub(1, Ordering::SeqCst);
             join_state.notify_all();
@@ -176,8 +177,7 @@ impl TaskGroup {
 
     /// Wait until all tasks in the group have completed.
     pub fn join(&self) {
-        self.join_state
-            .wait_until_zero(&self.pending, None);
+        self.join_state.wait_until_zero(&self.pending, None);
     }
 
     pub fn join_timeout(&self, timeout: Duration) -> bool {
@@ -299,9 +299,7 @@ mod tests {
         let sched = init_scheduler(Some(2));
         let group = TaskGroup::new(sched);
         let token = group.token();
-        let handle = group.spawn(|_ctx, tok| {
-            tok.check(42u32).unwrap()
-        });
+        let handle = group.spawn(|_ctx, tok| tok.check(42u32).unwrap());
         assert!(!token.is_cancelled());
         group.join();
         assert_eq!(handle.join().unwrap(), 42);

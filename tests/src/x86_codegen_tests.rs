@@ -26,8 +26,16 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("mean.pre"), "expected mean.pre in IR, got:\n{}", ir);
-    assert!(ir.contains("mean.loop"), "expected mean.loop in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("mean.pre"),
+        "expected mean.pre in IR, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("mean.loop"),
+        "expected mean.loop in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -46,8 +54,16 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("mean.pre"), "expected mean.pre in IR, got:\n{}", ir);
-    assert!(ir.contains("mean.loop"), "expected mean.loop in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("mean.pre"),
+        "expected mean.pre in IR, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("mean.loop"),
+        "expected mean.loop in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -65,8 +81,16 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("welford.pre"), "expected welford.pre in IR, got:\n{}", ir);
-    assert!(ir.contains("welford.loop"), "expected welford.loop in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("welford.pre"),
+        "expected welford.pre in IR, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("welford.loop"),
+        "expected welford.loop in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -85,8 +109,16 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("welford.pre"), "expected welford.pre in IR, got:\n{}", ir);
-    assert!(ir.contains("welford.loop"), "expected welford.loop in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("welford.pre"),
+        "expected welford.pre in IR, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("welford.loop"),
+        "expected welford.loop in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -106,7 +138,11 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("kahan.pre"), "expected kahan.pre in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("kahan.pre"),
+        "expected kahan.pre in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -130,9 +166,21 @@ fn main() -> int {
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
     // With aggressive pipeline, we now emit real tiled loops from actual code
-    assert!(ir.contains("tile.cond"), "expected tiled loop blocks in IR, got:\n{}", ir);
-    assert!(ir.contains("tile.inner.body"), "expected inner tiled loop body, got:\n{}", ir);
-    assert!(ir.contains("llvm.prefetch"), "expected prefetch in tiled loop, got:\n{}", ir);
+    assert!(
+        ir.contains("tile.cond"),
+        "expected tiled loop blocks in IR, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("tile.inner.body"),
+        "expected inner tiled loop body, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("llvm.prefetch"),
+        "expected prefetch in tiled loop, got:\n{}",
+        ir
+    );
     // clean up
     std::env::remove_var("TOLVEX_LLVM_PIPE");
 }
@@ -153,8 +201,16 @@ fn main() -> int {
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
     // Look for kahan loop blocks we emit (kahan.pre / kahan.loop / kahan.end)
-    assert!(ir.contains("kahan.pre"), "expected kahan.pre in IR, got:\n{}", ir);
-    assert!(ir.contains("kahan.loop"), "expected kahan.loop in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("kahan.pre"),
+        "expected kahan.pre in IR, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("kahan.loop"),
+        "expected kahan.loop in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -176,17 +232,41 @@ fn process_array() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    
+
     // Check for tiled structure from real loop transformation
-    assert!(ir.contains("tile.cond"), "expected outer tile condition, got:\n{}", ir);
-    assert!(ir.contains("tile.outer.body"), "expected outer tile body, got:\n{}", ir);
-    assert!(ir.contains("tile.inner.cond"), "expected inner tile condition, got:\n{}", ir);
-    assert!(ir.contains("tile.inner.body"), "expected inner tile body, got:\n{}", ir);
-    assert!(ir.contains("llvm.prefetch.p0"), "expected prefetch intrinsic, got:\n{}", ir);
-    
+    assert!(
+        ir.contains("tile.cond"),
+        "expected outer tile condition, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("tile.outer.body"),
+        "expected outer tile body, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("tile.inner.cond"),
+        "expected inner tile condition, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("tile.inner.body"),
+        "expected inner tile body, got:\n{}",
+        ir
+    );
+    assert!(
+        ir.contains("llvm.prefetch.p0"),
+        "expected prefetch intrinsic, got:\n{}",
+        ir
+    );
+
     // Check for loop metadata emission
-    assert!(ir.contains("tolvex.loop.info"), "expected loop metadata global, got:\n{}", ir);
-    
+    assert!(
+        ir.contains("tolvex.loop.info"),
+        "expected loop metadata global, got:\n{}",
+        ir
+    );
+
     // clean up
     std::env::remove_var("TOLVEX_LLVM_PIPE");
     std::env::remove_var("TOLVEX_TILE_SIZE");
@@ -211,11 +291,14 @@ fn vector_sum() -> float {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    
+
     // Check that vectorization-friendly IR is generated
     // The presence of loops and array access should trigger vectorization passes
-    assert!(ir.contains("for."), "expected loop structure for vectorization");
-    
+    assert!(
+        ir.contains("for."),
+        "expected loop structure for vectorization"
+    );
+
     // clean up
     std::env::remove_var("TOLVEX_LLVM_PIPE");
 }
@@ -240,12 +323,12 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    
+
     // Check that both functions are present (inlining happens at later stages)
     assert!(ir.contains("define"), "expected function definitions");
     assert!(ir.contains("helper"), "expected helper function");
     assert!(ir.contains("main"), "expected main function");
-    
+
     // clean up
     std::env::remove_var("TOLVEX_LLVM_PIPE");
 }
@@ -266,11 +349,14 @@ fn calculate_bmi(weight: float, height: float) -> float {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    
+
     // Check for BMI calculation pattern
-    assert!(ir.contains("fmul"), "expected multiplication for height squared");
+    assert!(
+        ir.contains("fmul"),
+        "expected multiplication for height squared"
+    );
     assert!(ir.contains("fdiv"), "expected division for BMI calculation");
-    
+
     // clean up
     std::env::remove_var("TOLVEX_LLVM_PIPE");
 }
@@ -292,7 +378,11 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("llvm.memcpy"), "expected llvm.memcpy in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("llvm.memcpy"),
+        "expected llvm.memcpy in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -310,7 +400,11 @@ fn main() -> int {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("llvm.prefetch"), "expected llvm.prefetch in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("llvm.prefetch"),
+        "expected llvm.prefetch in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]
@@ -432,7 +526,11 @@ fn copy_big() {
     let input = TokenSlice::new(&tokens);
     let (_rest, program) = parse_program(input).expect("parse ok");
     let ir = tlvxc_codegen_llvm::generate_ir_string(&program).expect("ir ok");
-    assert!(ir.contains("llvm.memcpy"), "expected llvm.memcpy in IR, got:\n{}", ir);
+    assert!(
+        ir.contains("llvm.memcpy"),
+        "expected llvm.memcpy in IR, got:\n{}",
+        ir
+    );
 }
 
 #[test]

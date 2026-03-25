@@ -1,9 +1,9 @@
+use std::io::Write;
+use std::process::Command;
 use tlvxc_codegen_llvm::generate_riscv32_object_with_opts_types_and_specs;
 use tlvxc_lexer::streaming_lexer::StreamingLexer;
 use tlvxc_lexer::token::Token;
 use tlvxc_parser::parser::{parse_program, TokenSlice};
-use std::io::Write;
-use std::process::Command;
 
 fn program_for(src: &str) -> tlvxc_ast::ast::ProgramNode {
     let lx = StreamingLexer::new(src);
@@ -20,15 +20,9 @@ fn riscv32_size_tool_runs_if_available() {
 fn main() -> int { return 0 }
 "#;
     let program = program_for(src);
-    let obj = generate_riscv32_object_with_opts_types_and_specs(
-        &program,
-        2,
-        "generic",
-        "",
-        &[],
-        &[],
-    )
-    .expect("emit ok");
+    let obj =
+        generate_riscv32_object_with_opts_types_and_specs(&program, 2, "generic", "", &[], &[])
+            .expect("emit ok");
     assert!(obj.len() > 0);
 
     // Write to a temp file

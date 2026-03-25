@@ -25,39 +25,39 @@ fn str_to_token_slice(input: &str) -> (TokenSlice<'_>, Vec<Token>) {
 #[cfg(test)]
 mod literals_test {
     use super::*;
-    use tlvxc_ast::ast::LiteralNode;
     use pretty_assertions::assert_eq;
+    use tlvxc_ast::ast::LiteralNode;
 
     #[test]
     fn test_parse_integer_literal() {
         let (input, _) = str_to_token_slice("42");
         let (_, lit) = parse_literal(input).unwrap();
-        
+
         assert_eq!(lit, LiteralNode::Int(42));
     }
-    
+
     #[test]
     fn test_parse_float_literal() {
         let (input, _) = str_to_token_slice("3.14");
         let (_, lit) = parse_literal(input).unwrap();
-        
+
         assert_eq!(lit, LiteralNode::Float(3.14));
     }
-    
+
     #[test]
     fn test_parse_string_literal() {
         let (input, _) = str_to_token_slice("\"hello\"");
         let (_, lit) = parse_literal(input).unwrap();
-        
+
         assert_eq!(lit, LiteralNode::String("hello".to_string()));
     }
-    
+
     #[test]
     fn test_parse_boolean_literal() {
         let (input, _) = str_to_token_slice("true");
         let (_, lit) = parse_literal(input).unwrap();
         assert_eq!(lit, LiteralNode::Bool(true));
-        
+
         let (input, _) = str_to_token_slice("false");
         let (_, lit) = parse_literal(input).unwrap();
         assert_eq!(lit, LiteralNode::Bool(false));

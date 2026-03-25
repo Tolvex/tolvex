@@ -11,6 +11,7 @@ lazy_static! {
 }
 
 #[derive(Debug, Error)]
+#[allow(dead_code)] // Stub implementation - not all errors are used yet
 pub enum VersionError {
     #[error("Invalid semver: {0}")]
     InvalidSemver(String),
@@ -23,6 +24,7 @@ pub enum VersionError {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct Version {
     pub major: u64,
     pub minor: u64,
@@ -31,6 +33,7 @@ pub struct Version {
     pub build: Option<String>,
 }
 
+#[allow(dead_code)] // Stub implementation
 impl Version {
     pub fn parse(s: &str) -> Result<Self, VersionError> {
         let caps = SEMVER_REGEX
@@ -108,16 +111,19 @@ impl std::fmt::Display for Version {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub enum BumpType {
     Major,
     Minor,
     Patch,
 }
 
+#[allow(dead_code)] // Stub implementation
 pub struct VersionManager {
     versions: HashMap<String, Vec<Version>>,
 }
 
+#[allow(dead_code)] // Stub implementation
 impl VersionManager {
     pub fn new() -> Self {
         Self {
@@ -130,10 +136,7 @@ impl VersionManager {
             return Err(VersionError::PrereleaseNotAllowed(version.to_string()));
         }
 
-        let entry = self
-            .versions
-            .entry(name.to_string())
-            .or_insert_with(Vec::new);
+        let entry = self.versions.entry(name.to_string()).or_default();
         if entry.contains(&version) {
             return Err(VersionError::VersionConflict {
                 name: name.to_string(),

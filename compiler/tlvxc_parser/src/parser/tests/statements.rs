@@ -147,10 +147,18 @@ mod statements_test {
         let (ts, _toks) = str_to_token_slice(input);
         let (rem, stmt) = parse_let_statement(ts).expect("parser should produce let stmt");
         if let StatementNode::Let(let_stmt) = stmt {
-            assert!(matches!(let_stmt.type_annotation, Some(ExpressionNode::Identifier(_))));
-        } else { panic!("expected let stmt"); }
+            assert!(matches!(
+                let_stmt.type_annotation,
+                Some(ExpressionNode::Identifier(_))
+            ));
+        } else {
+            panic!("expected let stmt");
+        }
         // Ensure comma remains for caller to handle
-        assert!(matches!(rem.peek().map(|t| &t.token_type), Some(tlvxc_lexer::token::TokenType::Comma)));
+        assert!(matches!(
+            rem.peek().map(|t| &t.token_type),
+            Some(tlvxc_lexer::token::TokenType::Comma)
+        ));
     }
 
     #[test]
@@ -164,8 +172,13 @@ mod statements_test {
                 Some(ExpressionNode::Identifier(id)) => assert_eq!(id.name, "List"),
                 other => panic!("expected identifier type ann, got {other:?}"),
             }
-        } else { panic!("expected let stmt"); }
-        assert!(matches!(rem.peek().map(|t| &t.token_type), Some(tlvxc_lexer::token::TokenType::LeftBracket)));
+        } else {
+            panic!("expected let stmt");
+        }
+        assert!(matches!(
+            rem.peek().map(|t| &t.token_type),
+            Some(tlvxc_lexer::token::TokenType::LeftBracket)
+        ));
     }
 
     #[test]
@@ -179,8 +192,13 @@ mod statements_test {
                 Some(ExpressionNode::Identifier(id)) => assert_eq!(id.name, "List"),
                 other => panic!("expected identifier type ann, got {other:?}"),
             }
-        } else { panic!("expected let stmt"); }
-        assert!(matches!(rem.peek().map(|t| &t.token_type), Some(tlvxc_lexer::token::TokenType::Less)));
+        } else {
+            panic!("expected let stmt");
+        }
+        assert!(matches!(
+            rem.peek().map(|t| &t.token_type),
+            Some(tlvxc_lexer::token::TokenType::Less)
+        ));
     }
 
     #[test]
@@ -242,7 +260,7 @@ mod statements_test {
 #[cfg(test)]
 mod type_decls_test {
     use super::*;
-    use tlvxc_ast::ast::{StatementNode, ExpressionNode, IdentifierNode};
+    use tlvxc_ast::ast::{ExpressionNode, IdentifierNode, StatementNode};
 
     #[test]
     fn test_parse_type_declaration_basic() {
@@ -254,9 +272,15 @@ mod type_decls_test {
                 assert_eq!(td.name.name, "Person");
                 assert_eq!(td.fields.len(), 2);
                 assert_eq!(td.fields[0].name, "name");
-                assert!(matches!(td.fields[0].type_annotation, ExpressionNode::Identifier(_)));
+                assert!(matches!(
+                    td.fields[0].type_annotation,
+                    ExpressionNode::Identifier(_)
+                ));
                 assert_eq!(td.fields[1].name, "age");
-                assert!(matches!(td.fields[1].type_annotation, ExpressionNode::Identifier(_)));
+                assert!(matches!(
+                    td.fields[1].type_annotation,
+                    ExpressionNode::Identifier(_)
+                ));
             }
             _ => panic!("expected type decl"),
         }
@@ -266,11 +290,14 @@ mod type_decls_test {
     fn test_parse_type_declaration_with_semicolon() {
         let input = "type Vital { value: Float, unit: String };";
         let (ts, _tokens) = str_to_token_slice(input);
-        let (_rem, stmt) = parse_type_declaration(ts).expect("should parse type decl with semicolon");
-        if let StatementNode::TypeDecl(td) = stmt { 
+        let (_rem, stmt) =
+            parse_type_declaration(ts).expect("should parse type decl with semicolon");
+        if let StatementNode::TypeDecl(td) = stmt {
             assert_eq!(td.name.name, "Vital");
             assert_eq!(td.fields.len(), 2);
-        } else { panic!("expected type decl"); }
+        } else {
+            panic!("expected type decl");
+        }
     }
 
     #[test]
@@ -278,17 +305,19 @@ mod type_decls_test {
         let input = "type Empty { }";
         let (ts, _tokens) = str_to_token_slice(input);
         let (_rem, stmt) = parse_type_declaration(ts).expect("should parse empty type decl");
-        if let StatementNode::TypeDecl(td) = stmt { 
+        if let StatementNode::TypeDecl(td) = stmt {
             assert_eq!(td.name.name, "Empty");
             assert!(td.fields.is_empty());
-        } else { panic!("expected type decl"); }
+        } else {
+            panic!("expected type decl");
+        }
     }
 }
 
 #[cfg(test)]
 mod functions_test {
     use super::*;
-    use tlvxc_ast::ast::{StatementNode, ExpressionNode};
+    use tlvxc_ast::ast::{ExpressionNode, StatementNode};
 
     #[test]
     fn test_fn_empty_params() {

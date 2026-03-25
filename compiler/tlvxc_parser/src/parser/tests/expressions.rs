@@ -13,8 +13,8 @@ fn str_to_token_slice(input: &str) -> (TokenSlice<'_>, Vec<Token>) {
 #[cfg(test)]
 mod expressions_test {
     use super::*;
-    use tlvxc_ast::ast::{BinaryOperator, ExpressionNode, LiteralNode};
     use pretty_assertions::assert_eq;
+    use tlvxc_ast::ast::{BinaryOperator, ExpressionNode, LiteralNode};
 
     #[test]
     /// Tests that the parser correctly applies operator precedence, ensuring multiplication is evaluated before addition in expressions like "2 + 3 * 4".
@@ -30,7 +30,7 @@ mod expressions_test {
         let input = "2 + 3 * 4";
         let (token_slice, _tokens) = str_to_token_slice(input);
         let (_, expr) = parse_expression(token_slice).unwrap();
-        
+
         // Expected: 2 + (3 * 4)
         match expr {
             ExpressionNode::Binary(binary) => {
@@ -57,7 +57,7 @@ mod expressions_test {
             _ => panic!("Expected binary expression"),
         }
     }
-    
+
     #[test]
     /// Tests that the parser correctly applies operator precedence across all supported binary operators.
     ///
@@ -75,25 +75,25 @@ mod expressions_test {
         let input = "a || b && c ?? d ?: e == f != g < h <= i > j >= k | l ^ m & n << o >> p + q - r * s / t % u ** v .. w";
         let (token_slice, _tokens) = str_to_token_slice(input);
         let (_, expr) = parse_expression(token_slice).unwrap();
-        
+
         // The expression should be parsed according to operator precedence
         // We'll walk the AST to verify the structure
-        
+
         // Top level should be logical OR (lowest precedence)
         if let ExpressionNode::Binary(bin) = &expr {
             assert_eq!(bin.operator, BinaryOperator::Or);
-            
+
             // Left side should be 'a'
             assert!(matches!(
                 bin.left,
                 ExpressionNode::Identifier(ref id) if id.name == "a"
             ));
-            
+
             // Right side should be the rest of the expression
             if let ExpressionNode::Binary(bin) = &bin.right {
                 // Next should be logical AND
                 assert_eq!(bin.operator, BinaryOperator::And);
-                
+
                 // And so on... The full test would continue walking the AST
                 // to verify each level of precedence
             } else {
@@ -103,7 +103,7 @@ mod expressions_test {
             panic!("Expected logical OR expression");
         }
     }
-    
+
     #[test]
     /// Tests that right-associative operators, specifically exponentiation (`**`), are parsed with correct associativity.
     ///
@@ -116,22 +116,22 @@ mod expressions_test {
     /// ```
     fn test_right_associative_operators() {
         // Test right-associative operators: ** (exponentiation), ?: (elvis), ?? (null-coalesce)
-        
+
         // Exponentiation is right-associative: 2 ** 3 ** 4 = 2 ** (3 ** 4)
         let input = "2 ** 3 ** 4";
         let (token_slice, _tokens) = str_to_token_slice(input);
         let (_, expr) = parse_expression(token_slice).unwrap();
-        
+
         // Expected: 2 ** (3 ** 4)
         if let ExpressionNode::Binary(bin) = &expr {
             assert_eq!(bin.operator, BinaryOperator::Pow);
-            
+
             // Left side should be 2
             assert!(matches!(
                 bin.left,
                 ExpressionNode::Literal(LiteralNode::Int(2))
             ));
-            
+
             // Right side should be another exponentiation
             if let ExpressionNode::Binary(inner_bin) = &bin.right {
                 assert_eq!(inner_bin.operator, BinaryOperator::Pow);
@@ -150,7 +150,7 @@ mod expressions_test {
             panic!("Expected exponentiation expression");
         }
     }
-    
+
     #[test]
     /// ```
     fn test_mixed_precedence() {
@@ -158,7 +158,7 @@ mod expressions_test {
         let input = "a + b * c ** d ** e << f | g & h";
         let (token_slice, _tokens) = str_to_token_slice(input);
         let (_, expr) = parse_expression(token_slice).unwrap();
-        
+
         // The structure should be: ((a + (b * (c ** (d ** e)))) << f) | (g & h)
         // We'll just verify the top level for this test
         if let ExpressionNode::Binary(bin) = &expr {
@@ -167,7 +167,7 @@ mod expressions_test {
             panic!("Expected bitwise OR expression");
         }
     }
-    
+
     #[test]
     /// ```
     fn test_comparison_chain() {
@@ -175,7 +175,7 @@ mod expressions_test {
         let input = "a < b < c";
         let (token_slice, _tokens) = str_to_token_slice(input);
         let result = parse_expression(token_slice);
-        
+
         // This should fail because comparison operators don't chain in most languages
         assert!(result.is_err(), "Comparison chaining should not be allowed");
     }
@@ -268,7 +268,8 @@ mod expressions_test {
 
         let input = "fhir_query(\"Patient\", age > 65)";
         let (token_slice, _tokens) = str_to_token_slice(input);
-        let (_rem, expr) = parse_expression(token_slice).expect("should parse fhir_query expression");
+        let (_rem, expr) =
+            parse_expression(token_slice).expect("should parse fhir_query expression");
 
         match expr {
             ExpressionNode::HealthcareQuery(hq) => {

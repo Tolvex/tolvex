@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct User {
     pub id: String,
     pub username: String,
@@ -18,6 +19,7 @@ pub struct User {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)] // Stub implementation
 pub struct AuthState {
     pub users: HashMap<String, User>,
     pub tokens: HashMap<String, String>, // token -> user_id
@@ -53,9 +55,10 @@ impl Default for AuthState {
     }
 }
 
+#[allow(dead_code)] // Stub implementation
 pub async fn auth_middleware(
     State(state): State<AuthState>,
-    mut request: Request,
+    request: Request,
     next: Next,
 ) -> Result<Response, StatusCode> {
     let auth_header = request
@@ -69,12 +72,14 @@ pub async fn auth_middleware(
     let user = state.users.get(user_id).ok_or(StatusCode::UNAUTHORIZED)?;
 
     // Store user in request extensions for downstream handlers
-    let mut req = request;
+    let (req, _) = request.into_parts();
+    let mut req = Request::from_parts(req, axum::body::Body::empty());
     req.extensions_mut().insert(user.clone());
 
     Ok(next.run(req).await)
 }
 
+#[allow(dead_code)] // Stub implementation
 pub async fn require_admin(request: Request, next: Next) -> Result<Response, StatusCode> {
     let user = request
         .extensions()

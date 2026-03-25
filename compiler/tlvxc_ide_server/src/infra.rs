@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct DatabaseConfig {
     pub url: String,
     pub max_connections: u32,
@@ -19,6 +20,7 @@ impl Default for DatabaseConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct StorageConfig {
     pub backend: StorageBackend,
     pub bucket: String,
@@ -27,6 +29,7 @@ pub struct StorageConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 #[serde(rename_all = "lowercase")]
 pub enum StorageBackend {
     Local,
@@ -46,6 +49,7 @@ impl Default for StorageConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct CdnConfig {
     pub provider: CdnProvider,
     pub domain: String,
@@ -53,6 +57,7 @@ pub struct CdnConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 #[serde(rename_all = "lowercase")]
 pub enum CdnProvider {
     Cloudflare,
@@ -70,27 +75,20 @@ impl Default for CdnConfig {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[allow(dead_code)] // Stub implementation
 pub struct InfrastructureConfig {
     pub database: DatabaseConfig,
     pub storage: StorageConfig,
     pub cdn: CdnConfig,
 }
 
-impl Default for InfrastructureConfig {
-    fn default() -> Self {
-        Self {
-            database: DatabaseConfig::default(),
-            storage: StorageConfig::default(),
-            cdn: CdnConfig::default(),
-        }
-    }
-}
-
+#[allow(dead_code)] // Stub implementation
 pub struct Infrastructure {
     config: InfrastructureConfig,
 }
 
+#[allow(dead_code)] // Stub implementation
 impl Infrastructure {
     pub fn new(config: InfrastructureConfig) -> Self {
         Self { config }

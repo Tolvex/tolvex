@@ -11,12 +11,14 @@ use super::registry_ui::{AppState, PackageInfo};
 use crate::version::Version;
 
 #[derive(Debug, Serialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct PublishResponse {
     pub success: bool,
     pub message: String,
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct PublishRequest {
     pub name: String,
     pub version: String,
@@ -24,6 +26,7 @@ pub struct PublishRequest {
     pub tarball: Vec<u8>, // Base64-encoded in real implementation
 }
 
+#[allow(dead_code)] // Stub implementation
 pub fn api_router() -> Router<AppState> {
     Router::new()
         .route(
@@ -38,6 +41,7 @@ pub fn api_router() -> Router<AppState> {
         .with_state(AppState::default())
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn list_packages(State(state): State<AppState>) -> Json<Vec<PackageInfo>> {
     let packages = state.packages.read().await;
     let mut packages_vec: Vec<_> = packages.values().cloned().collect();
@@ -45,6 +49,7 @@ async fn list_packages(State(state): State<AppState>) -> Json<Vec<PackageInfo>> 
     Json(packages_vec)
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn get_package(
     Path(name): Path<String>,
     State(state): State<AppState>,
@@ -57,6 +62,7 @@ async fn get_package(
         .ok_or(StatusCode::NOT_FOUND)
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn list_versions(
     Path(name): Path<String>,
     State(state): State<AppState>,
@@ -70,6 +76,7 @@ async fn list_versions(
     }
 }
 
+#[allow(dead_code)] // Stub implementation
 async fn publish_package(
     State(state): State<AppState>,
     Json(req): Json<PublishRequest>,

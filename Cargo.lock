@@ -2194,8 +2194,11 @@ name = "tlvxc_ide_server"
 version = "0.1.6"
 dependencies = [
  "axum",
+ "lazy_static",
+ "regex",
  "serde",
  "serde_json",
+ "thiserror 1.0.69",
  "tlvxc_ast",
  "tlvxc_env",
  "tlvxc_lexer",
@@ -2382,6 +2385,8 @@ dependencies = [
  "clap",
  "serde",
  "tempfile",
+ "thiserror 1.0.69",
+ "tokio",
  "toml",
 ]
 

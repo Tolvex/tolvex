@@ -5,6 +5,7 @@ use std::path::Path;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
+#[allow(dead_code)] // Stub implementation
 pub enum DocsError {
     #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
@@ -13,6 +14,7 @@ pub enum DocsError {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct Documentation {
     pub package_name: String,
     pub version: String,
@@ -22,6 +24,7 @@ pub struct Documentation {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct ModuleDoc {
     pub name: String,
     pub description: Option<String>,
@@ -30,6 +33,7 @@ pub struct ModuleDoc {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct FunctionDoc {
     pub name: String,
     pub signature: String,
@@ -40,6 +44,7 @@ pub struct FunctionDoc {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct TypeDoc {
     pub name: String,
     pub kind: TypeKind,
@@ -48,6 +53,7 @@ pub struct TypeDoc {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 #[serde(rename_all = "snake_case")]
 pub enum TypeKind {
     Struct,
@@ -57,6 +63,7 @@ pub enum TypeKind {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct FieldDoc {
     pub name: String,
     pub type_name: String,
@@ -64,6 +71,7 @@ pub struct FieldDoc {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct ParamDoc {
     pub name: String,
     pub type_name: String,
@@ -71,14 +79,17 @@ pub struct ParamDoc {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[allow(dead_code)] // Stub implementation
 pub struct ExampleDoc {
     pub name: String,
     pub code: String,
     pub description: Option<String>,
 }
 
+#[allow(dead_code)] // Stub implementation
 pub struct DocsGenerator;
 
+#[allow(dead_code)] // Stub implementation
 impl DocsGenerator {
     pub fn new() -> Self {
         Self
