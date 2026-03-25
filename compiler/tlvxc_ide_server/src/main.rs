@@ -17,6 +17,14 @@ use tlvxc_type::types::MediType;
 use tlvxc_typeck::type_checker::TypeChecker;
 use tower_http::cors::{Any, CorsLayer};
 
+mod auth;
+mod docs;
+mod infra;
+mod registry_api;
+mod registry_ui;
+mod resolver;
+mod version;
+
 #[derive(Debug, Deserialize)]
 struct AnalyzeRequest {
     source: String,

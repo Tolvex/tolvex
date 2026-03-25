@@ -174,7 +174,7 @@ fn test_patient_record_declaration_invalid_type() {
     let mut found_error = false;
     for stmt in &stmts {
         if let Err(msg) = checker.check_stmt(stmt) {
-            assert!(msg.contains("Unknown type"));
+            assert!(msg.contains("Unknown type "));
             found_error = true;
         }
     }
@@ -225,7 +225,7 @@ fn test_clinical_rule_invalid_condition() {
     let mut found_error = false;
     for stmt in &stmts {
         if let Err(msg) = checker.check_stmt(stmt) {
-            assert!(msg.contains("condition must be Bool"));
+            assert!(msg.contains("condition must be Bool "));
             found_error = true;
         }
     }
@@ -274,7 +274,7 @@ fn test_medical_transformation_wrong_input() {
         let msg = format!("{}", err_enum); 
         println!("Type Error: {}", msg); 
         // Check the specific message for UnknownType
-        if msg.contains("Type 'UnknownType' is undefined or has an unknown type.") {
+        if msg.contains(r#"Type "UnknownType" is undefined or has an unknown type."#) {
             // Optionally, also check the enum variant and name if needed for super robustness
             if let TypeError::UnknownType(name) = err_enum {
                 if name == "UnknownType" {
@@ -284,6 +284,6 @@ fn test_medical_transformation_wrong_input() {
             }
         }
     }
-    assert!(found_correct_error, "Expected 'UnknownType' error not found or message mismatch. Errors: {:?}", errors);
+    assert!(found_correct_error, "Expected UnknownType error not found or message mismatch. Errors: {:?}", errors);
 
 }

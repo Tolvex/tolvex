@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tolvex Package Registry</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 0; background: #f8fafc; }
+        header { background: #3ebbb3; color: white; padding: 1rem 2rem; }
+        header h1 { margin: 0; }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 1rem; }
+        nav a { color: white; text-decoration: none; }
+        main { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .search { margin-bottom: 2rem; }
+        .search input { width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; }
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+        .card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; }
+        .card h3 { margin: 0 0 0.5rem; }
+        .card p { margin: 0; color: #64748b; }
+        .tags { margin-top: 0.5rem; }
+        .tag { background: #e2e8f0; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.875rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tolvex Package Registry</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/packages">Packages</a></li>
+                <li><a href="/search">Search</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="search">
+            <input type="text" id="searchInput" placeholder="Search packages...">
+        </section>
+        <section class="package-grid" id="packageGrid">
+            <!-- Packages will be loaded here -->
+        </section>
+    </main>
+    <script>
+        async function loadPackages(tag) {
+            const url = tag ? `/packages?tag=${encodeURIComponent(tag)}` : '/packages';
+            const res = await fetch(url);
+            const packages = await res.json();
+            const grid = document.getElementById('packageGrid');
+            grid.innerHTML = packages.map(pkg => `
+                <div class="card">
+                    <h3><a href="/packages/${encodeURIComponent(pkg.name)}">${pkg.name}</a></h3>
+                    <p>${pkg.description || ''}</p>
+                    <div class="tags">${pkg.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                </div>
+            `).join('');
+        }
+
+        async function search(query) {
+            const res = await fetch(`/search?q=${encodeURIComponent(query)}`);
+            const packages = await res.json();
+            const grid = document.getElementById('packageGrid');
+            grid.innerHTML = packages.map(pkg => `
+                <div class="card">
+                    <h3><a href="/packages/${encodeURIComponent(pkg.name)}">${pkg.name}</a></h3>
+                    <p>${pkg.description || ''}</p>
+                    <div class="tags">${pkg.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const q = e.target.value.trim();
+            if (q) {
+                search(q);
+            } else {
+                loadPackages();
+            }
+        });
+
+        loadPackages();
+    </script>
+</body>
+</html>

@@ -55,6 +55,25 @@ pub struct FhirConfig {
     pub strict: bool,
 }
 
+impl std::fmt::Display for Dependency {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Dependency::Version(v) => write!(f, "{}", v),
+            Dependency::Detailed(d) => {
+                if let Some(v) = &d.version {
+                    write!(f, "{}", v)
+                } else if let Some(p) = &d.path {
+                    write!(f, "{{ path = \"{}\" }}", p)
+                } else if let Some(g) = &d.git {
+                    write!(f, "{{ git = \"{}\" }}", g)
+                } else {
+                    write!(f, "{{}}")
+                }
+            }
+        }
+    }
+}
+
 impl Manifest {
     pub fn new(name: &str) -> Self {
         Self {

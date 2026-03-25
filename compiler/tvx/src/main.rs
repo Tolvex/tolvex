@@ -4,7 +4,10 @@ use std::process::Command as ProcessCommand;
 
 use clap::{Args, Parser, Subcommand};
 
+pub mod discovery;
 pub mod manifest;
+pub mod registry;
+pub mod security;
 
 const MANIFEST_FILE: &str = "tolvex.toml";
 const SRC_DIR: &str = "src";
@@ -49,6 +52,23 @@ enum Command {
     Check,
     /// Remove build artifacts (target directory)
     Clean,
+    /// Publish the current package to the registry
+    Publish(PublishArgs),
+}
+
+#[derive(Debug, Args)]
+struct PublishArgs {
+    /// Registry URL (defaults to https://formulary.tolvex.dev)
+    #[arg(long)]
+    registry: Option<String>,
+
+    /// Force publishing even if version already exists
+    #[arg(long)]
+    force: bool,
+
+    /// Dry-run: validate and prepare without uploading
+    #[arg(long)]
+    dry_run: bool,
 }
 
 #[derive(Debug, Args)]
@@ -88,6 +108,7 @@ fn main() {
         Command::Build(args) => run_build(&ctx, &args),
         Command::Check => run_check(&ctx),
         Command::Clean => run_clean(&ctx),
+        Command::Publish(args) => run_publish(&ctx, &args),
     };
     std::process::exit(rc);
 }
@@ -369,6 +390,59 @@ fn run_check(ctx: &Context) -> i32 {
     }
 
     0
+}
+
+fn run_publish(ctx: &Context, args: &PublishArgs) -> i32 {
+    let manifest = match load_manifest(ctx) {
+        Ok(m) => m,
+        Err(rc) => return rc,
+    };
+
+    let registry_url = args
+        .registry
+        .as_deref()
+        .unwrap_or("https://formulary.tolvex.dev");
+    ctx.info(&format!(
+        "Publishing {} v{} to {}",
+        manifest.name, manifest.version, registry_url
+    ));
+
+    // Prepare metadata
+    let meta = registry::PackageMetadata::from_manifest(&manifest);
+
+    // Dry-run: stop here
+    if args.dry_run {
+        ctx.info("Dry-run mode: skipping upload");
+        ctx.success(&format!(
+            "Package prepared for upload: {} v{}",
+            manifest.name, manifest.version
+        ));
+        return 0;
+    }
+
+    // Stub: check version conflict
+    if !args.force {
+        // TODO: query registry for existing version
+        ctx.verbose(&format!(
+            "Checking if {} v{} already exists...",
+            meta.name, meta.version
+        ));
+    }
+
+    // Stub: security scan
+    ctx.verbose("Running security scan...");
+    // TODO: implement real scan; for now, we simulate success
+
+    // Stub: create tarball
+    ctx.verbose("Creating package tarball...");
+    // TODO: implement tarball creation
+
+    // Stub: upload
+    ctx.verbose(&format!("Uploading to {}...", registry_url));
+    // TODO: implement upload
+
+    eprintln!("error: publishing not yet fully implemented (stub)");
+    1
 }
 
 fn run_clean(ctx: &Context) -> i32 {

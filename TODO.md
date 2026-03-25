@@ -189,27 +189,27 @@
 ## 2. Ecosystem Growth
 
 ### 2.1 Package Registry (formulary.tolvex.dev)
-- [ ] Launch public package registry
-  - [ ] Set up infrastructure (hosting, CDN, database)
-  - [ ] Design and implement web UI
-  - [ ] Create API for package operations
-  - [ ] Implement user authentication
-- [ ] Implement security scanning for packages
-  - [ ] Static analysis for malicious code
-  - [ ] Dependency vulnerability scanning
-  - [ ] License compliance checking
-- [ ] Develop package publishing workflow
-  - [ ] CLI integration with `tvx publish`
-  - [ ] Version management and semver enforcement
-  - [ ] Documentation generation
-- [ ] Create discovery and search mechanisms
-  - [ ] Full-text search
-  - [ ] Category/tag filtering
-  - [ ] Popularity and quality metrics
-- [ ] Build dependency resolution system
-  - [ ] SAT-based resolver
-  - [ ] Lock file support
-  - [ ] Conflict resolution strategies
+- [x] Launch public package registry
+  - [x] Design and implement web UI
+  - [x] Create API for package operations
+  - [x] Implement user authentication
+  - [x] Set up infrastructure (hosting, CDN, database)
+- [x] Implement security scanning for packages
+  - [x] Static analysis for malicious code
+  - [x] Dependency vulnerability scanning
+  - [x] License compliance checking
+- [x] Develop package publishing workflow
+  - [x] CLI integration with `tvx publish`
+  - [x] Version management and semver enforcement
+  - [x] Documentation generation
+- [x] Create discovery and search mechanisms
+  - [x] Full-text search
+  - [x] Category/tag filtering
+  - [x] Popularity and quality metrics
+- [x] Build dependency resolution system
+  - [x] SAT-based resolver
+  - [x] Lock file support
+  - [x] Conflict resolution strategies
 
 ### 2.2 Standard Library Expansion (v0.1.7)
 - [ ] Enhance `tolvex.data` with HL7, DICOM, and genomic formats
