@@ -2326,6 +2326,7 @@ name = "tolvex_data"
 version = "0.1.6"
 dependencies = [
  "aes-gcm",
+ "chrono",
  "criterion",
  "hex",
  "once_cell",

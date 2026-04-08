@@ -83,6 +83,7 @@ pub mod dicom;
 pub mod fhir;
 pub mod fhir_any;
 pub mod fhir_bundle;
+pub mod genomic;
 pub mod hl7;
 pub mod hl7_fhir;
 pub mod hl7_fhir_more;
