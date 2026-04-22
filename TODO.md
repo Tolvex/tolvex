@@ -212,11 +212,11 @@
   - [x] Conflict resolution strategies
 
 ### 2.2 Standard Library Expansion (v0.1.7)
-- [ ] Enhance `tolvex.data` with HL7, DICOM, and genomic formats
-  - [ ] Full HL7 v2.x message parser and generator
-  - [ ] DICOM image reading and metadata extraction
-  - [ ] FASTQ/VCF/BAM genomic format support
-  - [ ] OMOP Common Data Model support
+- [x] Enhance `tolvex.data` with HL7, DICOM, and genomic formats
+  - [x] Full HL7 v2.x message parser and generator
+  - [x] DICOM image reading and metadata extraction
+  - [x] FASTQ/VCF/BAM genomic format support
+  - [x] OMOP Common Data Model support
 - [ ] Expand `tolvex.stats` with clinical trial and epidemiology methods
   - [ ] Cox proportional hazards model
   - [ ] Competing risks analysis

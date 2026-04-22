@@ -12,6 +12,7 @@ path = "src/lib.rs"
 [features]
 default = []
 encryption-aes-gcm = ["aes-gcm", "rand_core", "hex"]
+fhir-conversion = []
 
 [dependencies]
 serde = { version = "1", features = ["derive"] }

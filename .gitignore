@@ -6,6 +6,7 @@ Cargo.lock
 # IDE
 .vscode/
 .idea/
+.windsurf/
 *.swp
 *.swo
 *~
@@ -19,6 +20,7 @@ __pycache__/
 env/
 venv/
 .venv/
+.venv-docs/
 .env
 .env.local
 .env.*.local
@@ -47,3 +49,6 @@ compiler/tlvxc_lexer/proptest-regressions/
 
 # Environment
 .env
+.skill/
+.cursor/rules/skill-context.md
+.windsurf/rules/skill-context.md

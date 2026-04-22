@@ -129,40 +129,42 @@ pub enum DicomVR {
     UT,
 }
 
-impl DicomVR {
-    pub fn from_str(s: &str) -> Option<Self> {
+impl std::str::FromStr for DicomVR {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "AE" => Some(DicomVR::AE),
-            "AS" => Some(DicomVR::AS),
-            "AT" => Some(DicomVR::AT),
-            "CS" => Some(DicomVR::CS),
-            "DA" => Some(DicomVR::DA),
-            "DS" => Some(DicomVR::DS),
-            "DT" => Some(DicomVR::DT),
-            "FD" => Some(DicomVR::FD),
-            "FL" => Some(DicomVR::FL),
-            "IS" => Some(DicomVR::IS),
-            "LO" => Some(DicomVR::LO),
-            "LT" => Some(DicomVR::LT),
-            "OB" => Some(DicomVR::OB),
-            "OD" => Some(DicomVR::OD),
-            "OF" => Some(DicomVR::OF),
-            "OL" => Some(DicomVR::OL),
-            "OW" => Some(DicomVR::OW),
-            "PN" => Some(DicomVR::PN),
-            "SH" => Some(DicomVR::SH),
-            "SL" => Some(DicomVR::SL),
-            "SQ" => Some(DicomVR::SQ),
-            "SS" => Some(DicomVR::SS),
-            "ST" => Some(DicomVR::ST),
-            "TM" => Some(DicomVR::TM),
-            "UI" => Some(DicomVR::UI),
-            "UL" => Some(DicomVR::UL),
-            "UN" => Some(DicomVR::UN),
-            "UR" => Some(DicomVR::UR),
-            "US" => Some(DicomVR::US),
-            "UT" => Some(DicomVR::UT),
-            _ => None,
+            "AE" => Ok(DicomVR::AE),
+            "AS" => Ok(DicomVR::AS),
+            "AT" => Ok(DicomVR::AT),
+            "CS" => Ok(DicomVR::CS),
+            "DA" => Ok(DicomVR::DA),
+            "DS" => Ok(DicomVR::DS),
+            "DT" => Ok(DicomVR::DT),
+            "FD" => Ok(DicomVR::FD),
+            "FL" => Ok(DicomVR::FL),
+            "IS" => Ok(DicomVR::IS),
+            "LO" => Ok(DicomVR::LO),
+            "LT" => Ok(DicomVR::LT),
+            "OB" => Ok(DicomVR::OB),
+            "OD" => Ok(DicomVR::OD),
+            "OF" => Ok(DicomVR::OF),
+            "OL" => Ok(DicomVR::OL),
+            "OW" => Ok(DicomVR::OW),
+            "PN" => Ok(DicomVR::PN),
+            "SH" => Ok(DicomVR::SH),
+            "SL" => Ok(DicomVR::SL),
+            "SQ" => Ok(DicomVR::SQ),
+            "SS" => Ok(DicomVR::SS),
+            "ST" => Ok(DicomVR::ST),
+            "TM" => Ok(DicomVR::TM),
+            "UI" => Ok(DicomVR::UI),
+            "UL" => Ok(DicomVR::UL),
+            "UN" => Ok(DicomVR::UN),
+            "UR" => Ok(DicomVR::UR),
+            "US" => Ok(DicomVR::US),
+            "UT" => Ok(DicomVR::UT),
+            _ => Err(()),
         }
     }
 }
@@ -174,13 +176,13 @@ pub mod tags {
     pub const PATIENT_ID: (u16, u16) = (0x0010, 0x0020);
     pub const PATIENT_BIRTH_DATE: (u16, u16) = (0x0010, 0x0030);
     pub const PATIENT_SEX: (u16, u16) = (0x0010, 0x0040);
-    
+
     // Study Information
     pub const STUDY_INSTANCE_UID: (u16, u16) = (0x0020, 0x000D);
     pub const STUDY_DATE: (u16, u16) = (0x0008, 0x0020);
     pub const STUDY_TIME: (u16, u16) = (0x0008, 0x0030);
     pub const STUDY_DESCRIPTION: (u16, u16) = (0x0008, 0x1030);
-    
+
     // Series Information
     pub const SERIES_INSTANCE_UID: (u16, u16) = (0x0020, 0x000E);
     pub const SERIES_NUMBER: (u16, u16) = (0x0020, 0x0011);
@@ -189,16 +191,16 @@ pub mod tags {
     pub const SERIES_DESCRIPTION: (u16, u16) = (0x0008, 0x103E);
     pub const MODALITY: (u16, u16) = (0x0008, 0x0060);
     pub const BODY_PART_EXAMINED: (u16, u16) = (0x0018, 0x0015);
-    
+
     // Instance Information
     pub const SOP_INSTANCE_UID: (u16, u16) = (0x0008, 0x0018);
     pub const SOP_CLASS_UID: (u16, u16) = (0x0008, 0x0016);
     pub const INSTANCE_NUMBER: (u16, u16) = (0x0020, 0x0013);
-    
+
     // Equipment Information
     pub const MANUFACTURER: (u16, u16) = (0x0008, 0x0080);
     pub const INSTITUTION_NAME: (u16, u16) = (0x0008, 0x0080);
-    
+
     // Image Information
     pub const ROWS: (u16, u16) = (0x0028, 0x0010);
     pub const COLUMNS: (u16, u16) = (0x0028, 0x0011);
@@ -214,14 +216,14 @@ pub mod tags {
     pub const SLICE_LOCATION: (u16, u16) = (0x0020, 0x1041);
     pub const IMAGE_POSITION_PATIENT: (u16, u16) = (0x0020, 0x0032);
     pub const IMAGE_ORIENTATION_PATIENT: (u16, u16) = (0x0020, 0x0037);
-    
+
     // Pixel Data
     pub const PIXEL_DATA: (u16, u16) = (0x7FE0, 0x0010);
-    
+
     // Window/Level
     pub const WINDOW_CENTER: (u16, u16) = (0x0028, 0x1050);
     pub const WINDOW_WIDTH: (u16, u16) = (0x0028, 0x1051);
-    
+
     // Rescale
     pub const RECALE_INTERCEPT: (u16, u16) = (0x0028, 0x1052);
     pub const RECALE_SLOPE: (u16, u16) = (0x0028, 0x1053);
@@ -285,9 +287,9 @@ pub fn parse_dicom(bytes: &[u8]) -> Result<DicomObject, DicomError> {
 
     // Extract metadata from tags
     let metadata = extract_metadata(&tags)?;
-    
-    // Extract image data if available
-    let image_data = extract_image_data(&tags, &metadata)?;
+
+    // Extract image data if available (handle gracefully if metadata is missing)
+    let image_data = extract_image_data(&tags, &metadata).ok().flatten();
 
     Ok(DicomObject {
         has_preamble: true,
@@ -337,41 +339,93 @@ fn extract_metadata(tags: &[DicomTag]) -> Result<DicomMetadata, DicomError> {
     for tag in tags {
         match (tag.group, tag.element) {
             tags::PATIENT_NAME => {
-                metadata.patient_name = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.patient_name = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::PATIENT_ID => {
-                metadata.patient_id = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.patient_id = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::PATIENT_BIRTH_DATE => {
-                metadata.patient_birth_date = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.patient_birth_date = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::PATIENT_SEX => {
-                metadata.patient_sex = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.patient_sex = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::STUDY_INSTANCE_UID => {
-                metadata.study_instance_uid = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.study_instance_uid = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::SERIES_INSTANCE_UID => {
-                metadata.series_instance_uid = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.series_instance_uid = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::SOP_INSTANCE_UID => {
-                metadata.sop_instance_uid = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.sop_instance_uid = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::STUDY_DATE => {
-                metadata.study_date = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.study_date = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::SERIES_DATE => {
-                metadata.series_date = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.series_date = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::MODALITY => {
-                metadata.modality = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.modality = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::BODY_PART_EXAMINED => {
-                metadata.body_part_examined = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.body_part_examined = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::MANUFACTURER => {
-                metadata.manufacturer = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
-                metadata.institution_name = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.manufacturer = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
+                metadata.institution_name = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::ROWS => {
                 if tag.value.len() >= 2 {
@@ -380,12 +434,14 @@ fn extract_metadata(tags: &[DicomTag]) -> Result<DicomMetadata, DicomError> {
             }
             tags::COLUMNS => {
                 if tag.value.len() >= 2 {
-                    metadata.columns = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]) as u32);
+                    metadata.columns =
+                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]) as u32);
                 }
             }
             tags::BITS_ALLOCATED => {
                 if tag.value.len() >= 2 {
-                    metadata.bits_allocated = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
+                    metadata.bits_allocated =
+                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
                 }
             }
             tags::BITS_STORED => {
@@ -400,20 +456,27 @@ fn extract_metadata(tags: &[DicomTag]) -> Result<DicomMetadata, DicomError> {
             }
             tags::PIXEL_REPRESENTATION => {
                 if tag.value.len() >= 2 {
-                    metadata.pixel_representation = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
+                    metadata.pixel_representation =
+                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
                 }
             }
             tags::SAMPLES_PER_PIXEL => {
                 if tag.value.len() >= 2 {
-                    metadata.samples_per_pixel = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
+                    metadata.samples_per_pixel =
+                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
                 }
             }
             tags::PHOTOMETRIC_INTERPRETATION => {
-                metadata.photometric_interpretation = Some(String::from_utf8_lossy(&tag.value).trim_end_matches('\0').to_string());
+                metadata.photometric_interpretation = Some(
+                    String::from_utf8_lossy(&tag.value)
+                        .trim_end_matches('\0')
+                        .to_string(),
+                );
             }
             tags::PLANAR_CONFIGURATION => {
                 if tag.value.len() >= 2 {
-                    metadata.planar_configuration = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
+                    metadata.planar_configuration =
+                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
                 }
             }
             tags::WINDOW_CENTER => {
@@ -453,18 +516,28 @@ fn extract_metadata(tags: &[DicomTag]) -> Result<DicomMetadata, DicomError> {
 }
 
 /// Extract image data from DICOM tags
-fn extract_image_data(tags: &[DicomTag], metadata: &DicomMetadata) -> Result<Option<DicomImage>, DicomError> {
-    let pixel_data_tag = tags.iter().find(|tag| {
-        tag.group == tags::PIXEL_DATA.0 && tag.element == tags::PIXEL_DATA.1
-    });
+fn extract_image_data(
+    tags: &[DicomTag],
+    metadata: &DicomMetadata,
+) -> Result<Option<DicomImage>, DicomError> {
+    let pixel_data_tag = tags
+        .iter()
+        .find(|tag| tag.group == tags::PIXEL_DATA.0 && tag.element == tags::PIXEL_DATA.1);
 
     if let Some(pixel_tag) = pixel_data_tag {
-        let width = metadata.columns.ok_or_else(|| DicomError::new("Missing columns for image"))?;
-        let height = metadata.rows.ok_or_else(|| DicomError::new("Missing rows for image"))?;
+        let width = metadata
+            .columns
+            .ok_or_else(|| DicomError::new("Missing columns for image"))?;
+        let height = metadata
+            .rows
+            .ok_or_else(|| DicomError::new("Missing rows for image"))?;
         let bits_allocated = metadata.bits_allocated.unwrap_or(16);
         let samples_per_pixel = metadata.samples_per_pixel.unwrap_or(1);
-        let photometric_interpretation = metadata.photometric_interpretation.clone().unwrap_or_else(|| "MONOCHROME2".to_string());
-        
+        let photometric_interpretation = metadata
+            .photometric_interpretation
+            .clone()
+            .unwrap_or_else(|| "MONOCHROME2".to_string());
+
         let image = DicomImage {
             width,
             height,
@@ -477,7 +550,7 @@ fn extract_image_data(tags: &[DicomTag], metadata: &DicomMetadata) -> Result<Opt
             rescale_intercept: metadata.rescale_intercept,
             rescale_slope: metadata.rescale_slope,
         };
-        
+
         Ok(Some(image))
     } else {
         Ok(None)
@@ -522,14 +595,18 @@ fn parse_ds_array(s: &str) -> Option<[f64; 6]> {
 }
 
 /// Get a tag value by group and element
-pub fn get_tag_value<'a>(tags: &'a [DicomTag], group: u16, element: u16) -> Option<&'a [u8]> {
-    tags.iter().find(|tag| tag.group == group && tag.element == element).map(|tag| tag.value.as_slice())
+pub fn get_tag_value(tags: &[DicomTag], group: u16, element: u16) -> Option<&[u8]> {
+    tags.iter()
+        .find(|tag| tag.group == group && tag.element == element)
+        .map(|tag| tag.value.as_slice())
 }
 
 /// Get a tag value as string
 pub fn get_tag_value_string(tags: &[DicomTag], group: u16, element: u16) -> Option<String> {
     get_tag_value(tags, group, element).map(|value| {
-        String::from_utf8_lossy(value).trim_end_matches('\0').to_string()
+        String::from_utf8_lossy(value)
+            .trim_end_matches('\0')
+            .to_string()
     })
 }
 
@@ -559,7 +636,7 @@ pub fn get_tag_value_u32(tags: &[DicomTag], group: u16, element: u16) -> Option<
 pub fn dicom_to_grayscale(image: &DicomImage) -> Result<Vec<u8>, DicomError> {
     let pixel_count = (image.width * image.height) as usize;
     let mut grayscale_pixels = Vec::with_capacity(pixel_count);
-    
+
     match image.depth {
         8 => {
             // 8-bit grayscale
@@ -578,26 +655,34 @@ pub fn dicom_to_grayscale(image: &DicomImage) -> Result<Vec<u8>, DicomError> {
             }
         }
         _ => {
-            return Err(DicomError::new(format!("Unsupported bit depth: {}", image.depth)));
+            return Err(DicomError::new(format!(
+                "Unsupported bit depth: {}",
+                image.depth
+            )));
         }
     }
-    
+
     Ok(grayscale_pixels)
 }
 
 /// Apply window/level to DICOM image
-pub fn apply_window_level(image: &DicomImage, window_center: f64, window_width: f64) -> Result<Vec<u8>, DicomError> {
+pub fn apply_window_level(
+    image: &DicomImage,
+    window_center: f64,
+    window_width: f64,
+) -> Result<Vec<u8>, DicomError> {
     let pixel_count = (image.width * image.height) as usize;
     let mut windowed_pixels = Vec::with_capacity(pixel_count);
-    
+
     let min_val = window_center - window_width / 2.0;
     let max_val = window_center + window_width / 2.0;
-    
+
     match image.depth {
         8 => {
             for pixel in &image.pixel_data {
                 let value = *pixel as f64;
-                let windowed = ((value - min_val) / (max_val - min_val) * 255.0).clamp(0.0, 255.0) as u8;
+                let windowed =
+                    ((value - min_val) / (max_val - min_val) * 255.0).clamp(0.0, 255.0) as u8;
                 windowed_pixels.push(windowed);
             }
         }
@@ -605,16 +690,20 @@ pub fn apply_window_level(image: &DicomImage, window_center: f64, window_width: 
             for chunk in image.pixel_data.chunks(2) {
                 if chunk.len() == 2 {
                     let value = u16::from_le_bytes([chunk[0], chunk[1]]) as f64;
-                    let windowed = ((value - min_val) / (max_val - min_val) * 255.0).clamp(0.0, 255.0) as u8;
+                    let windowed =
+                        ((value - min_val) / (max_val - min_val) * 255.0).clamp(0.0, 255.0) as u8;
                     windowed_pixels.push(windowed);
                 }
             }
         }
         _ => {
-            return Err(DicomError::new(format!("Unsupported bit depth: {}", image.depth)));
+            return Err(DicomError::new(format!(
+                "Unsupported bit depth: {}",
+                image.depth
+            )));
         }
     }
-    
+
     Ok(windowed_pixels)
 }
 
@@ -624,7 +713,7 @@ pub fn apply_rescale(image: &DicomImage) -> Result<Vec<f64>, DicomError> {
     let intercept = image.rescale_intercept.unwrap_or(0.0);
     let pixel_count = (image.width * image.height) as usize;
     let mut rescaled_pixels = Vec::with_capacity(pixel_count);
-    
+
     match image.depth {
         8 => {
             for pixel in &image.pixel_data {
@@ -643,53 +732,52 @@ pub fn apply_rescale(image: &DicomImage) -> Result<Vec<f64>, DicomError> {
             }
         }
         _ => {
-            return Err(DicomError::new(format!("Unsupported bit depth: {}", image.depth)));
+            return Err(DicomError::new(format!(
+                "Unsupported bit depth: {}",
+                image.depth
+            )));
         }
     }
-    
+
     Ok(rescaled_pixels)
 }
 
 /// Create a simple DICOM file for testing
 pub fn create_test_dicom() -> DicomObject {
-    let mut tags = Vec::new();
-    
-    // Add basic tags
-    tags.push(DicomTag {
-        group: tags::PATIENT_NAME.0,
-        element: tags::PATIENT_NAME.1,
-        vr: "LO".to_string(),
-        value_length: 6,
-        value: b"Test^P".to_vec(),
-    });
-    
-    tags.push(DicomTag {
-        group: tags::PATIENT_ID.0,
-        element: tags::PATIENT_ID.1,
-        vr: "LO".to_string(),
-        value_length: 8,
-        value: b"12345678".to_vec(),
-    });
-    
-    tags.push(DicomTag {
-        group: tags::ROWS.0,
-        element: tags::ROWS.1,
-        vr: "US".to_string(),
-        value_length: 2,
-        value: (64u16).to_le_bytes().to_vec(),
-    });
-    
-    tags.push(DicomTag {
-        group: tags::COLUMNS.0,
-        element: tags::COLUMNS.1,
-        vr: "US".to_string(),
-        value_length: 2,
-        value: (64u16).to_le_bytes().to_vec(),
-    });
-    
+    let tags = vec![
+        DicomTag {
+            group: tags::PATIENT_NAME.0,
+            element: tags::PATIENT_NAME.1,
+            vr: "LO".to_string(),
+            value_length: 6,
+            value: b"Test^P".to_vec(),
+        },
+        DicomTag {
+            group: tags::PATIENT_ID.0,
+            element: tags::PATIENT_ID.1,
+            vr: "LO".to_string(),
+            value_length: 8,
+            value: b"12345678".to_vec(),
+        },
+        DicomTag {
+            group: tags::ROWS.0,
+            element: tags::ROWS.1,
+            vr: "US".to_string(),
+            value_length: 2,
+            value: (64u16).to_le_bytes().to_vec(),
+        },
+        DicomTag {
+            group: tags::COLUMNS.0,
+            element: tags::COLUMNS.1,
+            vr: "US".to_string(),
+            value_length: 2,
+            value: (64u16).to_le_bytes().to_vec(),
+        },
+    ];
+
     let metadata = extract_metadata(&tags).unwrap();
     let image_data = None;
-    
+
     DicomObject {
         has_preamble: true,
         magic_ok: true,
@@ -727,21 +815,21 @@ fn parse_vr_length(bytes: &[u8], pos: usize, vr: &str) -> Result<(u32, usize), D
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_dicom_vr_from_str() {
-        assert_eq!(DicomVR::from_str("AE"), Some(DicomVR::AE));
-        assert_eq!(DicomVR::from_str("US"), Some(DicomVR::US));
-        assert_eq!(DicomVR::from_str("XX"), None);
+        assert_eq!("AE".parse(), Ok(DicomVR::AE));
+        assert_eq!("US".parse(), Ok(DicomVR::US));
+        assert!("XX".parse::<DicomVR>().is_err());
     }
-    
+
     #[test]
     fn test_parse_ds_string() {
         assert_eq!(parse_ds_string("123.45"), Some(123.45));
         assert_eq!(parse_ds_string("  123.45  "), Some(123.45));
         assert_eq!(parse_ds_string("invalid"), None);
     }
-    
+
     #[test]
     fn test_parse_ds_pair() {
         assert_eq!(parse_ds_pair("0.5\\0.75"), Some((0.5, 0.75)));
@@ -749,14 +837,20 @@ mod tests {
         assert_eq!(parse_ds_pair("0.5"), None);
         assert_eq!(parse_ds_pair("invalid\\invalid"), None);
     }
-    
+
     #[test]
     fn test_parse_ds_array() {
-        assert_eq!(parse_ds_array("1.0\\2.0\\3.0\\4.0\\5.0\\6.0"), Some([1.0, 2.0, 3.0, 4.0, 5.0, 6.0]));
-        assert_eq!(parse_ds_array("1.0\\2.0\\3.0"), Some([1.0, 2.0, 3.0, 0.0, 0.0, 0.0]));
+        assert_eq!(
+            parse_ds_array("1.0\\2.0\\3.0\\4.0\\5.0\\6.0"),
+            Some([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+        );
+        assert_eq!(
+            parse_ds_array("1.0\\2.0\\3.0"),
+            Some([1.0, 2.0, 3.0, 0.0, 0.0, 0.0])
+        );
         assert_eq!(parse_ds_array("1.0\\2.0"), None);
     }
-    
+
     #[test]
     fn test_get_tag_value() {
         let tags = vec![
@@ -775,48 +869,50 @@ mod tests {
                 value: b"TestID123".to_vec(),
             },
         ];
-        
+
         assert_eq!(get_tag_value(&tags, 0x0010, 0x0010), Some(&b"TestName"[..]));
-        assert_eq!(get_tag_value(&tags, 0x0010, 0x0020), Some(&b"TestID123"[..]));
+        assert_eq!(
+            get_tag_value(&tags, 0x0010, 0x0020),
+            Some(&b"TestID123"[..])
+        );
         assert_eq!(get_tag_value(&tags, 0x0010, 0x0030), None);
     }
-    
+
     #[test]
     fn test_get_tag_value_string() {
-        let tags = vec![
-            DicomTag {
-                group: 0x0010,
-                element: 0x0010,
-                vr: "LO".to_string(),
-                value_length: 8,
-                value: b"TestName\0".to_vec(),
-            },
-        ];
-        
-        assert_eq!(get_tag_value_string(&tags, 0x0010, 0x0010), Some("TestName".to_string()));
+        let tags = vec![DicomTag {
+            group: 0x0010,
+            element: 0x0010,
+            vr: "LO".to_string(),
+            value_length: 8,
+            value: b"TestName\0".to_vec(),
+        }];
+
+        assert_eq!(
+            get_tag_value_string(&tags, 0x0010, 0x0010),
+            Some("TestName".to_string())
+        );
         assert_eq!(get_tag_value_string(&tags, 0x0010, 0x0020), None);
     }
-    
+
     #[test]
     fn test_get_tag_value_u16() {
-        let tags = vec![
-            DicomTag {
-                group: 0x0028,
-                element: 0x0010,
-                vr: "US".to_string(),
-                value_length: 2,
-                value: 64u16.to_le_bytes().to_vec(),
-            },
-        ];
-        
+        let tags = vec![DicomTag {
+            group: 0x0028,
+            element: 0x0010,
+            vr: "US".to_string(),
+            value_length: 2,
+            value: 64u16.to_le_bytes().to_vec(),
+        }];
+
         assert_eq!(get_tag_value_u16(&tags, 0x0028, 0x0010), Some(64));
         assert_eq!(get_tag_value_u16(&tags, 0x0028, 0x0011), None);
     }
-    
+
     #[test]
     fn test_create_test_dicom() {
         let dicom = create_test_dicom();
-        
+
         assert!(dicom.has_preamble);
         assert!(dicom.magic_ok);
         assert_eq!(dicom.tags.len(), 4);
@@ -826,7 +922,7 @@ mod tests {
         assert_eq!(dicom.metadata.columns, Some(64));
         assert!(dicom.image_data.is_none());
     }
-    
+
     #[test]
     fn test_extract_metadata() {
         let tags = vec![
@@ -852,14 +948,14 @@ mod tests {
                 value: 256u16.to_le_bytes().to_vec(),
             },
         ];
-        
+
         let metadata = extract_metadata(&tags).unwrap();
-        
+
         assert_eq!(metadata.patient_name, Some("Doe^John".to_string()));
         assert_eq!(metadata.rows, Some(128));
         assert_eq!(metadata.columns, Some(256));
     }
-    
+
     #[test]
     fn test_dicom_to_grayscale_8bit() {
         let image = DicomImage {
@@ -874,11 +970,11 @@ mod tests {
             rescale_intercept: None,
             rescale_slope: None,
         };
-        
+
         let grayscale = dicom_to_grayscale(&image).unwrap();
         assert_eq!(grayscale, vec![0, 128, 255, 64]);
     }
-    
+
     #[test]
     fn test_dicom_to_grayscale_16bit() {
         let image = DicomImage {
@@ -893,11 +989,11 @@ mod tests {
             rescale_intercept: None,
             rescale_slope: None,
         };
-        
+
         let grayscale = dicom_to_grayscale(&image).unwrap();
         assert_eq!(grayscale, vec![0, 255]);
     }
-    
+
     #[test]
     fn test_apply_window_level() {
         let image = DicomImage {
@@ -912,12 +1008,12 @@ mod tests {
             rescale_intercept: None,
             rescale_slope: None,
         };
-        
+
         let windowed = apply_window_level(&image, 127.5, 255.0).unwrap();
         // Values should be scaled to 0-255 range based on window center/width
         assert_eq!(windowed.len(), 4);
     }
-    
+
     #[test]
     fn test_apply_rescale() {
         let image = DicomImage {
@@ -932,7 +1028,7 @@ mod tests {
             rescale_intercept: Some(10.0),
             rescale_slope: Some(2.0),
         };
-        
+
         let rescaled = apply_rescale(&image).unwrap();
         assert_eq!(rescaled, vec![210.0, 410.0]); // (100*2+10, 200*2+10)
     }

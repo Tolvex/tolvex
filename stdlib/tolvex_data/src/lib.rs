@@ -91,6 +91,7 @@ pub mod hl7_fhir_obx;
 pub mod icd;
 pub mod loinc;
 pub mod ndjson;
+pub mod omop;
 pub mod query;
 pub mod sanitize;
 pub mod snomed;

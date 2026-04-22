@@ -160,53 +160,53 @@ pub enum BamTagValue {
 pub fn parse_fastq(data: &str) -> Result<Vec<FastqRecord>, GenomicError> {
     let mut records = Vec::new();
     let lines: Vec<&str> = data.lines().collect();
-    
+
     let mut i = 0;
     while i < lines.len() {
         if i + 3 >= lines.len() {
             return Err(GenomicError::new("Incomplete FASTQ record"));
         }
-        
+
         let header_line = lines[i];
         let sequence_line = lines[i + 1];
         let plus_line = lines[i + 2];
         let quality_line = lines[i + 3];
-        
+
         if !header_line.starts_with('@') {
             return Err(GenomicError::new("FASTQ record must start with @"));
         }
-        
+
         if !plus_line.starts_with('+') {
             return Err(GenomicError::new("FASTQ quality line must start with +"));
         }
-        
+
         let header = &header_line[1..];
         let mut parts = header.splitn(2, ' ');
         let id = parts.next().unwrap_or("").to_string();
         let description = parts.next().map(|s| s.to_string());
-        
+
         // Validate sequence and quality lengths match
         if sequence_line.len() != quality_line.len() {
             return Err(GenomicError::new("Sequence and quality lengths must match"));
         }
-        
+
         records.push(FastqRecord {
             id,
             sequence: sequence_line.to_string(),
             description,
             quality: quality_line.to_string(),
         });
-        
+
         i += 4;
     }
-    
+
     Ok(records)
 }
 
 /// Write FASTQ records to string
 pub fn write_fastq(records: &[FastqRecord]) -> String {
     let mut output = String::new();
-    
+
     for record in records {
         output.push('@');
         output.push_str(&record.id);
@@ -222,39 +222,45 @@ pub fn write_fastq(records: &[FastqRecord]) -> String {
         output.push_str(&record.quality);
         output.push('\n');
     }
-    
+
     output
 }
 
 /// Parse VCF (Variant Call Format) data
 pub fn parse_vcf(data: &str) -> Result<Vec<VcfRecord>, GenomicError> {
     let mut records = Vec::new();
-    
+
     for line in data.lines() {
         if line.starts_with('#') {
             continue;
         }
-        
+
         let parts: Vec<&str> = line.split('\t').collect();
         if parts.len() < 8 {
             return Err(GenomicError::new("VCF record must have at least 8 fields"));
         }
-        
+
         let chromosome = parts[0].to_string();
-        let position = parts[1].parse().map_err(|_| GenomicError::new("Invalid position"))?;
+        let position = parts[1]
+            .parse()
+            .map_err(|_| GenomicError::new("Invalid position"))?;
         let id = parts[2].to_string();
         let reference = parts[3].to_string();
         let alternative = parts[4].to_string();
-        
+
         let quality = if parts[5] == "." {
             None
         } else {
-            Some(parts[5].parse().map_err(|_| GenomicError::new("Invalid quality"))?)
+            Some(
+                parts[5]
+                    .parse()
+                    .map_err(|_| GenomicError::new("Invalid quality"))?,
+            )
         };
-        
+
         let filter = parts[6].to_string();
         let info_str = parts[7];
-        
+
         // Parse INFO fields
         let mut info = HashMap::new();
         if !info_str.is_empty() && info_str != "." {
@@ -266,30 +272,30 @@ pub fn parse_vcf(data: &str) -> Result<Vec<VcfRecord>, GenomicError> {
                 }
             }
         }
-        
+
         // Parse FORMAT and sample data if present
         let format = parts.get(8).map(|s| s.to_string());
         let mut samples = Vec::new();
-        
+
         if let Some(format_str) = format.as_ref() {
             let format_fields: Vec<&str> = format_str.split(':').collect();
-            
+
             if let Some(sample_data) = parts.get(9..) {
                 for sample_line in sample_data {
                     let mut sample_data = HashMap::new();
                     let values: Vec<&str> = sample_line.split(':').collect();
-                
-                for (i, field) in format_fields.iter().enumerate() {
-                    if let Some(value) = values.get(i) {
-                        sample_data.insert(field.to_string(), value.to_string());
+
+                    for (i, field) in format_fields.iter().enumerate() {
+                        if let Some(value) = values.get(i) {
+                            sample_data.insert(field.to_string(), value.to_string());
+                        }
                     }
-                }
-                
+
                     samples.push(sample_data);
                 }
             }
         }
-        
+
         records.push(VcfRecord {
             chromosome,
             position,
@@ -303,20 +309,20 @@ pub fn parse_vcf(data: &str) -> Result<Vec<VcfRecord>, GenomicError> {
             samples,
         });
     }
-    
+
     Ok(records)
 }
 
 /// Write VCF records to string
 pub fn write_vcf(records: &[VcfRecord], header: &[String]) -> String {
     let mut output = String::new();
-    
+
     // Write header
     for line in header {
         output.push_str(line);
         output.push('\n');
     }
-    
+
     // Write records
     for record in records {
         output.push_str(&record.chromosome);
@@ -329,16 +335,16 @@ pub fn write_vcf(records: &[VcfRecord], header: &[String]) -> String {
         output.push('\t');
         output.push_str(&record.alternative);
         output.push('\t');
-        
+
         match record.quality {
             Some(q) => output.push_str(&q.to_string()),
             None => output.push('.'),
         }
         output.push('\t');
-        
+
         output.push_str(&record.filter);
         output.push('\t');
-        
+
         // Write INFO fields
         if record.info.is_empty() {
             output.push('.');
@@ -354,12 +360,12 @@ pub fn write_vcf(records: &[VcfRecord], header: &[String]) -> String {
                 first = false;
             }
         }
-        
+
         // Write FORMAT and sample data
         if let Some(ref format) = record.format {
             output.push('\t');
             output.push_str(format);
-            
+
             for sample in &record.samples {
                 output.push('\t');
                 let mut first = true;
@@ -376,10 +382,10 @@ pub fn write_vcf(records: &[VcfRecord], header: &[String]) -> String {
                 }
             }
         }
-        
+
         output.push('\n');
     }
-    
+
     output
 }
 
@@ -388,25 +394,25 @@ pub fn parse_bam_header(sam_header: &str) -> Result<BamHeader, GenomicError> {
     let mut lines = Vec::new();
     let mut references = Vec::new();
     let mut read_groups = Vec::new();
-    
+
     for line in sam_header.lines() {
         if !line.starts_with('@') {
             continue;
         }
-        
+
         lines.push(line.to_string());
-        
+
         let parts: Vec<&str> = line.split('\t').collect();
         if parts.is_empty() {
             continue;
         }
-        
+
         match parts[0] {
             "@SQ" => {
                 if parts.len() >= 3 {
                     let mut name = None;
                     let mut length = None;
-                    
+
                     for part in &parts[1..] {
                         if let Some((key, value)) = part.split_once(':') {
                             match key {
@@ -416,7 +422,7 @@ pub fn parse_bam_header(sam_header: &str) -> Result<BamHeader, GenomicError> {
                             }
                         }
                     }
-                    
+
                     if let (Some(name), Some(length)) = (name, length) {
                         references.push(BamReference { name, length });
                     }
@@ -428,7 +434,7 @@ pub fn parse_bam_header(sam_header: &str) -> Result<BamHeader, GenomicError> {
                     let mut sample = None;
                     let mut library = None;
                     let mut fields = HashMap::new();
-                    
+
                     for part in &parts[1..] {
                         if let Some((key, value)) = part.split_once(':') {
                             match key {
@@ -441,7 +447,7 @@ pub fn parse_bam_header(sam_header: &str) -> Result<BamHeader, GenomicError> {
                             }
                         }
                     }
-                    
+
                     if let Some(id) = id {
                         read_groups.push(BamReadGroup {
                             id,
@@ -455,7 +461,7 @@ pub fn parse_bam_header(sam_header: &str) -> Result<BamHeader, GenomicError> {
             _ => {}
         }
     }
-    
+
     Ok(BamHeader {
         lines,
         references,
@@ -478,7 +484,7 @@ pub fn create_test_vcf() -> VcfRecord {
     let mut info = HashMap::new();
     info.insert("DP".to_string(), "10".to_string());
     info.insert("AF".to_string(), "0.5".to_string());
-    
+
     VcfRecord {
         chromosome: "1".to_string(),
         position: 12345,
@@ -504,10 +510,10 @@ pub fn fastq_stats(records: &[FastqRecord]) -> FastqStats {
     let total_reads = records.len();
     let mut quality_sum: u64 = 0;
     let mut quality_count = 0;
-    
+
     for record in records {
         total_bases += record.sequence.len();
-        
+
         for q_char in record.quality.chars() {
             if let Some(q_score) = phred_score_from_char(q_char) {
                 quality_sum += q_score as u64;
@@ -515,17 +521,21 @@ pub fn fastq_stats(records: &[FastqRecord]) -> FastqStats {
             }
         }
     }
-    
+
     let avg_quality = if quality_count > 0 {
         quality_sum as f64 / quality_count as f64
     } else {
         0.0
     };
-    
+
     FastqStats {
         total_reads,
         total_bases,
-        average_read_length: if total_reads > 0 { total_bases / total_reads } else { 0 },
+        average_read_length: if total_reads > 0 {
+            total_bases / total_reads
+        } else {
+            0
+        },
         average_quality: avg_quality,
     }
 }
@@ -561,27 +571,28 @@ pub fn vcf_stats(records: &[VcfRecord]) -> VcfStats {
     let mut deletions = 0;
     let mut transitions = 0;
     let mut transversions = 0;
-    
+
     for record in records {
         for alt in record.alternative.split(',') {
             if alt == "." {
                 continue;
             }
-            
+
             let ref_len = record.reference.len();
             let alt_len = alt.len();
-            
+
             if ref_len == 1 && alt_len == 1 {
                 snps += 1;
-                
+
                 // Check if transition or transversion
-                let ref_base = record.reference.chars().next().unwrap();
-                let alt_base = alt.chars().next().unwrap();
-                
-                if is_transition(ref_base, alt_base) {
-                    transitions += 1;
-                } else {
-                    transversions += 1;
+                if let (Some(ref_base), Some(alt_base)) =
+                    (record.reference.chars().next(), alt.chars().next())
+                {
+                    if is_transition(ref_base, alt_base) {
+                        transitions += 1;
+                    } else {
+                        transversions += 1;
+                    }
                 }
             } else if alt_len > ref_len {
                 insertions += 1;
@@ -590,7 +601,7 @@ pub fn vcf_stats(records: &[VcfRecord]) -> VcfStats {
             }
         }
     }
-    
+
     VcfStats {
         total_variants,
         snps,
@@ -614,7 +625,10 @@ pub struct VcfStats {
 
 /// Check if a SNP is a transition (A<->G or C<->T)
 fn is_transition(ref_base: char, alt_base: char) -> bool {
-    matches!((ref_base, alt_base), ('A', 'G') | ('G', 'A') | ('C', 'T') | ('T', 'C'))
+    matches!(
+        (ref_base, alt_base),
+        ('A', 'G') | ('G', 'A') | ('C', 'T') | ('T', 'C')
+    )
 }
 
 /// Genomic error type
@@ -642,24 +656,24 @@ impl std::error::Error for GenomicError {}
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_parse_fastq() {
         let fastq_data = "@read1 desc\nATCG\n+\nIIII\n@read2\nGCTA\n+\nHHHH\n";
         let records = parse_fastq(fastq_data).unwrap();
-        
+
         assert_eq!(records.len(), 2);
         assert_eq!(records[0].id, "read1");
         assert_eq!(records[0].sequence, "ATCG");
         assert_eq!(records[0].description, Some("desc".to_string()));
         assert_eq!(records[0].quality, "IIII");
-        
+
         assert_eq!(records[1].id, "read2");
         assert_eq!(records[1].sequence, "GCTA");
         assert_eq!(records[1].description, None);
         assert_eq!(records[1].quality, "HHHH");
     }
-    
+
     #[test]
     fn test_write_fastq() {
         let records = vec![
@@ -676,17 +690,18 @@ mod tests {
                 quality: "HHHH".to_string(),
             },
         ];
-        
+
         let output = write_fastq(&records);
         let expected = "@read1 desc\nATCG\n+\nIIII\n@read2\nGCTA\n+\nHHHH\n";
         assert_eq!(output, expected);
     }
-    
+
     #[test]
     fn test_parse_vcf() {
-        let vcf_data = "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n1\t12345\t.\tA\tT\t99\tPASS\tDP=10\n";
+        let vcf_data =
+            "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n1\t12345\t.\tA\tT\t99\tPASS\tDP=10\n";
         let records = parse_vcf(vcf_data).unwrap();
-        
+
         assert_eq!(records.len(), 1);
         assert_eq!(records[0].chromosome, "1");
         assert_eq!(records[0].position, 12345);
@@ -696,19 +711,19 @@ mod tests {
         assert_eq!(records[0].filter, "PASS");
         assert_eq!(records[0].info.get("DP"), Some(&"10".to_string()));
     }
-    
+
     #[test]
     fn test_phred_score_conversion() {
         assert_eq!(phred_score_from_char('!'), Some(0));
         assert_eq!(phred_score_from_char('I'), Some(40));
         assert_eq!(phred_score_from_char('~'), Some(93)); // 126 - 33 = 93
         assert_eq!(phred_score_from_char('A'), Some(32)); // 'A' (65) - 33 = 32
-        
+
         assert_eq!(phred_score_to_char(0), '!');
         assert_eq!(phred_score_to_char(40), 'I');
         assert_eq!(phred_score_to_char(93), '~'); // 93 + 33 = 126
     }
-    
+
     #[test]
     fn test_fastq_stats() {
         let records = vec![
@@ -725,34 +740,34 @@ mod tests {
                 quality: "HHHH".to_string(),
             },
         ];
-        
+
         let stats = fastq_stats(&records);
         assert_eq!(stats.total_reads, 2);
         assert_eq!(stats.total_bases, 8);
         assert_eq!(stats.average_read_length, 4);
         assert_eq!(stats.average_quality, 39.5); // (4*40 + 4*39) / 8
     }
-    
+
     #[test]
     fn test_vcf_stats() {
         let records = vec![
             create_test_vcf(), // SNP A->T (transversion)
         ];
-        
+
         let stats = vcf_stats(&records);
         assert_eq!(stats.total_variants, 1);
         assert_eq!(stats.snps, 1);
         assert_eq!(stats.transitions, 0);
         assert_eq!(stats.transversions, 1);
     }
-    
+
     #[test]
     fn test_is_transition() {
         assert!(is_transition('A', 'G'));
         assert!(is_transition('G', 'A'));
         assert!(is_transition('C', 'T'));
         assert!(is_transition('T', 'C'));
-        
+
         assert!(!is_transition('A', 'C'));
         assert!(!is_transition('A', 'T'));
         assert!(!is_transition('G', 'C'));
