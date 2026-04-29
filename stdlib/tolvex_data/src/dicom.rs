@@ -198,7 +198,7 @@ pub mod tags {
     pub const INSTANCE_NUMBER: (u16, u16) = (0x0020, 0x0013);
 
     // Equipment Information
-    pub const MANUFACTURER: (u16, u16) = (0x0008, 0x0080);
+    pub const MANUFACTURER: (u16, u16) = (0x0008, 0x0070);
     pub const INSTITUTION_NAME: (u16, u16) = (0x0008, 0x0080);
 
     // Image Information
@@ -421,6 +421,8 @@ fn extract_metadata(tags: &[DicomTag]) -> Result<DicomMetadata, DicomError> {
                         .trim_end_matches('\0')
                         .to_string(),
                 );
+            }
+            tags::INSTITUTION_NAME => {
                 metadata.institution_name = Some(
                     String::from_utf8_lossy(&tag.value)
                         .trim_end_matches('\0')

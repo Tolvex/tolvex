@@ -10,6 +10,7 @@
 //! - Concept code mapping utilities
 //! - Data conversion helpers
 
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -509,9 +510,17 @@ pub fn calculate_age(year_of_birth: i32, current_year: i32) -> i32 {
     current_year - year_of_birth
 }
 
-/// Check if a concept is valid on a given date
+/// Check if a concept is valid on a given date.
+/// Returns false if any date cannot be parsed as YYYY-MM-DD.
 pub fn is_concept_valid(concept: &Concept, check_date: &str) -> bool {
-    concept.valid_start_date.as_str() <= check_date && check_date <= concept.valid_end_date.as_str()
+    let start = NaiveDate::parse_from_str(&concept.valid_start_date, "%Y-%m-%d").ok();
+    let end = NaiveDate::parse_from_str(&concept.valid_end_date, "%Y-%m-%d").ok();
+    let check = NaiveDate::parse_from_str(check_date, "%Y-%m-%d").ok();
+
+    match (start, end, check) {
+        (Some(start), Some(end), Some(check)) => start <= check && check <= end,
+        _ => false, // Invalid date format: conservatively reject
+    }
 }
 
 /// Validate a concept ID is valid per OMOP CDM spec (non-negative)

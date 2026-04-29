@@ -240,6 +240,24 @@ pub fn parse_vcf(data: &str) -> Result<Vec<VcfRecord>, GenomicError> {
             return Err(GenomicError::new("VCF record must have at least 8 fields"));
         }
 
+        // Validate required fields are non-empty
+        if parts[0].is_empty() {
+            return Err(GenomicError::new("VCF CHROM field cannot be empty"));
+        }
+        if parts[1].is_empty() {
+            return Err(GenomicError::new("VCF POS field cannot be empty"));
+        }
+        if parts[3].is_empty() || parts[3] == "." {
+            return Err(GenomicError::new(
+                "VCF REF field cannot be empty or missing",
+            ));
+        }
+        if parts[4].is_empty() || parts[4] == "." {
+            return Err(GenomicError::new(
+                "VCF ALT field cannot be empty or missing",
+            ));
+        }
+
         let chromosome = parts[0].to_string();
         let position = parts[1]
             .parse()
