@@ -23,7 +23,19 @@ _harness_version: "4.10.0"
 
 <!-- Add tasks with cc:todo or pm:requested here. -->
 
-(none)
+### Standard Library Expansion (v0.1.7) — TODO.md §2.2
+
+- [ ] SL01: Cox proportional hazards + competing risks analysis in `tolvex_stats::survival` `cc:todo` [P]
+  - DoD: `cox_ph` fits regression coefficients and `competing_risks` computes cumulative incidence functions; both covered by unit tests; `cargo test -p tolvex_stats` passes.
+- [ ] SL02: Meta-analysis, SIR/SEIR epidemiological models, and sample size calculations in `tolvex_stats` `cc:todo` [P]
+  - DoD: fixed/random-effects `meta_analysis`, `sir_model`/`seir_model` simulators, and `sample_size_*` functions added with unit tests; `cargo test -p tolvex_stats` passes.
+- [ ] SL03: Local differential privacy and secure aggregation in `tolvex_privacy` `cc:todo` [P]
+  - DoD: randomized-response-based local DP mechanism added to `mechanisms.rs`; secure aggregation protocol added to `aggregate.rs`/`federated.rs`; unit tests cover both; `cargo test -p tolvex_privacy` passes.
+  - Note: Laplace/Gaussian mechanisms (`mechanisms.rs`) and federated averaging (`federated.rs::fedavg`) are already implemented — do not duplicate, only add what's missing.
+- [ ] SL04: `tolvex_rt` streaming: tumbling/sliding/session windowing, alert/notification system, MQTT/AMQP device adapters `cc:todo` [P]
+  - DoD: windowing functions added to `stream.rs` (a sliding-sum helper already exists — extend, don't duplicate), an alert/notification dispatch primitive added, MQTT/AMQP adapter stubs added to `device.rs` behind feature flags; unit tests cover windowing math; `cargo test -p tolvex_rt` passes.
+- [ ] SL05: Web-based interactive dashboard runtime (chart components, layout, real-time data binding) `cc:todo` [P]
+  - DoD: decide crate placement first (extend `tolvex_stats::viz` vs. new `tolvex_viz` crate) and record the decision in this task before implementing; interactive chart component, dashboard layout, and real-time data binding primitives added with unit tests; `cargo test` passes for the chosen crate.
 
 ---
 
@@ -31,7 +43,8 @@ _harness_version: "4.10.0"
 
 <!-- Add tasks with cc:done or pm:confirmed here. -->
 
-(none)
+- [x] SL00: Enhance `tolvex_data` with HL7 v2.x, DICOM, FASTQ/VCF/BAM, and OMOP CDM support `cc:done`
+  - DoD: parsers/extractors present in `tolvex_data`; matches TODO.md §2.2 first bullet (checked) and recent commits (`db7634c8`, `52cb0e3c`, `d7db84c4`).
 
 ---
 
