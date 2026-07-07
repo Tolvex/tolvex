@@ -43,7 +43,7 @@ _harness_version: "4.10.0"
 
 - [x] SL00: Enhance `tolvex_data` with HL7 v2.x, DICOM, FASTQ/VCF/BAM, and OMOP CDM support `cc:done`
   - DoD: parsers/extractors present in `tolvex_data`; matches TODO.md §2.2 first bullet (checked) and recent commits (`db7634c8`, `52cb0e3c`, `d7db84c4`).
-- [x] SL01: Cox proportional hazards + competing risks analysis in `tolvex_stats::survival` `cc:done`
+- [x] SL01: Cox proportional hazards + competing risks analysis in `tolvex_stats::survival` `cc:done [e61aa39]`
   - DoD: `cox_ph` (Newton-Raphson on the Breslow partial likelihood) fits regression coefficients and `competing_risks` (Aalen-Johansen estimator) computes cumulative incidence functions; both covered by unit tests including a hand-computed CIF fixture and a finite-difference stationarity check on `cox_partial_log_likelihood`; `cargo test -p tolvex_stats` passes; `cargo clippy -p tolvex_stats --all-targets -- -D warnings` clean for the new code (one pre-existing, unrelated `viz.rs` clippy error left untouched).
 
 ---
