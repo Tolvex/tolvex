@@ -52,3 +52,8 @@ compiler/tlvxc_lexer/proptest-regressions/
 .skill/
 .cursor/rules/skill-context.md
 .windsurf/rules/skill-context.md
+
+# Claude Code harness (generated/local; regenerate via `harness sync`)
+.claude/
+.claude-plugin/
+out/progress-snapshot.html
