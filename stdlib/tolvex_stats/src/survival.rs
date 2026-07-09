@@ -1,4 +1,5 @@
 //! Survival analysis: Kaplan–Meier estimator and log-rank test (simplified)
+use std::ops::Range;
 
 /// Kaplan–Meier output
 #[derive(Debug, Clone)]
@@ -162,38 +163,64 @@ struct TimeGroup {
     risk_start: usize,
 }
 
-/// Sort subjects by time and group distinct times that have at least one event,
-/// recording each group's event members and where its risk set starts in `order`.
-fn time_groups(times: &[f64], events: &[bool]) -> (Vec<usize>, Vec<TimeGroup>) {
+/// Sort order plus, for each distinct time, that time and its tied-subject
+/// range within the sort order.
+type TimeBlocks = (Vec<usize>, Vec<(f64, Range<usize>)>);
+
+/// Sort subject indices by time, grouping tied times into contiguous `order`
+/// ranges. Returns `None` if any time is `NaN` (which has no total order and
+/// would otherwise make the comparator used by `sort_by` panic).
+fn sort_and_group_times(times: &[f64]) -> Option<TimeBlocks> {
     let n = times.len();
+    if times.iter().any(|t| t.is_nan()) {
+        return None;
+    }
     let mut order: Vec<usize> = (0..n).collect();
     order.sort_by(|&a, &b| times[a].partial_cmp(&times[b]).unwrap());
 
-    let mut groups = Vec::new();
+    let mut blocks = Vec::new();
     let mut i = 0;
     while i < n {
         let t = times[order[i]];
         let mut j = i;
-        let mut event_idx = Vec::new();
         while j < n && times[order[j]] == t {
-            if events[order[j]] {
-                event_idx.push(order[j]);
-            }
             j += 1;
         }
+        blocks.push((t, i..j));
+        i = j;
+    }
+    Some((order, blocks))
+}
+
+/// Sort subjects by time and group distinct times that have at least one event,
+/// recording each group's event members and where its risk set starts in `order`.
+/// Returns `None` if any time is `NaN`.
+fn time_groups(times: &[f64], events: &[bool]) -> Option<(Vec<usize>, Vec<TimeGroup>)> {
+    let (order, blocks) = sort_and_group_times(times)?;
+    let mut groups = Vec::new();
+    for (_, range) in blocks {
+        let event_idx: Vec<usize> = range
+            .clone()
+            .filter(|&j| events[order[j]])
+            .map(|j| order[j])
+            .collect();
         if !event_idx.is_empty() {
             groups.push(TimeGroup {
                 event_idx,
-                risk_start: i,
+                risk_start: range.start,
             });
         }
-        i = j;
     }
-    (order, groups)
+    Some((order, groups))
 }
 
 /// Breslow partial log-likelihood, score (gradient), and observed information
 /// (negative Hessian) of a Cox proportional hazards model at a given `beta`.
+///
+/// Risk sets `order[g.risk_start..]` are nested suffixes of `order` (later
+/// groups have larger `risk_start`, i.e. smaller risk sets), so the s0/s1/s2
+/// sums are accumulated incrementally by walking `order` once from the end
+/// backward, rather than rescanning the full remaining risk set per group.
 fn score_info(
     covariates: &[Vec<f64>],
     order: &[usize],
@@ -205,7 +232,30 @@ fn score_info(
     let mut grad = vec![0.0f64; p];
     let mut info = vec![vec![0.0f64; p]; p];
 
-    for g in groups {
+    let mut s0 = 0.0f64;
+    let mut s1 = vec![0.0f64; p];
+    let mut s2 = vec![vec![0.0f64; p]; p];
+    let mut next_idx = order.len();
+
+    for g in groups.iter().rev() {
+        while next_idx > g.risk_start {
+            next_idx -= 1;
+            let idx = order[next_idx];
+            let lp: f64 = covariates[idx]
+                .iter()
+                .zip(beta.iter())
+                .map(|(x, b)| x * b)
+                .sum();
+            let w = lp.exp();
+            s0 += w;
+            for a in 0..p {
+                s1[a] += w * covariates[idx][a];
+                for b in 0..p {
+                    s2[a][b] += w * covariates[idx][a] * covariates[idx][b];
+                }
+            }
+        }
+
         let d_k = g.event_idx.len() as f64;
 
         let mut sum_event_lp = 0.0f64;
@@ -219,25 +269,6 @@ fn score_info(
             sum_event_lp += lp;
             for (k, sum_k) in sum_event_cov.iter_mut().enumerate() {
                 *sum_k += covariates[idx][k];
-            }
-        }
-
-        let mut s0 = 0.0f64;
-        let mut s1 = vec![0.0f64; p];
-        let mut s2 = vec![vec![0.0f64; p]; p];
-        for &idx in &order[g.risk_start..] {
-            let lp: f64 = covariates[idx]
-                .iter()
-                .zip(beta.iter())
-                .map(|(x, b)| x * b)
-                .sum();
-            let w = lp.exp();
-            s0 += w;
-            for a in 0..p {
-                s1[a] += w * covariates[idx][a];
-                for b in 0..p {
-                    s2[a][b] += w * covariates[idx][a] * covariates[idx][b];
-                }
             }
         }
 
@@ -257,23 +288,10 @@ fn score_info(
     (ll, grad, info)
 }
 
-/// Solve `a * x = b` via Gauss-Jordan elimination with partial pivoting.
-/// Returns `None` if `a` is singular (or not square, or dimensions mismatch).
-fn solve_linear_system(a: &[Vec<f64>], b: &[f64]) -> Option<Vec<f64>> {
-    let n = b.len();
-    if a.len() != n || a.iter().any(|row| row.len() != n) {
-        return None;
-    }
-    let mut m: Vec<Vec<f64>> = a
-        .iter()
-        .zip(b.iter())
-        .map(|(row, &bi)| {
-            let mut r = row.clone();
-            r.push(bi);
-            r
-        })
-        .collect();
-
+/// Reduce an `n`-row augmented matrix to reduced row-echelon form (identity
+/// in its first `n` columns) via Gauss-Jordan elimination with partial
+/// pivoting. Returns `None` if the left `n x n` block is singular.
+fn gauss_jordan_eliminate(mut m: Vec<Vec<f64>>, n: usize) -> Option<Vec<Vec<f64>>> {
     for col in 0..n {
         let (pivot_row, &max_val) = m
             .iter()
@@ -302,6 +320,26 @@ fn solve_linear_system(a: &[Vec<f64>], b: &[f64]) -> Option<Vec<f64>> {
             }
         }
     }
+    Some(m)
+}
+
+/// Solve `a * x = b` via Gauss-Jordan elimination with partial pivoting.
+/// Returns `None` if `a` is singular (or not square, or dimensions mismatch).
+fn solve_linear_system(a: &[Vec<f64>], b: &[f64]) -> Option<Vec<f64>> {
+    let n = b.len();
+    if a.len() != n || a.iter().any(|row| row.len() != n) {
+        return None;
+    }
+    let m: Vec<Vec<f64>> = a
+        .iter()
+        .zip(b.iter())
+        .map(|(row, &bi)| {
+            let mut r = row.clone();
+            r.push(bi);
+            r
+        })
+        .collect();
+    let m = gauss_jordan_eliminate(m, n)?;
     Some(m.iter().map(|row| row[n]).collect())
 }
 
@@ -312,7 +350,7 @@ fn invert_matrix(a: &[Vec<f64>]) -> Option<Vec<Vec<f64>>> {
     if n == 0 || a.iter().any(|row| row.len() != n) {
         return None;
     }
-    let mut m: Vec<Vec<f64>> = a
+    let m: Vec<Vec<f64>> = a
         .iter()
         .enumerate()
         .map(|(i, row)| {
@@ -321,35 +359,7 @@ fn invert_matrix(a: &[Vec<f64>]) -> Option<Vec<Vec<f64>>> {
             r
         })
         .collect();
-
-    for col in 0..n {
-        let (pivot_row, &max_val) = m
-            .iter()
-            .enumerate()
-            .skip(col)
-            .map(|(r, row)| (r, &row[col]))
-            .max_by(|a, b| a.1.abs().partial_cmp(&b.1.abs()).unwrap())?;
-        if max_val.abs() < 1e-12 {
-            return None;
-        }
-        m.swap(col, pivot_row);
-        let pivot = m[col][col];
-        for v in m[col].iter_mut() {
-            *v /= pivot;
-        }
-        let pivot_row_vals = m[col].clone();
-        for (r, row) in m.iter_mut().enumerate() {
-            if r == col {
-                continue;
-            }
-            let factor = row[col];
-            if factor != 0.0 {
-                for (c, pv) in pivot_row_vals.iter().enumerate() {
-                    row[c] -= factor * pv;
-                }
-            }
-        }
-    }
+    let m = gauss_jordan_eliminate(m, n)?;
     Some(m.iter().map(|row| row[n..].to_vec()).collect())
 }
 
@@ -373,7 +383,7 @@ pub fn cox_partial_log_likelihood(
     if p == 0 || covariates.iter().any(|row| row.len() != p) {
         return None;
     }
-    let (order, groups) = time_groups(times, events);
+    let (order, groups) = time_groups(times, events)?;
     if groups.is_empty() {
         return None;
     }
@@ -409,7 +419,7 @@ pub fn cox_ph(covariates: &[Vec<f64>], times: &[f64], events: &[bool]) -> Option
     if p == 0 || covariates.iter().any(|row| row.len() != p) {
         return None;
     }
-    let (order, groups) = time_groups(times, events);
+    let (order, groups) = time_groups(times, events)?;
     if groups.is_empty() {
         return None;
     }
@@ -487,30 +497,25 @@ pub fn competing_risks(times: &[f64], event_types: &[usize]) -> Option<Competing
         return None;
     }
 
-    let mut order: Vec<usize> = (0..n).collect();
-    order.sort_by(|&a, &b| times[a].partial_cmp(&times[b]).unwrap());
+    let (order, blocks) = sort_and_group_times(times)?;
 
-    let mut uniq_times = Vec::new();
-    let mut overall_survival = Vec::new();
-    let mut cif: Vec<Vec<f64>> = vec![Vec::new(); causes.len()];
+    let mut uniq_times = Vec::with_capacity(blocks.len());
+    let mut overall_survival = Vec::with_capacity(blocks.len());
+    let mut cif: Vec<Vec<f64>> = vec![Vec::with_capacity(blocks.len()); causes.len()];
 
     let mut s_prev = 1.0f64;
     let mut cif_prev = vec![0.0f64; causes.len()];
 
-    let mut i = 0;
-    while i < n {
-        let t = times[order[i]];
-        let at_risk = (n - i) as f64; // n - i >= 1 since i < n
-        let mut j = i;
+    for (t, range) in blocks {
+        let at_risk = (n - range.start) as f64; // n - range.start >= 1 since range.start < n
         let mut d_cause = vec![0usize; causes.len()];
-        while j < n && times[order[j]] == t {
-            let et = event_types[order[j]];
+        for &idx in &order[range.clone()] {
+            let et = event_types[idx];
             if et != 0 {
                 if let Some(pos) = causes.iter().position(|&c| c == et) {
                     d_cause[pos] += 1;
                 }
             }
-            j += 1;
         }
         let d_total: usize = d_cause.iter().sum();
 
@@ -523,7 +528,6 @@ pub fn competing_risks(times: &[f64], event_types: &[usize]) -> Option<Competing
         overall_survival.push(s_next);
         s_prev = s_next;
         uniq_times.push(t);
-        i = j;
     }
 
     Some(CompetingRisksResult {
@@ -567,6 +571,15 @@ mod tests {
         assert!(cox_ph(&[vec![]], &[1.0], &[true]).is_none());
         // No events at all: nothing to fit against.
         assert!(cox_ph(&[vec![0.0], vec![1.0]], &[1.0, 2.0], &[false, false]).is_none());
+    }
+
+    #[test]
+    fn cox_ph_rejects_nan_times_without_panicking() {
+        let covariates: Vec<Vec<f64>> = vec![vec![0.0], vec![1.0], vec![1.0]];
+        let times = vec![1.0, f64::NAN, 3.0];
+        let events = vec![true, true, true];
+        assert!(cox_ph(&covariates, &times, &events).is_none());
+        assert!(cox_partial_log_likelihood(&covariates, &times, &events, &[0.1]).is_none());
     }
 
     #[test]
@@ -655,6 +668,13 @@ mod tests {
         assert!(competing_risks(&[1.0, 2.0], &[1]).is_none());
         // All censored: no cause to compute a CIF for.
         assert!(competing_risks(&[1.0, 2.0], &[0, 0]).is_none());
+    }
+
+    #[test]
+    fn competing_risks_rejects_nan_times_without_panicking() {
+        let times = vec![1.0, f64::NAN, 3.0];
+        let event_types = vec![1usize, 2, 0];
+        assert!(competing_risks(&times, &event_types).is_none());
     }
 
     #[test]
