@@ -63,7 +63,8 @@ pub fn sample_size_proportion(p1: f64, p2: f64, alpha: f64, target_power: f64) -
         || !(0.0..=1.0).contains(&p2)
         || alpha <= 0.0
         || alpha >= 1.0
-        || !(0.0..1.0).contains(&target_power)
+        || target_power <= 0.0
+        || target_power >= 1.0
         || p1 == p2
     {
         return 0;
@@ -117,5 +118,6 @@ mod tests {
         assert_eq!(sample_size_proportion(1.5, 0.3, 0.05, 0.8), 0);
         assert_eq!(sample_size_proportion(0.3, 0.5, 0.0, 0.8), 0);
         assert_eq!(sample_size_proportion(0.3, 0.5, 0.05, 1.0), 0);
+        assert_eq!(sample_size_proportion(0.3, 0.5, 0.05, 0.0), 0);
     }
 }

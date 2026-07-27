@@ -40,18 +40,19 @@ fn cochrans_q(effects: &[f64], weights: &[f64], pooled: f64) -> f64 {
         .sum()
 }
 
-/// Fixed-effects (inverse-variance) meta-analysis.
+/// Validate `effects`/`variances` and, if valid, return the fixed-effect
+/// (inverse-variance) pooling result alongside the weights used to compute
+/// it, so callers needing those weights (e.g. the random-effects estimator)
+/// don't have to recompute them.
 ///
-/// `effects` are per-study effect estimates (e.g. log risk ratios, mean
-/// differences); `variances` are their corresponding sampling variances
-/// (standard error squared). Returns `None` if the inputs mismatch in
-/// length, are empty, or contain a non-positive variance.
-pub fn fixed_effects_meta_analysis(
+/// Returns `None` if the inputs mismatch in length, are empty, or contain a
+/// non-positive or NaN variance.
+fn fixed_effects_core(
     effects: &[f64],
     variances: &[f64],
-) -> Option<MetaAnalysisResult> {
+) -> Option<(MetaAnalysisResult, Vec<f64>)> {
     let k = effects.len();
-    if k == 0 || k != variances.len() || variances.iter().any(|&v| v <= 0.0) {
+    if k == 0 || k != variances.len() || variances.iter().any(|&v| v.is_nan() || v <= 0.0) {
         return None;
     }
     let weights: Vec<f64> = variances.iter().map(|v| 1.0 / v).collect();
@@ -63,7 +64,7 @@ pub fn fixed_effects_meta_analysis(
     } else {
         0.0
     };
-    Some(MetaAnalysisResult {
+    let result = MetaAnalysisResult {
         pooled_effect: pooled,
         se,
         ci_lower: pooled - Z_975 * se,
@@ -72,7 +73,21 @@ pub fn fixed_effects_meta_analysis(
         i_squared,
         tau_squared: 0.0,
         k,
-    })
+    };
+    Some((result, weights))
+}
+
+/// Fixed-effects (inverse-variance) meta-analysis.
+///
+/// `effects` are per-study effect estimates (e.g. log risk ratios, mean
+/// differences); `variances` are their corresponding sampling variances
+/// (standard error squared). Returns `None` if the inputs mismatch in
+/// length, are empty, or contain a non-positive or NaN variance.
+pub fn fixed_effects_meta_analysis(
+    effects: &[f64],
+    variances: &[f64],
+) -> Option<MetaAnalysisResult> {
+    fixed_effects_core(effects, variances).map(|(result, _)| result)
 }
 
 /// Random-effects meta-analysis using the DerSimonian–Laird estimator of
@@ -83,10 +98,9 @@ pub fn random_effects_meta_analysis(
     effects: &[f64],
     variances: &[f64],
 ) -> Option<MetaAnalysisResult> {
-    let fixed = fixed_effects_meta_analysis(effects, variances)?;
+    let (fixed, fixed_weights) = fixed_effects_core(effects, variances)?;
     let k = fixed.k;
 
-    let fixed_weights: Vec<f64> = variances.iter().map(|v| 1.0 / v).collect();
     let sum_w: f64 = fixed_weights.iter().sum();
     let sum_w2: f64 = fixed_weights.iter().map(|w| w * w).sum();
     let df = (k - 1) as f64;
@@ -167,5 +181,7 @@ mod tests {
         assert!(fixed_effects_meta_analysis(&[1.0], &[1.0, 2.0]).is_none());
         assert!(fixed_effects_meta_analysis(&[1.0], &[0.0]).is_none());
         assert!(random_effects_meta_analysis(&[1.0], &[-1.0]).is_none());
+        assert!(fixed_effects_meta_analysis(&[1.0, 2.0], &[0.25, f64::NAN]).is_none());
+        assert!(random_effects_meta_analysis(&[1.0, 2.0], &[0.25, f64::NAN]).is_none());
     }
 }

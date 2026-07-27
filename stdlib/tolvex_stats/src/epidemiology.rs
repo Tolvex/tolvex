@@ -66,6 +66,51 @@ pub fn lr_negative(sens: f64, spec: f64) -> f64 {
     }
 }
 
+/// Upper bound on the number of forward-Euler steps a compartmental model
+/// will simulate, regardless of the requested `days`/`dt`. Protects against
+/// unbounded memory growth (or an effectively-infinite loop) from an
+/// oversized horizon or an overly fine step size; the trajectory is
+/// truncated at this many steps rather than erroring, since `days`/`dt` are
+/// plain `f64`s with no natural validity bound of their own.
+const MAX_EPIDEMIC_STEPS: usize = 10_000_000;
+
+/// Number of forward-Euler steps to take for a `days`/`dt` horizon, clamped
+/// to `MAX_EPIDEMIC_STEPS`. Returns `0` if `dt` or `days` is non-positive.
+fn euler_step_count(days: f64, dt: f64) -> usize {
+    if dt <= 0.0 || days <= 0.0 {
+        0
+    } else {
+        ((days / dt).round().max(0.0) as usize).min(MAX_EPIDEMIC_STEPS)
+    }
+}
+
+/// Integrate `derivs` forward from `state0` for `steps` steps of size `dt`
+/// using the forward Euler method, returning the time points and the state
+/// at each point (including the initial state at `t = 0`).
+fn euler_integrate<const N: usize>(
+    state0: [f64; N],
+    steps: usize,
+    dt: f64,
+    derivs: impl Fn([f64; N]) -> [f64; N],
+) -> (Vec<f64>, Vec<[f64; N]>) {
+    let mut t_series = Vec::with_capacity(steps + 1);
+    let mut state_series = Vec::with_capacity(steps + 1);
+    let mut state = state0;
+    let mut t = 0.0;
+    t_series.push(t);
+    state_series.push(state);
+    for _ in 0..steps {
+        let d = derivs(state);
+        for k in 0..N {
+            state[k] += d[k] * dt;
+        }
+        t += dt;
+        t_series.push(t);
+        state_series.push(state);
+    }
+    (t_series, state_series)
+}
+
 /// Time series produced by [`sir_model`]: susceptible, infected, and
 /// recovered compartments (as fractions or counts, matching the inputs) at
 /// each simulated time point.
@@ -84,7 +129,8 @@ pub struct SirTrajectory {
 /// or absolute counts); `beta` is the transmission rate, `gamma` the
 /// recovery rate, `days` the simulation horizon, and `dt` the integration
 /// step. Returns a trajectory containing only the initial point if `dt` or
-/// `days` is non-positive.
+/// `days` is non-positive; the trajectory is truncated at
+/// [`MAX_EPIDEMIC_STEPS`] steps if `days / dt` would otherwise exceed it.
 pub fn sir_model(
     s0: f64,
     i0: f64,
@@ -94,27 +140,17 @@ pub fn sir_model(
     days: f64,
     dt: f64,
 ) -> SirTrajectory {
+    let steps = euler_step_count(days, dt);
+    let (t, states) = euler_integrate([s0, i0, r0], steps, dt, |[s, i, _r]| {
+        [-beta * s * i, beta * s * i - gamma * i, gamma * i]
+    });
     let mut traj = SirTrajectory {
-        t: vec![0.0],
-        s: vec![s0],
-        i: vec![i0],
-        r: vec![r0],
+        t,
+        s: Vec::with_capacity(states.len()),
+        i: Vec::with_capacity(states.len()),
+        r: Vec::with_capacity(states.len()),
     };
-    if dt <= 0.0 || days <= 0.0 {
-        return traj;
-    }
-    let steps = (days / dt).round().max(0.0) as usize;
-    let (mut s, mut i, mut r) = (s0, i0, r0);
-    let mut t = 0.0;
-    for _ in 0..steps {
-        let ds = -beta * s * i;
-        let di = beta * s * i - gamma * i;
-        let dr = gamma * i;
-        s += ds * dt;
-        i += di * dt;
-        r += dr * dt;
-        t += dt;
-        traj.t.push(t);
+    for [s, i, r] in states {
         traj.s.push(s);
         traj.i.push(i);
         traj.r.push(r);
@@ -140,7 +176,8 @@ pub struct SeirTrajectory {
 /// transmission rate, `sigma` the incubation rate (1/latent period), `gamma`
 /// the recovery rate, `days` the simulation horizon, and `dt` the
 /// integration step. Returns a trajectory containing only the initial point
-/// if `dt` or `days` is non-positive.
+/// if `dt` or `days` is non-positive; the trajectory is truncated at
+/// [`MAX_EPIDEMIC_STEPS`] steps if `days / dt` would otherwise exceed it.
 #[allow(clippy::too_many_arguments)]
 pub fn seir_model(
     s0: f64,
@@ -153,34 +190,47 @@ pub fn seir_model(
     days: f64,
     dt: f64,
 ) -> SeirTrajectory {
+    let steps = euler_step_count(days, dt);
+    let (t, states) = euler_integrate([s0, e0, i0, r0], steps, dt, |[s, e, i, _r]| {
+        [
+            -beta * s * i,
+            beta * s * i - sigma * e,
+            sigma * e - gamma * i,
+            gamma * i,
+        ]
+    });
     let mut traj = SeirTrajectory {
-        t: vec![0.0],
-        s: vec![s0],
-        e: vec![e0],
-        i: vec![i0],
-        r: vec![r0],
+        t,
+        s: Vec::with_capacity(states.len()),
+        e: Vec::with_capacity(states.len()),
+        i: Vec::with_capacity(states.len()),
+        r: Vec::with_capacity(states.len()),
     };
-    if dt <= 0.0 || days <= 0.0 {
-        return traj;
-    }
-    let steps = (days / dt).round().max(0.0) as usize;
-    let (mut s, mut e, mut i, mut r) = (s0, e0, i0, r0);
-    let mut t = 0.0;
-    for _ in 0..steps {
-        let ds = -beta * s * i;
-        let de = beta * s * i - sigma * e;
-        let di = sigma * e - gamma * i;
-        let dr = gamma * i;
-        s += ds * dt;
-        e += de * dt;
-        i += di * dt;
-        r += dr * dt;
-        t += dt;
-        traj.t.push(t);
+    for [s, e, i, r] in states {
         traj.s.push(s);
         traj.e.push(e);
         traj.i.push(i);
         traj.r.push(r);
     }
     traj
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn euler_step_count_clamps_to_max_epidemic_steps() {
+        // days/dt is astronomically larger than MAX_EPIDEMIC_STEPS; the
+        // count must be clamped rather than overflowing/hanging downstream
+        // Vec growth in sir_model/seir_model.
+        assert_eq!(euler_step_count(1e12, 1e-6), MAX_EPIDEMIC_STEPS);
+    }
+
+    #[test]
+    fn euler_step_count_non_positive_inputs_are_zero() {
+        assert_eq!(euler_step_count(0.0, 0.1), 0);
+        assert_eq!(euler_step_count(10.0, 0.0), 0);
+        assert_eq!(euler_step_count(-1.0, 0.1), 0);
+    }
 }
