@@ -6,7 +6,7 @@ _harness_version: "4.10.0"
 # Plans.md - Task Tracking
 
 > **Project**: tolvex
-> **Last updated**: 2026-07-07
+> **Last updated**: 2026-07-27
 > **Updated by**: Claude Code
 
 ---
@@ -25,8 +25,6 @@ _harness_version: "4.10.0"
 
 ### Standard Library Expansion (v0.1.7) — TODO.md §2.2
 
-- [ ] SL02: Meta-analysis, SIR/SEIR epidemiological models, and sample size calculations in `tolvex_stats` `cc:todo` [P]
-  - DoD: fixed/random-effects `meta_analysis`, `sir_model`/`seir_model` simulators, and `sample_size_*` functions added with unit tests; `cargo test -p tolvex_stats` passes.
 - [ ] SL03: Local differential privacy and secure aggregation in `tolvex_privacy` `cc:todo` [P]
   - DoD: randomized-response-based local DP mechanism added to `mechanisms.rs`; secure aggregation protocol added to `aggregate.rs`/`federated.rs`; unit tests cover both; `cargo test -p tolvex_privacy` passes.
   - Note: Laplace/Gaussian mechanisms (`mechanisms.rs`) and federated averaging (`federated.rs::fedavg`) are already implemented — do not duplicate, only add what's missing.
@@ -46,6 +44,8 @@ _harness_version: "4.10.0"
 - [x] SL01: Cox proportional hazards + competing risks analysis in `tolvex_stats::survival` `cc:done [e61aa39, f33e844d]`
   - DoD: `cox_ph` (Newton-Raphson on the Breslow partial likelihood) fits regression coefficients and `competing_risks` (Aalen-Johansen estimator) computes cumulative incidence functions; both covered by unit tests including a hand-computed CIF fixture and a finite-difference stationarity check on `cox_partial_log_likelihood`; `cargo test -p tolvex_stats` passes; `cargo clippy -p tolvex_stats --all-targets -- -D warnings` clean for the new code (one pre-existing, unrelated `viz.rs` clippy error left untouched).
   - Follow-up `f33e844d`: fixed 5 code-review findings — NaN-panic in the time sort (now returns `None`), O(n²) risk-set recomputation in `score_info` (now incremental), duplicated sort/group logic in `competing_risks`, and duplicated Gauss-Jordan elimination in `invert_matrix`.
+- [x] SL02: Meta-analysis, SIR/SEIR epidemiological models, and sample size calculations in `tolvex_stats` `cc:done [1d156bb]`
+  - DoD: fixed-effects and DerSimonian-Laird random-effects `meta_analysis` (new `meta_analysis.rs`, inverse-variance pooling with Q/I²/tau² diagnostics), forward-Euler `sir_model`/`seir_model` simulators (`epidemiology.rs`), and `sample_size_proportion` (feature-gated `pvalue`, alongside the existing `sample_size_two_sample_t`) added with unit tests; `cargo test -p tolvex_stats` and `cargo test -p tolvex_stats --features pvalue` both pass; `cargo clippy -p tolvex_stats --all-targets -- -D warnings` clean for the new code (same pre-existing, unrelated `viz.rs` clippy error left untouched).
 
 ---
 
@@ -97,6 +97,6 @@ For larger plans, you may add task IDs, dependencies, and parallel markers.
 
 ## Last Update
 
-- **Updated at**: 2026-07-07
+- **Updated at**: 2026-07-27
 - **Last session owner**: Claude Code
 - **Branch**: main
