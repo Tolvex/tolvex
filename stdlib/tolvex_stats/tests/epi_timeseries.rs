@@ -1,6 +1,6 @@
 use tolvex_stats::{
     exponential_moving_average, incidence_rate, moving_average, npv, ppv, prevalence, rolling_std,
-    sensitivity, specificity,
+    seir_model, sensitivity, sir_model, specificity,
 };
 
 #[test]
@@ -27,6 +27,53 @@ fn ts_moving_and_ema() {
     // simple progression sanity checks
     assert!(ema[1] > ema[0]);
     assert!(ema[2] > ema[1]);
+}
+
+#[test]
+fn sir_conserves_population_and_epidemic_rises_then_falls() {
+    let traj = sir_model(0.99, 0.01, 0.0, 0.5, 0.1, 100.0, 0.1);
+    assert_eq!(traj.t.len(), traj.s.len());
+    assert_eq!(traj.t.len(), traj.i.len());
+    assert_eq!(traj.t.len(), traj.r.len());
+
+    // S + I + R should stay ~1.0 throughout (no births/deaths).
+    for k in 0..traj.t.len() {
+        let total = traj.s[k] + traj.i[k] + traj.r[k];
+        assert!((total - 1.0).abs() < 1e-6, "total={total} at step {k}");
+    }
+
+    // With R0 = beta/gamma = 5 > 1, infections should rise above the
+    // initial level before eventually declining as susceptibles deplete.
+    let peak_i = traj.i.iter().cloned().fold(f64::MIN, f64::max);
+    assert!(peak_i > 0.01);
+    assert!(*traj.i.last().unwrap() < peak_i);
+}
+
+#[test]
+fn sir_non_positive_horizon_returns_only_initial_point() {
+    let traj = sir_model(0.99, 0.01, 0.0, 0.5, 0.1, 0.0, 0.1);
+    assert_eq!(traj.t, vec![0.0]);
+    assert_eq!(traj.s, vec![0.99]);
+    assert_eq!(traj.i, vec![0.01]);
+    assert_eq!(traj.r, vec![0.0]);
+}
+
+#[test]
+fn seir_conserves_population_and_epidemic_rises_then_falls() {
+    let traj = seir_model(0.99, 0.0, 0.01, 0.0, 0.5, 0.2, 0.1, 150.0, 0.1);
+    assert_eq!(traj.t.len(), traj.s.len());
+    assert_eq!(traj.t.len(), traj.e.len());
+    assert_eq!(traj.t.len(), traj.i.len());
+    assert_eq!(traj.t.len(), traj.r.len());
+
+    for k in 0..traj.t.len() {
+        let total = traj.s[k] + traj.e[k] + traj.i[k] + traj.r[k];
+        assert!((total - 1.0).abs() < 1e-6, "total={total} at step {k}");
+    }
+
+    let peak_i = traj.i.iter().cloned().fold(f64::MIN, f64::max);
+    assert!(peak_i > 0.01);
+    assert!(*traj.i.last().unwrap() < peak_i);
 }
 
 #[test]

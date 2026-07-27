@@ -19,6 +19,7 @@ mod clinical;
 mod epidemiology;
 #[cfg(feature = "fhir")]
 mod fhir_adapters;
+mod meta_analysis;
 mod ml;
 mod population;
 mod power;
@@ -36,6 +37,7 @@ pub use clinical::*;
 pub use epidemiology::*;
 #[cfg(feature = "fhir")]
 pub use fhir_adapters::*;
+pub use meta_analysis::*;
 pub use ml::*;
 pub use population::*;
 pub use power::*;
