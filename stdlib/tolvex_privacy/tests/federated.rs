@@ -63,3 +63,25 @@ fn secure_fedavg_rejects_mismatched_dims() {
     let u2 = ModelUpdate::new("b", vec![1.0, 2.0], 1);
     assert!(secure_fedavg(&[u1, u2], 1).is_none());
 }
+
+#[test]
+fn secure_fedavg_rejects_empty_weights_like_fedavg() {
+    // Matches fedavg's own dim == 0 guard: an update with no weights carries
+    // no model to average, so both should reject it the same way.
+    let u1 = ModelUpdate::new("a", vec![], 5);
+    let u2 = ModelUpdate::new("b", vec![], 3);
+    assert!(fedavg(&[u1.clone(), u2.clone()]).is_none());
+    assert!(secure_fedavg(&[u1, u2], 1).is_none());
+}
+
+#[test]
+fn secure_fedavg_single_client_matches_plain_average() {
+    // With one client there are no peers to mask against, so
+    // secure_mask_vector leaves the contribution untouched -- this path is
+    // still worth covering explicitly.
+    let u1 = ModelUpdate::new("a", vec![2.0, 4.0], 7);
+    let plain = fedavg(std::slice::from_ref(&u1)).expect("plain");
+    let secure = secure_fedavg(&[u1], 999).expect("secure");
+    assert_abs_diff_eq!(secure[0], plain[0], epsilon = 1e-6);
+    assert_abs_diff_eq!(secure[1], plain[1], epsilon = 1e-6);
+}

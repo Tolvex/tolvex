@@ -74,6 +74,15 @@ fn randomized_response_probability_basic() {
 }
 
 #[test]
+fn randomized_response_probability_rejects_non_finite_epsilon() {
+    // f64::INFINITY.exp() / (f64::INFINITY.exp() + 1.0) would otherwise
+    // compute INFINITY / INFINITY = NaN.
+    assert!(randomized_response_probability(f64::INFINITY).is_none());
+    assert!(randomized_response_probability(f64::NEG_INFINITY).is_none());
+    assert!(randomized_response_probability(f64::NAN).is_none());
+}
+
+#[test]
 fn randomized_response_deterministic_with_seeded_rng() {
     let mut rng1 = StdRng::seed_from_u64(5);
     let mut rng2 = StdRng::seed_from_u64(5);
@@ -109,6 +118,7 @@ fn randomized_response_debias_invalid_inputs() {
     assert!(randomized_response_debias(0, 0, 1.0).is_none());
     assert!(randomized_response_debias(5, 3, 1.0).is_none());
     assert!(randomized_response_debias(1, 10, 0.0).is_none());
+    assert!(randomized_response_debias(1, 10, f64::INFINITY).is_none());
     let d = randomized_response_debias(0, 10, 1.0).expect("d");
     assert!((0.0..=1.0).contains(&d));
 }

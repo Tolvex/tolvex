@@ -87,7 +87,7 @@ fn secure_fedavg_finalize(summed: &[f64]) -> Option<Vec<f64>> {
 /// Returns `None` under the same conditions as `fedavg` (empty updates,
 /// mismatched weight dimensions, or zero total examples).
 pub fn secure_fedavg(updates: &[ModelUpdate], master_secret: u64) -> Option<Vec<f64>> {
-    if updates.is_empty() {
+    if updates.is_empty() || updates[0].weights.is_empty() {
         return None;
     }
     let n_clients = updates.len();
