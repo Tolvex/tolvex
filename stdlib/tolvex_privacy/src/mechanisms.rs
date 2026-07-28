@@ -72,3 +72,43 @@ pub fn gaussian_mechanism(
     let n = gaussian_noise(sigma, rng)?;
     Some(value + n)
 }
+
+/// Probability of reporting the true bit under `epsilon`-local-differential-
+/// privacy binary randomized response: `p = e^epsilon / (e^epsilon + 1)`.
+/// Requires `epsilon > 0`; `p` is always in `(0.5, 1.0)`.
+pub fn randomized_response_probability(epsilon: f64) -> Option<f64> {
+    if epsilon.partial_cmp(&0.0) != Some(Ordering::Greater) {
+        return None;
+    }
+    let e = epsilon.exp();
+    Some(e / (e + 1.0))
+}
+
+/// Local-DP binary randomized response: reports `true_bit` with probability
+/// `p = randomized_response_probability(epsilon)` and its flip otherwise, so
+/// no single response reveals `true_bit` with confidence above what
+/// `epsilon` permits.
+pub fn randomized_response(true_bit: bool, epsilon: f64, rng: &mut impl Rng) -> Option<bool> {
+    let p = randomized_response_probability(epsilon)?;
+    let keep = rng.gen_range(0.0..1.0) < p;
+    Some(if keep { true_bit } else { !true_bit })
+}
+
+/// Debias an aggregate of `randomized_response` reports back to an estimate
+/// of the true population proportion of `true` values.
+///
+/// `observed_true_count` is the number of `true` reports out of `n`
+/// respondents, each randomized at the given `epsilon`. Returns `None` if
+/// `n == 0` or `epsilon` is invalid; the result is clamped to `[0, 1]` since
+/// the raw method-of-moments estimator can fall outside that range for small
+/// `n` or extreme observed counts.
+pub fn randomized_response_debias(observed_true_count: u64, n: usize, epsilon: f64) -> Option<f64> {
+    if n == 0 || observed_true_count as usize > n {
+        return None;
+    }
+    let p = randomized_response_probability(epsilon)?;
+    let observed_freq = observed_true_count as f64 / n as f64;
+    // p != 0.5 is guaranteed since epsilon > 0 => p in (0.5, 1.0).
+    let estimate = (observed_freq + p - 1.0) / (2.0 * p - 1.0);
+    Some(estimate.clamp(0.0, 1.0))
+}
