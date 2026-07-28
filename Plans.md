@@ -6,7 +6,7 @@ _harness_version: "4.10.0"
 # Plans.md - Task Tracking
 
 > **Project**: tolvex
-> **Last updated**: 2026-07-27
+> **Last updated**: 2026-07-28
 > **Updated by**: Claude Code
 
 ---
@@ -25,9 +25,6 @@ _harness_version: "4.10.0"
 
 ### Standard Library Expansion (v0.1.7) — TODO.md §2.2
 
-- [ ] SL03: Local differential privacy and secure aggregation in `tolvex_privacy` `cc:todo` [P]
-  - DoD: randomized-response-based local DP mechanism added to `mechanisms.rs`; secure aggregation protocol added to `aggregate.rs`/`federated.rs`; unit tests cover both; `cargo test -p tolvex_privacy` passes.
-  - Note: Laplace/Gaussian mechanisms (`mechanisms.rs`) and federated averaging (`federated.rs::fedavg`) are already implemented — do not duplicate, only add what's missing.
 - [ ] SL04: `tolvex_rt` streaming: tumbling/sliding/session windowing, alert/notification system, MQTT/AMQP device adapters `cc:todo` [P]
   - DoD: windowing functions added to `stream.rs` (a sliding-sum helper already exists — extend, don't duplicate), an alert/notification dispatch primitive added, MQTT/AMQP adapter stubs added to `device.rs` behind feature flags; unit tests cover windowing math; `cargo test -p tolvex_rt` passes.
 - [ ] SL05: Web-based interactive dashboard runtime (chart components, layout, real-time data binding) `cc:todo` [P]
@@ -46,6 +43,8 @@ _harness_version: "4.10.0"
   - Follow-up `f33e844d`: fixed 5 code-review findings — NaN-panic in the time sort (now returns `None`), O(n²) risk-set recomputation in `score_info` (now incremental), duplicated sort/group logic in `competing_risks`, and duplicated Gauss-Jordan elimination in `invert_matrix`.
 - [x] SL02: Meta-analysis, SIR/SEIR epidemiological models, and sample size calculations in `tolvex_stats` `cc:done [1d156bb]`
   - DoD: fixed-effects and DerSimonian-Laird random-effects `meta_analysis` (new `meta_analysis.rs`, inverse-variance pooling with Q/I²/tau² diagnostics), forward-Euler `sir_model`/`seir_model` simulators (`epidemiology.rs`), and `sample_size_proportion` (feature-gated `pvalue`, alongside the existing `sample_size_two_sample_t`) added with unit tests; `cargo test -p tolvex_stats` and `cargo test -p tolvex_stats --features pvalue` both pass; `cargo clippy -p tolvex_stats --all-targets -- -D warnings` clean for the new code (same pre-existing, unrelated `viz.rs` clippy error left untouched).
+- [x] SL03: Local differential privacy and secure aggregation in `tolvex_privacy` `cc:done [982b91e]`
+  - DoD: epsilon-LDP binary randomized response (`randomized_response`/`randomized_response_probability`/`randomized_response_debias` in `mechanisms.rs`) and a pairwise-masking secure aggregation protocol (`derive_pairwise_seed`/`secure_mask_vector`/`secure_sum` in `aggregate.rs`, composed into `secure_fedavg` in `federated.rs` alongside the existing plain `fedavg`) added with unit tests (including a statistical recovery check for the debiasing estimator and an exact-sum-recovery check for secure aggregation); `cargo test -p tolvex_privacy` passes (24 tests); `cargo clippy -p tolvex_privacy --all-targets -- -D warnings` clean.
 
 ---
 
@@ -97,6 +96,6 @@ For larger plans, you may add task IDs, dependencies, and parallel markers.
 
 ## Last Update
 
-- **Updated at**: 2026-07-27
+- **Updated at**: 2026-07-28
 - **Last session owner**: Claude Code
 - **Branch**: main
