@@ -202,10 +202,10 @@ impl Query {
     fn matches_str(preds: &[Predicate], key: &str, candidate: Option<&str>) -> bool {
         for p in preds {
             match p {
-                Predicate::Eq { key: k, value } if k == key => {
-                    if candidate != Some(value.as_str()) {
-                        return false;
-                    }
+                Predicate::Eq { key: k, value }
+                    if k == key && candidate != Some(value.as_str()) =>
+                {
+                    return false;
                 }
                 Predicate::Contains { key: k, value } if k == key => {
                     if let Some(c) = candidate {
@@ -243,30 +243,30 @@ impl Query {
     fn matches_f64(preds: &[Predicate], key: &str, candidate: Option<f64>) -> bool {
         for p in preds {
             match p {
-                Predicate::Gt { key: k, value } if k == key => {
-                    if !candidate.map(|v| v > *value).unwrap_or(false) {
-                        return false;
-                    }
+                Predicate::Gt { key: k, value }
+                    if k == key && !candidate.map(|v| v > *value).unwrap_or(false) =>
+                {
+                    return false;
                 }
-                Predicate::Ge { key: k, value } if k == key => {
-                    if !candidate.map(|v| v >= *value).unwrap_or(false) {
-                        return false;
-                    }
+                Predicate::Ge { key: k, value }
+                    if k == key && !candidate.map(|v| v >= *value).unwrap_or(false) =>
+                {
+                    return false;
                 }
-                Predicate::Lt { key: k, value } if k == key => {
-                    if !candidate.map(|v| v < *value).unwrap_or(false) {
-                        return false;
-                    }
+                Predicate::Lt { key: k, value }
+                    if k == key && !candidate.map(|v| v < *value).unwrap_or(false) =>
+                {
+                    return false;
                 }
-                Predicate::Le { key: k, value } if k == key => {
-                    if !candidate.map(|v| v <= *value).unwrap_or(false) {
-                        return false;
-                    }
+                Predicate::Le { key: k, value }
+                    if k == key && !candidate.map(|v| v <= *value).unwrap_or(false) =>
+                {
+                    return false;
                 }
-                Predicate::Between { key: k, min, max } if k == key => {
-                    if !candidate.map(|v| v >= *min && v <= *max).unwrap_or(false) {
-                        return false;
-                    }
+                Predicate::Between { key: k, min, max }
+                    if k == key && !candidate.map(|v| v >= *min && v <= *max).unwrap_or(false) =>
+                {
+                    return false;
                 }
                 Predicate::Eq { key: k, value } if k == key => {
                     // Allow equality on numeric by parsing value
@@ -298,26 +298,24 @@ impl Query {
                 Predicate::DateGe {
                     key: k,
                     value_yyyymmdd,
-                } if k == key => {
-                    if !cand_norm
+                } if k == key
+                    && !cand_norm
                         .as_deref()
                         .map(|c| c >= value_yyyymmdd.as_str())
-                        .unwrap_or(false)
-                    {
-                        return false;
-                    }
+                        .unwrap_or(false) =>
+                {
+                    return false;
                 }
                 Predicate::DateLe {
                     key: k,
                     value_yyyymmdd,
-                } if k == key => {
-                    if !cand_norm
+                } if k == key
+                    && !cand_norm
                         .as_deref()
                         .map(|c| c <= value_yyyymmdd.as_str())
-                        .unwrap_or(false)
-                    {
-                        return false;
-                    }
+                        .unwrap_or(false) =>
+                {
+                    return false;
                 }
                 _ => {}
             }

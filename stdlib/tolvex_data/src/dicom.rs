@@ -429,44 +429,27 @@ fn extract_metadata(tags: &[DicomTag]) -> Result<DicomMetadata, DicomError> {
                         .to_string(),
                 );
             }
-            tags::ROWS => {
-                if tag.value.len() >= 2 {
-                    metadata.rows = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]) as u32);
-                }
+            tags::ROWS if tag.value.len() >= 2 => {
+                metadata.rows = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]) as u32);
             }
-            tags::COLUMNS => {
-                if tag.value.len() >= 2 {
-                    metadata.columns =
-                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]) as u32);
-                }
+            tags::COLUMNS if tag.value.len() >= 2 => {
+                metadata.columns = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]) as u32);
             }
-            tags::BITS_ALLOCATED => {
-                if tag.value.len() >= 2 {
-                    metadata.bits_allocated =
-                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
-                }
+            tags::BITS_ALLOCATED if tag.value.len() >= 2 => {
+                metadata.bits_allocated = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
             }
-            tags::BITS_STORED => {
-                if tag.value.len() >= 2 {
-                    metadata.bits_stored = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
-                }
+            tags::BITS_STORED if tag.value.len() >= 2 => {
+                metadata.bits_stored = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
             }
-            tags::HIGH_BIT => {
-                if tag.value.len() >= 2 {
-                    metadata.high_bit = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
-                }
+            tags::HIGH_BIT if tag.value.len() >= 2 => {
+                metadata.high_bit = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
             }
-            tags::PIXEL_REPRESENTATION => {
-                if tag.value.len() >= 2 {
-                    metadata.pixel_representation =
-                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
-                }
+            tags::PIXEL_REPRESENTATION if tag.value.len() >= 2 => {
+                metadata.pixel_representation =
+                    Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
             }
-            tags::SAMPLES_PER_PIXEL => {
-                if tag.value.len() >= 2 {
-                    metadata.samples_per_pixel =
-                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
-                }
+            tags::SAMPLES_PER_PIXEL if tag.value.len() >= 2 => {
+                metadata.samples_per_pixel = Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
             }
             tags::PHOTOMETRIC_INTERPRETATION => {
                 metadata.photometric_interpretation = Some(
@@ -475,11 +458,9 @@ fn extract_metadata(tags: &[DicomTag]) -> Result<DicomMetadata, DicomError> {
                         .to_string(),
                 );
             }
-            tags::PLANAR_CONFIGURATION => {
-                if tag.value.len() >= 2 {
-                    metadata.planar_configuration =
-                        Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
-                }
+            tags::PLANAR_CONFIGURATION if tag.value.len() >= 2 => {
+                metadata.planar_configuration =
+                    Some(u16::from_le_bytes([tag.value[0], tag.value[1]]));
             }
             tags::WINDOW_CENTER => {
                 metadata.window_center = parse_ds_string(&String::from_utf8_lossy(&tag.value));

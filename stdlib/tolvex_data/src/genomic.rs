@@ -426,54 +426,50 @@ pub fn parse_bam_header(sam_header: &str) -> Result<BamHeader, GenomicError> {
         }
 
         match parts[0] {
-            "@SQ" => {
-                if parts.len() >= 3 {
-                    let mut name = None;
-                    let mut length = None;
+            "@SQ" if parts.len() >= 3 => {
+                let mut name = None;
+                let mut length = None;
 
-                    for part in &parts[1..] {
-                        if let Some((key, value)) = part.split_once(':') {
-                            match key {
-                                "SN" => name = Some(value.to_string()),
-                                "LN" => length = value.parse().ok(),
-                                _ => {}
-                            }
+                for part in &parts[1..] {
+                    if let Some((key, value)) = part.split_once(':') {
+                        match key {
+                            "SN" => name = Some(value.to_string()),
+                            "LN" => length = value.parse().ok(),
+                            _ => {}
                         }
-                    }
-
-                    if let (Some(name), Some(length)) = (name, length) {
-                        references.push(BamReference { name, length });
                     }
                 }
-            }
-            "@RG" => {
-                if parts.len() >= 2 {
-                    let mut id = None;
-                    let mut sample = None;
-                    let mut library = None;
-                    let mut fields = HashMap::new();
 
-                    for part in &parts[1..] {
-                        if let Some((key, value)) = part.split_once(':') {
-                            match key {
-                                "ID" => id = Some(value.to_string()),
-                                "SM" => sample = Some(value.to_string()),
-                                "LB" => library = Some(value.to_string()),
-                                _ => {
-                                    fields.insert(key.to_string(), value.to_string());
-                                }
+                if let (Some(name), Some(length)) = (name, length) {
+                    references.push(BamReference { name, length });
+                }
+            }
+            "@RG" if parts.len() >= 2 => {
+                let mut id = None;
+                let mut sample = None;
+                let mut library = None;
+                let mut fields = HashMap::new();
+
+                for part in &parts[1..] {
+                    if let Some((key, value)) = part.split_once(':') {
+                        match key {
+                            "ID" => id = Some(value.to_string()),
+                            "SM" => sample = Some(value.to_string()),
+                            "LB" => library = Some(value.to_string()),
+                            _ => {
+                                fields.insert(key.to_string(), value.to_string());
                             }
                         }
                     }
+                }
 
-                    if let Some(id) = id {
-                        read_groups.push(BamReadGroup {
-                            id,
-                            sample,
-                            library,
-                            fields,
-                        });
-                    }
+                if let Some(id) = id {
+                    read_groups.push(BamReadGroup {
+                        id,
+                        sample,
+                        library,
+                        fields,
+                    });
                 }
             }
             _ => {}
@@ -549,11 +545,7 @@ pub fn fastq_stats(records: &[FastqRecord]) -> FastqStats {
     FastqStats {
         total_reads,
         total_bases,
-        average_read_length: if total_reads > 0 {
-            total_bases / total_reads
-        } else {
-            0
-        },
+        average_read_length: total_bases.checked_div(total_reads).unwrap_or(0),
         average_quality: avg_quality,
     }
 }

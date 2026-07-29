@@ -2655,7 +2655,7 @@ impl<'a> TypeChecker<'a> {
                 // Check body in new scope with param bindings
                 let parent = self.env.clone();
                 let mut child = TypeEnv::with_parent(parent);
-                for (p, ty) in fun.params.iter().zip(param_tys.into_iter()) {
+                for (p, ty) in fun.params.iter().zip(param_tys) {
                     child.insert(p.name.name().to_string(), ty);
                 }
                 let mut ck = TypeChecker::new(&mut child);

@@ -217,15 +217,11 @@ pub fn validate_observation(o: &FHIRObservation) -> Result<(), ValidationError> 
         let code = o.code.as_str();
         let unit_opt = o.unit.as_ref().map(|s| s.trim().to_ascii_lowercase());
         match code {
-            "HR" => {
-                if unit_opt.as_deref() != Some("bpm") {
-                    return Err(ValidationError::new("Observation HR requires unit bpm"));
-                }
+            "HR" if unit_opt.as_deref() != Some("bpm") => {
+                return Err(ValidationError::new("Observation HR requires unit bpm"));
             }
-            "BP" => {
-                if unit_opt.as_deref() != Some("mmhg") {
-                    return Err(ValidationError::new("Observation BP requires unit mmhg"));
-                }
+            "BP" if unit_opt.as_deref() != Some("mmhg") => {
+                return Err(ValidationError::new("Observation BP requires unit mmhg"));
             }
             "TEMP" => match unit_opt.as_deref() {
                 Some("c") | Some("f") => {}

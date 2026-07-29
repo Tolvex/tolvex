@@ -1681,11 +1681,9 @@ pub fn parse_match_statement(input: TokenSlice<'_>) -> IResult<TokenSlice<'_>, S
                                     brace = (brace - 1).max(0);
                                 }
                             }
-                            TokenType::Comma => {
-                                if paren == 0 && bracket == 0 && brace == 0 {
-                                    boundary = Some(idx);
-                                    break;
-                                }
+                            TokenType::Comma if paren == 0 && bracket == 0 && brace == 0 => {
+                                boundary = Some(idx);
+                                break;
                             }
                             _ => {}
                         }

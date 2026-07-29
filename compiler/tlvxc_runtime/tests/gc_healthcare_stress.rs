@@ -55,7 +55,7 @@ fn gc_healthcare_like_workload_stress() {
         active_patients.push(p.id());
         // Attach a few observations to each patient
         for j in 0..6u32 {
-            let o = gc.allocate(mk_observation(i * 10 + j, p.id() as u64));
+            let o = gc.allocate(mk_observation(i * 10 + j, p.id()));
             gc.add_edge(p.id(), o.id());
         }
     }
@@ -81,7 +81,7 @@ fn gc_healthcare_like_workload_stress() {
         }
 
         for k in 0..3u32 {
-            let o = gc.allocate(mk_observation(t * 3 + k, temp_patient.id() as u64));
+            let o = gc.allocate(mk_observation(t * 3 + k, temp_patient.id()));
             gc.add_edge(temp_patient.id(), o.id());
         }
 

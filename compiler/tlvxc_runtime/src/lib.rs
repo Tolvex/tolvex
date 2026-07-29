@@ -365,7 +365,7 @@ pub unsafe extern "C" fn tolvex_gc_alloc_string(ptr: *const u8, len: usize) -> u
         guard.maybe_start_incremental_major();
         guard.incremental_step_with_params();
     }
-    r.id() as u64
+    r.id()
 }
 
 #[no_mangle]
@@ -399,7 +399,7 @@ pub extern "C" fn tolvex_gc_alloc_unit() -> u64 {
         guard.maybe_start_incremental_major();
         guard.incremental_step_with_params();
     }
-    r.id() as u64
+    r.id()
 }
 
 #[no_mangle]

@@ -71,11 +71,7 @@ pub fn histogram_ascii(xs: &[f64], bin_edges: &[f64], max_width: usize) -> Vec<S
     let max_count = *counts.iter().max().unwrap_or(&0);
     let mut lines = Vec::with_capacity(counts.len());
     for (i, &c) in counts.iter().enumerate() {
-        let bar_len = if max_count == 0 {
-            0
-        } else {
-            (c * max_width) / max_count
-        };
+        let bar_len = (c * max_width).checked_div(max_count).unwrap_or(0);
         let mut line = String::new();
         if i + 1 < bin_edges.len() {
             line.push_str(&format!("[{:.3},{:.3}): ", bin_edges[i], bin_edges[i + 1]));
