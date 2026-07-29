@@ -31,27 +31,37 @@ fn program_for(src: &str) -> tlvxc_ast::ast::ProgramNode {
 #[cfg(target_os = "macos")]
 fn link_with_clang(obj_path: &std::path::Path) -> PathBuf {
     let exe_path = obj_path.with_extension("");
-    let mut cmd = Command::new("clang");
-    cmd.arg("-o").arg(&exe_path).arg(obj_path);
+    let sdk_path = Command::new("xcrun")
+        .arg("--show-sdk-path")
+        .output()
+        .ok()
+        .filter(|out| out.status.success())
+        .map(|out| String::from_utf8_lossy(&out.stdout).trim().to_string())
+        .filter(|s| !s.is_empty());
+
     // CI may put a bare (non-Xcode) clang ahead of /usr/bin/clang on PATH (e.g. Homebrew's
-    // llvm@15), which doesn't auto-detect the macOS SDK the way Xcode's clang wrapper does.
-    // Pass the SDK sysroot explicitly so `libSystem` and friends can be found.
-    if let Ok(out) = Command::new("xcrun").arg("--show-sdk-path").output() {
-        if out.status.success() {
-            let sdk_path = String::from_utf8_lossy(&out.stdout).trim().to_string();
-            if !sdk_path.is_empty() {
-                cmd.arg("-isysroot").arg(sdk_path);
-            }
+    // llvm@15), which doesn't auto-detect the macOS SDK the way Xcode's clang wrapper does and
+    // fails to find `libSystem` even with -isysroot set. Prefer the real Xcode clang at its
+    // fixed path so linking doesn't depend on PATH ordering; fall back to plain `clang` (with
+    // an explicit sysroot, if we found one) if that binary isn't present.
+    let candidates: &[&str] = &["/usr/bin/clang", "clang"];
+    let mut last_err = None;
+    for clang in candidates {
+        let mut cmd = Command::new(clang);
+        cmd.arg("-o").arg(&exe_path).arg(obj_path);
+        if let Some(sdk_path) = &sdk_path {
+            cmd.arg("-isysroot").arg(sdk_path);
+        }
+        match cmd.output() {
+            Ok(out) if out.status.success() => return exe_path,
+            Ok(out) => last_err = Some(String::from_utf8_lossy(&out.stderr).to_string()),
+            Err(e) => last_err = Some(e.to_string()),
         }
     }
-    let out = cmd.output().expect("failed to spawn clang");
-    if !out.status.success() {
-        panic!(
-            "clang failed to link object into executable. stderr: {}",
-            String::from_utf8_lossy(&out.stderr)
-        );
-    }
-    exe_path
+    panic!(
+        "clang failed to link object into executable. stderr: {}",
+        last_err.unwrap_or_default()
+    );
 }
 
 // Windows helpers
