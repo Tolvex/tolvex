@@ -31,12 +31,20 @@ fn program_for(src: &str) -> tlvxc_ast::ast::ProgramNode {
 #[cfg(target_os = "macos")]
 fn link_with_clang(obj_path: &std::path::Path) -> PathBuf {
     let exe_path = obj_path.with_extension("");
-    let out = Command::new("clang")
-        .arg("-o")
-        .arg(&exe_path)
-        .arg(obj_path)
-        .output()
-        .expect("failed to spawn clang");
+    let mut cmd = Command::new("clang");
+    cmd.arg("-o").arg(&exe_path).arg(obj_path);
+    // CI may put a bare (non-Xcode) clang ahead of /usr/bin/clang on PATH (e.g. Homebrew's
+    // llvm@15), which doesn't auto-detect the macOS SDK the way Xcode's clang wrapper does.
+    // Pass the SDK sysroot explicitly so `libSystem` and friends can be found.
+    if let Ok(out) = Command::new("xcrun").arg("--show-sdk-path").output() {
+        if out.status.success() {
+            let sdk_path = String::from_utf8_lossy(&out.stdout).trim().to_string();
+            if !sdk_path.is_empty() {
+                cmd.arg("-isysroot").arg(sdk_path);
+            }
+        }
+    }
+    let out = cmd.output().expect("failed to spawn clang");
     if !out.status.success() {
         panic!(
             "clang failed to link object into executable. stderr: {}",
