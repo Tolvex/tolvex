@@ -6,7 +6,7 @@ _harness_version: "4.10.0"
 # Plans.md - Task Tracking
 
 > **Project**: tolvex
-> **Last updated**: 2026-07-28
+> **Last updated**: 2026-07-31
 > **Updated by**: Claude Code
 
 ---
@@ -25,8 +25,6 @@ _harness_version: "4.10.0"
 
 ### Standard Library Expansion (v0.1.7) — TODO.md §2.2
 
-- [ ] SL04: `tolvex_rt` streaming: tumbling/sliding/session windowing, alert/notification system, MQTT/AMQP device adapters `cc:todo` [P]
-  - DoD: windowing functions added to `stream.rs` (a sliding-sum helper already exists — extend, don't duplicate), an alert/notification dispatch primitive added, MQTT/AMQP adapter stubs added to `device.rs` behind feature flags; unit tests cover windowing math; `cargo test -p tolvex_rt` passes.
 - [ ] SL05: Web-based interactive dashboard runtime (chart components, layout, real-time data binding) `cc:todo` [P]
   - DoD: decide crate placement first (extend `tolvex_stats::viz` vs. new `tolvex_viz` crate) and record the decision in this task before implementing; interactive chart component, dashboard layout, and real-time data binding primitives added with unit tests; `cargo test` passes for the chosen crate.
 
@@ -46,6 +44,8 @@ _harness_version: "4.10.0"
 - [x] SL03: Local differential privacy and secure aggregation in `tolvex_privacy` `cc:done [982b91e, c85a394]`
   - DoD: epsilon-LDP binary randomized response (`randomized_response`/`randomized_response_probability`/`randomized_response_debias` in `mechanisms.rs`) and a pairwise-masking secure aggregation protocol (`derive_pairwise_seed`/`secure_mask_vector`/`secure_sum` in `aggregate.rs`, composed into `secure_fedavg` in `federated.rs` alongside the existing plain `fedavg`) added with unit tests (including a statistical recovery check for the debiasing estimator and an exact-sum-recovery check for secure aggregation); `cargo test -p tolvex_privacy` passes; `cargo clippy -p tolvex_privacy --all-targets -- -D warnings` clean.
   - Follow-up `c85a394`: fixed 2 code-review findings — `randomized_response_probability(f64::INFINITY)` silently returned `Some(NaN)` (now rejected via an `is_finite()` guard), and `secure_fedavg` diverged from `fedavg`'s documented contract by not rejecting empty-weight updates (now guarded to match); also tightened a `u64`-to-`usize` truncation risk in `randomized_response_debias`. Independent reviewer verdict: APPROVE.
+- [x] SL04: `tolvex_rt` streaming: tumbling/sliding/session windowing, alert/notification system, MQTT/AMQP device adapters `cc:done [dd8cdbc]`
+  - DoD: `tumbling_windows`, `sliding_windows` (zero-copy, returns borrowed slices), and `session_windows` (gap-based grouping) added to `stream.rs` alongside the existing `sliding_window_sum`; a generic threshold alert/notification dispatch primitive added (`alert.rs`: `AlertCondition`/`AlertRule`/`AlertDispatcher`/`NotificationSink`); `MqttAdapter`/`AmqpAdapter` stubs added to `device.rs` behind new `mqtt`/`amqp` Cargo features, unified via a shared `DeviceTransport` trait; unit tests cover windowing math and alert dispatch; `cargo test -p tolvex_rt` and `cargo test -p tolvex_rt --all-features` both pass; `cargo clippy -p tolvex_rt --all-targets --all-features -- -D warnings` clean. Independent reviewer verdict: APPROVE.
 
 ---
 
@@ -97,6 +97,6 @@ For larger plans, you may add task IDs, dependencies, and parallel markers.
 
 ## Last Update
 
-- **Updated at**: 2026-07-28
+- **Updated at**: 2026-07-31
 - **Last session owner**: Claude Code
 - **Branch**: main
