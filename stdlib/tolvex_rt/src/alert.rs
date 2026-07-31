@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum AlertCondition {
     Above(f64),
@@ -8,8 +10,8 @@ pub enum AlertCondition {
 impl AlertCondition {
     pub fn matches(&self, value: f64) -> bool {
         match self {
-            AlertCondition::Above(threshold) => value > *threshold,
-            AlertCondition::Below(threshold) => value < *threshold,
+            AlertCondition::Above(threshold) => value >= *threshold,
+            AlertCondition::Below(threshold) => value <= *threshold,
             AlertCondition::OutsideRange(lo, hi) => value < *lo || value > *hi,
         }
     }
@@ -44,18 +46,31 @@ impl NotificationSink for CollectingSink {
 }
 
 pub struct AlertDispatcher<S: NotificationSink> {
-    rules: Vec<AlertRule>,
+    rules_by_metric: HashMap<String, Vec<AlertCondition>>,
     sink: S,
 }
 
 impl<S: NotificationSink> AlertDispatcher<S> {
     pub fn new(rules: Vec<AlertRule>, sink: S) -> Self {
-        Self { rules, sink }
+        let mut rules_by_metric: HashMap<String, Vec<AlertCondition>> = HashMap::new();
+        for rule in rules {
+            rules_by_metric
+                .entry(rule.metric)
+                .or_default()
+                .push(rule.condition);
+        }
+        Self {
+            rules_by_metric,
+            sink,
+        }
     }
 
     pub fn check(&mut self, metric: &str, value: f64) {
-        for rule in &self.rules {
-            if rule.metric == metric && rule.condition.matches(value) {
+        let Some(conditions) = self.rules_by_metric.get(metric) else {
+            return;
+        };
+        for condition in conditions {
+            if condition.matches(value) {
                 self.sink.notify(&Alert {
                     metric: metric.to_string(),
                     value,

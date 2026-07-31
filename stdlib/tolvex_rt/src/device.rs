@@ -46,10 +46,12 @@ pub fn parse_device_message(protocol: DeviceProtocol, msg: &str) -> Option<Devic
 
 /// Common interface for device-protocol client adapters (MQTT, AMQP, ...),
 /// so new transports plug into one shape instead of each growing an
-/// unrelated `connect`/`publish` pair.
+/// unrelated `connect`/`publish` pair. Methods take `&mut self` so a real
+/// (non-stub) implementation can hold and mutate a live connection handle
+/// without needing interior mutability.
 pub trait DeviceTransport {
-    fn connect(&self) -> Result<(), String>;
-    fn publish(&self, reading: &DeviceReading) -> Result<(), String>;
+    fn connect(&mut self) -> Result<(), String>;
+    fn publish(&mut self, reading: &DeviceReading) -> Result<(), String>;
 }
 
 #[cfg(any(feature = "mqtt", feature = "amqp"))]
@@ -76,11 +78,11 @@ impl MqttAdapter {
 
 #[cfg(feature = "mqtt")]
 impl DeviceTransport for MqttAdapter {
-    fn connect(&self) -> Result<(), String> {
+    fn connect(&mut self) -> Result<(), String> {
         Err(stub_err("MQTT", "connecting to", &self.broker_url))
     }
 
-    fn publish(&self, _reading: &DeviceReading) -> Result<(), String> {
+    fn publish(&mut self, _reading: &DeviceReading) -> Result<(), String> {
         Err(stub_err("MQTT", "publish to topic", &self.topic))
     }
 }
@@ -110,11 +112,11 @@ impl AmqpAdapter {
 
 #[cfg(feature = "amqp")]
 impl DeviceTransport for AmqpAdapter {
-    fn connect(&self) -> Result<(), String> {
+    fn connect(&mut self) -> Result<(), String> {
         Err(stub_err("AMQP", "connecting to", &self.broker_url))
     }
 
-    fn publish(&self, _reading: &DeviceReading) -> Result<(), String> {
+    fn publish(&mut self, _reading: &DeviceReading) -> Result<(), String> {
         Err(stub_err(
             "AMQP",
             "publish to exchange",

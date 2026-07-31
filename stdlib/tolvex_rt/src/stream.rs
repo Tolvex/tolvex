@@ -46,11 +46,11 @@ impl<T> RingBuffer<T> {
     }
 }
 
-pub fn tumbling_windows<T: Clone>(xs: &[T], size: usize) -> Vec<Vec<T>> {
+pub fn tumbling_windows<T>(xs: &[T], size: usize) -> Vec<&[T]> {
     if size == 0 {
         return Vec::new();
     }
-    xs.chunks(size).map(|c| c.to_vec()).collect()
+    xs.chunks(size).collect()
 }
 
 pub fn sliding_windows<T>(xs: &[T], size: usize, step: usize) -> Vec<&[T]> {
@@ -68,25 +68,29 @@ pub fn sliding_windows<T>(xs: &[T], size: usize, step: usize) -> Vec<&[T]> {
 }
 
 /// Groups timestamped events into sessions, splitting whenever the gap
-/// between consecutive events exceeds `gap_ms`. Assumes `events` is sorted
-/// ascending by timestamp.
-pub fn session_windows<T: Clone>(events: &[(u64, T)], gap_ms: u64) -> Vec<Vec<(u64, T)>> {
+/// between consecutive events exceeds `gap_ms`. `events` is expected to be
+/// sorted ascending by timestamp; an out-of-order timestamp is treated as
+/// its own session boundary rather than silently merging into the previous
+/// session with an assumed zero gap.
+pub fn session_windows<T>(events: &[(u64, T)], gap_ms: u64) -> Vec<&[(u64, T)]> {
     if events.is_empty() {
         return Vec::new();
     }
 
-    let mut out: Vec<Vec<(u64, T)>> = Vec::new();
-    let mut current: Vec<(u64, T)> = vec![events[0].clone()];
+    let mut out = Vec::new();
+    let mut start = 0;
 
-    for pair in events.windows(2) {
-        let (prev_ts, _) = &pair[0];
-        let (ts, val) = &pair[1];
-        if ts.saturating_sub(*prev_ts) > gap_ms {
-            out.push(std::mem::take(&mut current));
+    for i in 1..events.len() {
+        let starts_new_session = match events[i].0.checked_sub(events[i - 1].0) {
+            Some(gap) => gap > gap_ms,
+            None => true,
+        };
+        if starts_new_session {
+            out.push(&events[start..i]);
+            start = i;
         }
-        current.push((*ts, val.clone()));
     }
-    out.push(current);
+    out.push(&events[start..]);
     out
 }
 
