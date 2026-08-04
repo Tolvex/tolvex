@@ -15,9 +15,7 @@ _harness_version: "4.10.0"
 
 <!-- Add tasks with cc:wip here. -->
 
-- [ ] SL05: Web-based interactive dashboard runtime (chart components, layout, real-time data binding) `cc:wip`
-  - DoD: decide crate placement first (extend `tolvex_stats::viz` vs. new `tolvex_viz` crate) and record the decision in this task before implementing; interactive chart component, dashboard layout, and real-time data binding primitives added with unit tests; `cargo test` passes for the chosen crate.
-  - Decision: new `tolvex_viz` crate. `TODO.md` §2.2 lists "Enhance `tolvex.viz`" as its own domain bullet alongside `tolvex.data`/`tolvex.stats`/`tolvex.privacy`/`tolvex.iot` — the project's established pattern is one crate per domain (`tolvex.iot` became the standalone `tolvex_rt` crate rather than folding into an existing one). The existing `tolvex_stats::viz` module is a small, stateless one-shot rendering helper (ASCII/SVG snapshot functions) scoped to descriptive-stats output; it has no runtime/state concept. The new feature (stateful interactive components, layout composition, live data binding) is an orthogonal rendering/runtime concern, not statistical computation, so it belongs in its own crate rather than widening `tolvex_stats`'s scope.
+(none)
 
 ---
 
@@ -48,6 +46,10 @@ _harness_version: "4.10.0"
 - [x] SL04: `tolvex_rt` streaming: tumbling/sliding/session windowing, alert/notification system, MQTT/AMQP device adapters `cc:done [dd8cdbc, 80ec222]`
   - DoD: `tumbling_windows`, `sliding_windows` (zero-copy, returns borrowed slices), and `session_windows` (gap-based grouping) added to `stream.rs` alongside the existing `sliding_window_sum`; a generic threshold alert/notification dispatch primitive added (`alert.rs`: `AlertCondition`/`AlertRule`/`AlertDispatcher`/`NotificationSink`); `MqttAdapter`/`AmqpAdapter` stubs added to `device.rs` behind new `mqtt`/`amqp` Cargo features, unified via a shared `DeviceTransport` trait; unit tests cover windowing math and alert dispatch; `cargo test -p tolvex_rt` and `cargo test -p tolvex_rt --all-features` both pass; `cargo clippy -p tolvex_rt --all-targets --all-features -- -D warnings` clean.
   - Follow-up `80ec222`: fixed 2 correctness bugs found in a high-effort automated code review — `session_windows` used `saturating_sub` for the inter-event gap, so an out-of-order timestamp was silently clamped to a 0ms gap and merged into the wrong session instead of forcing a split (now uses `checked_sub`, treating disorder as a boundary); `AlertCondition::Above`/`Below` used strict inequality, so a reading exactly at the configured threshold never alerted (now inclusive). Also addressed 4 cleanup findings: `tumbling_windows`/`session_windows` now return borrowed slices instead of cloning (dropping the `Clone` bound); `DeviceTransport::connect`/`publish` take `&mut self` so a real transport can hold connection state without interior mutability; `AlertDispatcher` now indexes rules by metric (`HashMap`) instead of a linear scan per `check()`.
+- [x] SL05: Web-based interactive dashboard runtime (chart components, layout, real-time data binding) `cc:done [74df3d8]`
+  - DoD: decide crate placement first (extend `tolvex_stats::viz` vs. new `tolvex_viz` crate) and record the decision in this task before implementing; interactive chart component, dashboard layout, and real-time data binding primitives added with unit tests; `cargo test` passes for the chosen crate.
+  - Decision: new `tolvex_viz` crate. `TODO.md` §2.2 lists "Enhance `tolvex.viz`" as its own domain bullet alongside `tolvex.data`/`tolvex.stats`/`tolvex.privacy`/`tolvex.iot` — the project's established pattern is one crate per domain (`tolvex.iot` became the standalone `tolvex_rt` crate rather than folding into an existing one). The existing `tolvex_stats::viz` module is a small, stateless one-shot rendering helper (ASCII/SVG snapshot functions) scoped to descriptive-stats output; it has no runtime/state concept. The new feature (stateful interactive components, layout composition, live data binding) is an orthogonal rendering/runtime concern, not statistical computation, so it belongs in its own crate rather than widening `tolvex_stats`'s scope.
+  - Implementation: `InteractiveLineChart` (multi-series SVG line chart with per-point tooltip via embedded `<title>`) in `chart.rs`; `DashboardLayout`/`Panel` (grid placement with eager bounds/overlap validation, CSS Grid render) in `layout.rs`; `DataBinding` (bounded real-time buffer, wraps `tolvex_rt::stream::RingBuffer<f64>` rather than re-implementing eviction) in `binding.rs`; `Dashboard` (composes layout + charts into a self-contained HTML page) in `dashboard.rs`. Added a non-destructive `RingBuffer::iter()` accessor to `tolvex_rt` to support the binding reuse (additive, no behavior change to existing callers). Post-implementation `/simplify` pass (4 parallel review agents: reuse/simplification/efficiency/altitude) folded the double per-point scale computation into one pass, dropped an unused `Default` derive, simplified `scale_point`'s signature, and merged `DashboardLayout::add_panel`'s duplicate-id/overlap scans into a single loop. `cargo test -p tolvex_viz -p tolvex_rt` (17 passed), `cargo clippy -p tolvex_viz -p tolvex_rt --all-targets -- -D warnings`, and `cargo fmt --check` all clean; full `cargo test --workspace` (pre-commit hook, with LLVM 15 env vars set) passed.
 
 ---
 
@@ -99,6 +101,6 @@ For larger plans, you may add task IDs, dependencies, and parallel markers.
 
 ## Last Update
 
-- **Updated at**: 2026-07-31
+- **Updated at**: 2026-08-04
 - **Last session owner**: Claude Code
 - **Branch**: main
