@@ -44,6 +44,11 @@ impl<T> RingBuffer<T> {
     pub fn dropped(&self) -> usize {
         self.dropped
     }
+
+    /// Iterates the buffered items oldest-first without consuming them.
+    pub fn iter(&self) -> impl Iterator<Item = &T> {
+        self.buf.iter()
+    }
 }
 
 pub fn tumbling_windows<T>(xs: &[T], size: usize) -> Vec<&[T]> {

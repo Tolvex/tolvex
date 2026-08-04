@@ -2380,6 +2380,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tolvex_viz"
+version = "0.1.6"
+dependencies = [
+ "tolvex_rt",
+]
+
+[[package]]
 name = "tolvexpack"
 version = "0.1.6"
 dependencies = [

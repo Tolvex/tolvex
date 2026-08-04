@@ -1,0 +1,13 @@
+[package]
+name = "tolvex_viz"
+version = "0.1.6"
+edition = "2021"
+description = "Medi standard library: interactive dashboard runtime, chart components, and layout"
+license = "Apache-2.0"
+
+[lib]
+name = "tolvex_viz"
+path = "src/lib.rs"
+
+[dependencies]
+tolvex_rt = { path = "../tolvex_rt" }

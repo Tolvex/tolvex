@@ -15,7 +15,9 @@ _harness_version: "4.10.0"
 
 <!-- Add tasks with cc:wip here. -->
 
-(none)
+- [ ] SL05: Web-based interactive dashboard runtime (chart components, layout, real-time data binding) `cc:wip`
+  - DoD: decide crate placement first (extend `tolvex_stats::viz` vs. new `tolvex_viz` crate) and record the decision in this task before implementing; interactive chart component, dashboard layout, and real-time data binding primitives added with unit tests; `cargo test` passes for the chosen crate.
+  - Decision: new `tolvex_viz` crate. `TODO.md` §2.2 lists "Enhance `tolvex.viz`" as its own domain bullet alongside `tolvex.data`/`tolvex.stats`/`tolvex.privacy`/`tolvex.iot` — the project's established pattern is one crate per domain (`tolvex.iot` became the standalone `tolvex_rt` crate rather than folding into an existing one). The existing `tolvex_stats::viz` module is a small, stateless one-shot rendering helper (ASCII/SVG snapshot functions) scoped to descriptive-stats output; it has no runtime/state concept. The new feature (stateful interactive components, layout composition, live data binding) is an orthogonal rendering/runtime concern, not statistical computation, so it belongs in its own crate rather than widening `tolvex_stats`'s scope.
 
 ---
 
@@ -25,8 +27,7 @@ _harness_version: "4.10.0"
 
 ### Standard Library Expansion (v0.1.7) — TODO.md §2.2
 
-- [ ] SL05: Web-based interactive dashboard runtime (chart components, layout, real-time data binding) `cc:todo` [P]
-  - DoD: decide crate placement first (extend `tolvex_stats::viz` vs. new `tolvex_viz` crate) and record the decision in this task before implementing; interactive chart component, dashboard layout, and real-time data binding primitives added with unit tests; `cargo test` passes for the chosen crate.
+(none — SL05 moved to In Progress)
 
 ---
 

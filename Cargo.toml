@@ -21,5 +21,6 @@ members = [
     "stdlib/tolvex_privacy",
     "stdlib/tolvex_rt",
     "stdlib/tolvex_ai", "stdlib/tolvex_model",
+    "stdlib/tolvex_viz",
     "bindings/pytolvex",
 ]
